@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Parkinson's Disease Progression — Complete Multimodal Feature Dictionary</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #1e293b;
+    background-color: #ffffff;
+    padding: 16px 20px;
+    line-height: 1.35;
+    font-size: 10.5px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  .title-group h1 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+  }
+
+  .title-group p {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .target-card {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-left: 5px solid #2563eb;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .target-title {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #1d4ed8;
+  }
+
+  .target-val {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: 1px;
+  }
+
+  .target-desc {
+    font-size: 10px;
+    color: #334155;
+  }
+
+  .target-meta {
+    text-align: right;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #475569;
+  }
+
+  .section-title {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1.5px solid #cbd5e1;
+    padding-bottom: 3px;
+  }
+
+  .section-tag {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+
+  .tag-motor { background: #dbeafe; color: #1e40af; }
+  .tag-nonmotor { background: #fef3c7; color: #92400e; }
+  .tag-demo { background: #f3e8ff; color: #6b21a8; }
+  .tag-bio { background: #fee2e2; color: #991b1b; }
+  .tag-imaging { background: #dcfce7; color: #166534; }
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    font-size: 10px;
+  }
+
+  th {
+    background: #0f172a;
+    color: #ffffff;
+    text-align: left;
+    padding: 6px 10px;
+    font-weight: 600;
+    font-size: 9.5px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 5.5px 10px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: top;
+    background: #ffffff;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:nth-child(even) td {
+    background: #f8fafc;
+  }
+
+  .col-code {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-weight: 700;
+    color: #0969da;
+    background: #f6f8fa;
+    padding: 1px 4px;
+    border-radius: 4px;
+    border: 1px solid #e1e4e8;
+    font-size: 9.5px;
+    display: inline-block;
+  }
+
+  .file-name {
+    font-size: 9px;
+    color: #64748b;
+    font-weight: 500;
+    font-family: 'Consolas', monospace;
+  }
+
+  .type-badge {
+    display: inline-block;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 8.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .type-cont { background: #e0f2fe; color: #0284c7; }
+  .type-cat { background: #fef3c7; color: #b45309; }
+  .type-bin { background: #f1f5f9; color: #475569; }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    color: #94a3b8;
+    margin-top: 12px;
+    padding-top: 6px;
+    border-top: 1px solid #e2e8f0;
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="title-group">
+      <h1>📋 PPMI Complete Multimodal Feature Dictionary</h1>
+      <p>Master Dataset Specifications &amp; Variable Mappings for Parkinson's Progression Capstone</p>
+    </div>
+    <div style="text-align: right; font-size: 10px; color: #64748b;">
+      <div><strong>Cohort:</strong> De Novo PD &amp; Healthy Controls (N = 9,270)</div>
+      <div><strong>Dataset:</strong> PPMI Longitudinal (5.67 GiB)</div>
+    </div>
+  </div>
+
+  <div class="target-card">
+    <div>
+      <div class="target-title">⭐ Primary Prediction Target &amp; Medication Confounder</div>
+      <div class="target-val"><span class="col-code">NP3TOT</span> — MDS-UPDRS Part III Total Motor Score (0 – 132)</div>
+      <div class="target-desc">Predicting exact motor score at <strong>t + 12 months</strong> and <strong>t + 24 months</strong> into the future.</div>
+    </div>
+    <div class="target-meta">
+      <div>Medication Confounder: <span class="col-code">PDSTATE</span> (ON vs. OFF)</div>
+      <div>Medication Dose: <span class="col-code">LEDD</span> (Levodopa Daily mg)</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: MASTER IDENTIFIERS -->
+  <div class="section-title">
+    <span>1. Master Identifiers &amp; Temporal Indexing</span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 20%;">Variable Name</th>
+        <th style="width: 25%;">Source File</th>
+        <th style="width: 12%;">Type</th>
+        <th style="width: 43%;">Clinical / Machine Learning Role</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="col-code">PATNO</span></td>
+        <td><span class="file-name">All CSV tables</span></td>
+        <td><span class="type-badge type-cat">Key</span></td>
+        <td>Unique patient identifier. Master key for relational joins and <strong>patient-level split</strong> (70/15/15).</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">EVENT_ID</span></td>
+        <td><span class="file-name">All CSV tables</span></td>
+        <td><span class="type-badge type-cat">Categorical</span></td>
+        <td>Clinical visit identifier (<span class="col-code">BL</span>=Baseline, <span class="col-code">V04</span>=Year 1, <span class="col-code">V06</span>=Year 2, <span class="col-code">V08</span>=Year 3).</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">INFODT</span></td>
+        <td><span class="file-name">All CSV tables</span></td>
+        <td><span class="type-badge type-cat">Date</span></td>
+        <td>Date of clinical check-up. Used to compute true elapsed days (<span class="col-code">&Delta;t</span>) for GRU-D decay.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">PDSTATE</span></td>
+        <td><span class="file-name">MDS-UPDRS_Part_III...</span></td>
+        <td><span class="type-badge type-bin">Binary</span></td>
+        <td>Medication state during motor exam (<span class="col-code">ON</span> vs. <span class="col-code">OFF</span> medication). Essential covariate.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 2: MOTOR FEATURES -->
+  <div class="section-title">
+    <span>2. Modality 1A: In-Clinic Motor Exam Subscores</span>
+    <span class="section-tag tag-motor">Motor Time-Series</span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 20%;">Variable Name</th>
+        <th style="width: 25%;">Source File</th>
+        <th style="width: 12%;">Type</th>
+        <th style="width: 43%;">Clinical Motor Examination Item</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="col-code">NP3SPCH</span>, <span class="col-code">NP3FACXP</span></td>
+        <td><span class="file-name">MDS-UPDRS_Part_III...</span></td>
+        <td><span class="type-badge type-cont">0 – 4</span></td>
+        <td>Speech impairment and facial expression masking (hypomimia).</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">NP3RIGN</span>, <span class="col-code">NP3RIGRU/LU</span></td>
+        <td><span class="file-name">MDS-UPDRS_Part_III...</span></td>
+        <td><span class="type-badge type-cont">0 – 4 each</span></td>
+        <td>Muscle Rigidity in neck, right/left arms, and right/left legs (<span class="col-code">NP3RIGRL/LL</span>).</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">NP3FTAPR</span>, <span class="col-code">NP3FTAPL</span></td>
+        <td><span class="file-name">MDS-UPDRS_Part_III...</span></td>
+        <td><span class="type-badge type-cont">0 – 4 each</span></td>
+        <td>Finger Tapping: speed, amplitude, and hesitations for right and left hands.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">NP3HMOVR/L</span>, <span class="col-code">PRSPR/L</span></td>
+        <td><span class="file-name">MDS-UPDRS_Part_III...</span></td>
+        <td><span class="type-badge type-cont">0 – 4 each</span></td>
+        <td>Rapid alternating hand movements (fist opening/closing and pronation/supination).</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">NP3TTAPR/L</span>, <span class="col-code">LGAGR/L</span></td>
+        <td><span class="file-name">MDS-UPDRS_Part_III...</span></td>
+        <td><span class="type-badge type-cont">0 – 4 each</span></td>
+        <td>Toe tapping agility and leg agility (testing lower limb bradykinesia).</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">NP3RISNG</span></td>
+        <td><span class="file-name">MDS-UPDRS_Part_III...</span></td>
+        <td><span class="type-badge type-cont">0 – 4</span></td>
+        <td>Arising from a chair with arms crossed over chest.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">NP3GAIT</span>, <span class="col-code">NP3FRZGT</span></td>
+        <td><span class="file-name">MDS-UPDRS_Part_III...</span></td>
+        <td><span class="type-badge type-cont">0 – 4 each</span></td>
+        <td>Walking stride length, arm swing, shuffling, and sudden Freezing of Gait episodes.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">NP3PSTBL</span>, <span class="col-code">NP3POSTR</span></td>
+        <td><span class="file-name">MDS-UPDRS_Part_III...</span></td>
+        <td><span class="type-badge type-cont">0 – 4 each</span></td>
+        <td>Postural stability (pull test recovery) and stooped posture severity.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">NP3BRADY</span></td>
+        <td><span class="file-name">MDS-UPDRS_Part_III...</span></td>
+        <td><span class="type-badge type-cont">0 – 4</span></td>
+        <td>Global body bradykinesia (overall slowness and lack of spontaneous movement).</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">NP3PTRMR/L</span>, <span class="col-code">RTMR...</span></td>
+        <td><span class="file-name">MDS-UPDRS_Part_III...</span></td>
+        <td><span class="type-badge type-cont">0 – 4 each</span></td>
+        <td>Action/postural tremor of hands, and resting tremor of arms, legs, and lip/jaw.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 3: DAILY LIVING & NON-MOTOR -->
+  <div class="section-title">
+    <span>3. Modality 1B: Daily Living &amp; Non-Motor Clinical Domains</span>
+    <span class="section-tag tag-nonmotor">Cognition, Sleep, Autonomic</span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 20%;">Variable Name</th>
+        <th style="width: 25%;">Source File</th>
+        <th style="width: 12%;">Type</th>
+        <th style="width: 43%;">Clinical Domain &amp; Significance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="col-code">NP1RTOT</span></td>
+        <td><span class="file-name">MDS-UPDRS_Part_I...</span></td>
+        <td><span class="type-badge type-cont">Continuous</span></td>
+        <td>Non-motor aspects of daily living (cognitive impairment, hallucinations, apathy).</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">NP2PTOT</span></td>
+        <td><span class="file-name">MDS_UPDRS_Part_II...</span></td>
+        <td><span class="type-badge type-cont">Continuous</span></td>
+        <td>Motor aspects of daily living (swallowing, dressing, hygiene, writing, turning in bed).</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">NP4WDYSK</span>, <span class="col-code">NP4OFF</span></td>
+        <td><span class="file-name">MDS-UPDRS_Part_IV...</span></td>
+        <td><span class="type-badge type-cont">Continuous</span></td>
+        <td>Motor complications: daily duration of involuntary dyskinesia and "OFF" state time.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">MSEADLG</span></td>
+        <td><span class="file-name">Modified_Schwab...</span></td>
+        <td><span class="type-badge type-cont">0 – 100%</span></td>
+        <td>Schwab &amp; England Activities of Daily Living: measure of functional independence.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">MCATOT</span></td>
+        <td><span class="file-name">Montreal_Cognitive...</span></td>
+        <td><span class="type-badge type-cont">0 – 30</span></td>
+        <td><strong>MoCA Total Score:</strong> Global cognitive decline, executive function, visuospatial memory.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">SCAU1</span> – <span class="col-code">SCAU25</span></td>
+        <td><span class="file-name">SCOPA-AUT_26Sep2026.csv</span></td>
+        <td><span class="type-badge type-cont">Composite</span></td>
+        <td>Autonomic dysfunction: gastrointestinal, urinary, orthostatic, and cardiovascular issues.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">GDSTOT</span></td>
+        <td><span class="file-name">Geriatric_Depression...</span></td>
+        <td><span class="type-badge type-cont">0 – 15</span></td>
+        <td>Geriatric Depression Scale: tracks depression and mood decline in Parkinson's.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">DRMVIVID</span>, <span class="col-code">SLPLMBMV</span></td>
+        <td><span class="file-name">REM_Sleep_Behavior...</span></td>
+        <td><span class="type-badge type-bin">Binary</span></td>
+        <td>RBD sleep questionnaire: acting out violent dreams, thrashing (strong early PD marker).</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">ESS_TOT</span></td>
+        <td><span class="file-name">Epworth_Sleepiness...</span></td>
+        <td><span class="type-badge type-cont">0 – 24</span></td>
+        <td>Epworth Sleepiness Scale: excessive daytime somnolence.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">UPSIT_TOTAL</span></td>
+        <td><span class="file-name">University_of_Penn_UPSIT</span></td>
+        <td><span class="type-badge type-cont">0 – 40</span></td>
+        <td>Smell identification test: olfactory loss is present in &gt;90% of early PD patients.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 4: DEMOGRAPHICS, GENETICS & MEDICATION -->
+  <div class="section-title">
+    <span>4. Demographics, Genetic Risk &amp; Medication Confounders</span>
+    <span class="section-tag tag-demo">Static &amp; Confounders</span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 20%;">Variable Name</th>
+        <th style="width: 25%;">Source File</th>
+        <th style="width: 12%;">Type</th>
+        <th style="width: 43%;">Clinical / Machine Learning Role</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="col-code">AGE_AT_VISIT</span></td>
+        <td><span class="file-name">Age_at_visit...</span></td>
+        <td><span class="type-badge type-cont">Years</span></td>
+        <td>Patient age at time of clinical exam. Strongest natural risk factor for progression.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">SEX</span>, <span class="col-code">EDUCYRS</span></td>
+        <td><span class="file-name">Demographics_26Sep2026.csv</span></td>
+        <td><span class="type-badge type-cat">Cat / Int</span></td>
+        <td>Biological sex (higher incidence in males) and years of education (cognitive reserve).</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">LEDD</span></td>
+        <td><span class="file-name">LEDD_Concomitant_Med...</span></td>
+        <td><span class="type-badge type-cont">mg / day</span></td>
+        <td><strong>Levodopa Equivalent Daily Dose:</strong> Total daily dopaminergic medication load.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">LRRK2</span>, <span class="col-code">GBA</span>, <span class="col-code">APOE</span></td>
+        <td><span class="file-name">iu_genetic_consensus...</span></td>
+        <td><span class="type-badge type-bin">Binary</span></td>
+        <td>Carrier flags for pathogenic Parkinson's mutations and APOE &epsilon;4 Alzheimer's allele.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">BIODADPD</span>, <span class="col-code">BIOMOMPD</span></td>
+        <td><span class="file-name">Family_History_26Sep2026.csv</span></td>
+        <td><span class="type-badge type-bin">Binary</span></td>
+        <td>Family history of Parkinson's disease in first-degree relatives (father, mother, sibling).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 5: BIOSPECIMEN BIOMARKERS -->
+  <div class="section-title">
+    <span>5. Modality 2: Biofluid / Biospecimen Biomarkers</span>
+    <span class="section-tag tag-bio">CSF &amp; Blood Assays</span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 20%;">Variable Name</th>
+        <th style="width: 25%;">Source File</th>
+        <th style="width: 12%;">Type</th>
+        <th style="width: 43%;">Biological Measurement &amp; Target Mechanism</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="col-code">ABeta42</span> (A&beta;1-42)</td>
+        <td><span class="file-name">Current_Biospecimen...</span></td>
+        <td><span class="type-badge type-cont">pg / mL</span></td>
+        <td>Cerebrospinal fluid Amyloid-Beta: lower CSF levels correlate with cognitive decline.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">tTau</span>, <span class="col-code">pTau181</span></td>
+        <td><span class="file-name">Current_Biospecimen...</span></td>
+        <td><span class="type-badge type-cont">pg / mL</span></td>
+        <td>CSF Total Tau and Phospho-Tau: indicators of ongoing neuronal death and axonal injury.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">Alpha-synuclein</span></td>
+        <td><span class="file-name">Current_Biospecimen...</span></td>
+        <td><span class="type-badge type-cont">pg / mL</span></td>
+        <td>Total alpha-synuclein protein concentration in lumbar puncture CSF.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">SAA_Status</span></td>
+        <td><span class="file-name">SAA_Biospecimen...</span></td>
+        <td><span class="type-badge type-cat">Pos / Neg</span></td>
+        <td><strong>Seed Amplification Assay:</strong> Direct biochemical detection of pathological &alpha;-syn seeds.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">Fmax</span>, <span class="col-code">T50</span></td>
+        <td><span class="file-name">SAA_Biospecimen...</span></td>
+        <td><span class="type-badge type-cont">Kinetics</span></td>
+        <td>SAA Aggregation kinetics: maximum fluorescence intensity and time to 50% aggregation.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 6: IMAGING-DERIVED FEATURES -->
+  <div class="section-title">
+    <span>6. Modality 3: Imaging-Derived Features (Pre-computed)</span>
+    <span class="section-tag tag-imaging">DaTSCAN SPECT &amp; Structural MRI</span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 20%;">Variable Name</th>
+        <th style="width: 25%;">Source File</th>
+        <th style="width: 12%;">Type</th>
+        <th style="width: 43%;">Neuroimaging Measurement &amp; Brain Structure</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="col-code">PUTAMEN_L/R_REF_CWM</span></td>
+        <td><span class="file-name">Xing_Core_Lab_Quant_SBR</span></td>
+        <td><span class="type-badge type-cont">SBR Ratio</span></td>
+        <td><strong>Putamen Striatal Binding Ratio:</strong> Directly measures dopamine terminal loss (hallmark of PD).</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">CAUDATE_L/R_REF_CWM</span></td>
+        <td><span class="file-name">Xing_Core_Lab_Quant_SBR</span></td>
+        <td><span class="type-badge type-cont">SBR Ratio</span></td>
+        <td>Caudate Striatal Binding Ratio: dopamine binding in cognitive/associative basal ganglia.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">Striatal Asymmetry</span></td>
+        <td><span class="file-name">Computed Feature</span></td>
+        <td><span class="type-badge type-cont">Index</span></td>
+        <td>Asymmetry between left and right putamen binding (|L - R| / (L + R)).</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">Hippocampus_L/R</span></td>
+        <td><span class="file-name">FS7_ASEG_VOL_26Sep2026</span></td>
+        <td><span class="type-badge type-cont">mm&sup3;</span></td>
+        <td>FreeSurfer 7 Left and Right Hippocampal volume: marker of cognitive neurodegeneration.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">Lateral_Ventricles</span></td>
+        <td><span class="file-name">FS7_ASEG_VOL_26Sep2026</span></td>
+        <td><span class="type-badge type-cont">mm&sup3;</span></td>
+        <td>Ventricular enlargement: global cerebral atrophy marker (identified by Dentamaro et al.).</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">Brain_Stem</span></td>
+        <td><span class="file-name">FS7_ASEG_VOL_26Sep2026</span></td>
+        <td><span class="type-badge type-cont">mm&sup3;</span></td>
+        <td>Brainstem volume (where the dopamine-producing Substantia Nigra is located).</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">eTIV</span></td>
+        <td><span class="file-name">FS7_ASEG_VOL_26Sep2026</span></td>
+        <td><span class="type-badge type-cont">mm&sup3;</span></td>
+        <td><strong>Estimated Total Intra-Cranial Volume:</strong> Used to normalize brain region sizes across heads.</td>
+      </tr>
+      <tr>
+        <td><span class="col-code">Cortical Thickness</span></td>
+        <td><span class="file-name">FS7_APARC_CTH_26Sep2026</span></td>
+        <td><span class="type-badge type-cont">mm</span></td>
+        <td>Mean cortical thickness in temporal and prefrontal lobes (linked to executive dysfunction).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <span>Parkinson's Disease Progression &mdash; Multimodal Feature Specification Dossier</span>
+    <span>Generated: September 2026</span>
+  </div>
+
+</body>
+</html>
