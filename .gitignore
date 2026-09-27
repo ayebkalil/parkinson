@@ -1,0 +1,19 @@
+# Data
+data/raw/
+*.csv.gz
+*.tar.gz
+*.zip
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+venv/
+env/
+.ipynb_checkpoints/
+
+# System
+.DS_Store
+Thumbs.db
