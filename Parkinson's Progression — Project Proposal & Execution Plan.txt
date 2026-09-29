@@ -1,0 +1,326 @@
+TOTAL PAGES: 9
+
+=== PAGE 1 ===
+Parkinson's Disease Progression —
+Project Proposal & Execution Plan
+Big Data & Deep Learning Capstone. Part 1 refines the original project brief into a
+precise, defensible proposal. Part 2 is the team's working execution plan. Replace
+bracketed placeholders with your own details.
+How to use this: Share Part 1 with your supervisor for sign-off before writing code.
+Use Part 2 as a living checklist — update the risk register if new issues come up.
+Part 1 — Refined Project Proposal
+1. Objective
+Model individual-level longitudinal progression of Parkinson's disease by fusing
+multimodal clinical, biomarker, and imaging-derived data from the PPMI cohort, using
+deep learning architectures suited to irregular longitudinal data, with rigorous leakage-
+safe evaluation. Extend to smartphone-derived (mPower) signals as a secondary
+objective if data access, quality, and time allow.
+2. Research Questions
+RQ1 (core): Can [MDS-UPDRS Part III motor score] at 12 and 24 months be
+predicted more accurately from a patient's full longitudinal multimodal visit history than
+from a single baseline visit alone?
+RQ2 (core): Among early (feature-level), late (decision-level), and attention-based
+(learned) fusion of clinical, biomarker, and imaging-derived modalities, which strategy
+gives the best — and most stable across prediction horizons — performance?
+RQ3 (optional extension): Does adding mPower smartphone-derived voice, tapping,
+and gait features as an auxiliary modality improve on the PPMI-only model, despite
+device heterogeneity and crowdsourced noise?
+Week 1 team decision: confirm or replace the bracketed target in RQ1. MDS-
+UPDRS Part III (motor score) is recommended — it's the most consistently collected
+scale across PPMI visits and maps directly to clinically meaningful severity.
+Whatever you choose, it must be this specific, not "progression" in general.
+3. Prediction Task Definition
+Unit of prediction: one patient, at one point in their visit history
+Input: all visits up to and including time t
+
+=== PAGE 2 ===
+Output: target score at t + 12 months and t + 24 months (two horizons, evaluated
+separately)
+Task type: regression (primary); optional secondary framing as binary
+classification ("meaningful worsening" vs. "stable," using an established clinical
+threshold) for interpretability
+Hard rule: no visit after time t may contribute to any feature used to predict at time
+t. This is checked explicitly during data engineering, never assumed.
+4. Data & Cohort
+Primary: PPMI — clinical/motor/non-motor assessments, biospecimen markers,
+imaging-derived measures (DAT-SPECT striatal binding ratios, structural MRI
+regional volumes)
+Cohort: de novo PD, prodromal, and healthy control arms — finalize exact
+inclusion criteria in Week 1 once data access is confirmed
+Secondary (stretch): mPower — voice, finger-tapping, gait, and tremor from
+smartphone sensors (~58,000 recordings, ~5,800 participants)
+MVP scope: imaging as derived features, not raw 3D volumes. Raw-volume 3D
+CNN work is a stretch goal only (Part 2, Phase 4).
+5. Methodology
+5.1 Pipeline overview
+flowchart TD
+    A[Raw PPMI tables: clinical, biomarker, imaging-derived] --> B[Spark E
+    B --> C[Patient-level train/val/test split]
+    C --> D[Clinical and biomarker encoder: GRU-D or time-aware Transforme
+    C --> E[Imaging-derived encoder: FFN or CNN]
+    D --> F[Fusion layer: early, late, attention - compared head to head]
+    E --> F
+    F --> G[Prediction: target at +12 and +24 months]
+    G --> H[Explainability: SHAP, attention, Grad-CAM]
+5.2 Big Data component — where Spark is actually load-bearing
+PPMI alone (~1,000 multimodal patients) is not large by volume — don't pretend
+otherwise in the report. Spark earns its place in two specific jobs:
+1. Longitudinal feature engineering across the full cohort's visit history:
+windowed/rolling statistics, time-since-baseline features, missing-visit masks — a
+genuine distributed job over all patients × all visits × all modalities.
+2. (If RQ3 is pursued) mPower raw-signal processing: feature extraction from tens
+of thousands of raw voice/accelerometer recordings — genuinely high-volume, and
+the strongest justification for distributed processing in this project.
+
+=== PAGE 3 ===
+5.3 Train/val/test protocol
+Split by patient ID, never by visit/row. Compute the split once, save it as a shared
+table ( patient_id → split ), and have every team member load that same file.
+Nobody recomputes their own split.
+5.4 Baselines (built before any fusion work)
+Per-modality classical ML on the most recent visit only (cross-sectional baseline)
+Per-modality simple sequence model (plain LSTM) on the full visit history
+These exist to prove the pipeline works end-to-end and to give a real yardstick for the
+fusion models later.
+5.5 Modality encoders
+Clinical/biomarker time series → GRU-D or a time-embedded Transformer (built to
+handle irregular visit spacing directly, not assume uniform time steps)
+Imaging-derived features → feedforward network or small CNN
+Stretch: raw 3D imaging CNN, following Dentamaro et al.'s architecture — only
+after the above is solid
+5.6 Fusion strategies (compared head-to-head)
+Early (feature-level concatenation), late (decision-level ensembling), and attention-
+based (learned) fusion — all three implemented and benchmarked, not just one
+chosen by assumption.
+5.7 Explainability
+SHAP for tabular/derived-feature contributions; attention-weight visualization for the
+sequence/fusion model; Grad-CAM if a raw-imaging CNN is built.
+5.8 Stability evaluation
+Re-run the fusion comparison across both prediction horizons (12 vs. 24 months). If
+the winning fusion strategy changes between horizons, that instability is itself a real,
+reportable finding for RQ2 — not a bug to hide.
+6. Evaluation Metrics
+Regression: MAE, RMSE, R²
+Secondary classification framing: F1, AUROC, calibration
+Comparing fusion strategies: paired significance testing (e.g., bootstrap), not raw
+metric differences alone
+7. Ethics & Data Governance
+
+=== PAGE 4 ===
+Full compliance with the PPMI Data Use Agreement (and mPower/Synapse terms,
+if RQ3 is pursued)
+No attempt at participant re-identification; all reporting is aggregate/de-identified
+Non-commercial academic use only; outputs restricted to the capstone report and
+any approved academic publication
+Any demo built for the final presentation is an internal, non-deployed illustration —
+not a clinical tool, not a public product (see Deliverables)
+8. Deliverables
+In scope:
+Spark-based data engineering pipeline
+Baseline models + fusion models with full comparison results
+Explainability analysis
+Written report (methodology, results, discussion, limitations)
+Internal demo (Streamlit/Gradio) for the defense — local, not deployed
+Explicitly out of scope: a deployed, public-facing web application. This is a research
+pipeline, not a product — confirm with your supervisor if your program's rubric says
+otherwise.
+9. References
+1. Dentamaro, V. et al. (2024). Enhancing early Parkinson's disease detection through
+multimodal deep learning and explainable AI: insights from the PPMI database.
+Scientific Reports.
+2. Junaid, M. et al. (2025). Multitask Deep Learning for Predicting Parkinson's
+Progression and Depression From Multimodal Time Series Data. IEEE Access.
+3. Botha, H. et al. (2026). Longitudinal voice biomarker trajectory modelling for
+Parkinson's disease severity: domain-adaptive transfer learning on mPower real-
+world smartphone data. Frontiers in Digital Health.
+4. Lim, W. et al. (2025). Smartphone-derived multidomain features including voice,
+finger-tapping movement and gait aid early identification of Parkinson's disease.
+NPJ Parkinson's Disease.
+5. Dritsas, E. et al. (2025). Applying Machine Learning on Big Data With Apache
+Spark. IEEE Access.
+6. Bot, B. M. et al. (2016). The mPower study, Parkinson disease mobile data
+collected using ResearchKit. Scientific Data. (The foundational mPower dataset
+paper — describes the study design and data collection. Note: distinct from Botha
+et al. above, which analyzes the resulting data.)
+
+=== PAGE 5 ===
+Part 2 — Team Execution Plan
+Assumes a ~14-week semester. Adjust week numbers to your actual deadline.
+10. Team Roles at a Glance
+Role Name Primary focus Key tools
+Data & Big Data
+Engineering
+Lead
+[Name] Spark pipeline, feature
+engineering, the shared
+patient-level split, evaluation
+harness
+PySpark,
+Docker/Databricks
+CE
+Time-Series &
+Clinical Modeling
+Lead
+[Name] Clinical/biomarker sequence
+encoder, RQ1
+PyTorch, GRU-D /
+Transformers
+Imaging, Fusion
+& Explainability
+Lead
+[Name] Imaging encoder, all fusion
+strategies, RQ2, XAI
+PyTorch, SHAP,
+Grad-CAM
+All three should understand the full pipeline well enough to defend any part of it —
+ownership avoids duplicated work, it doesn't mean the other two ignore that piece.
+11. Phase-by-Phase Plan
+Phase 1 — Foundations (Weeks 1–2)
+Goal: Data access moving, infrastructure ready, literature synthesized, target locked.
+Data Engineering Lead: Complete PPMI registration/DUA — this is the urgent
+one, start it immediately; set up the Spark environment (Docker or Databricks
+Community Edition); set up the shared GitHub repo ( data/ , notebooks/ , src/ ,
+report/ ); read the Dritsas et al. (Spark) paper and Bot et al. (the mPower origin
+paper — just reading, no registration needed, useful background for whoever
+eventually builds the Phase 7 pipeline); start exploring PPMI's data dictionary as
+soon as documentation is available. mPower/Synapse registration itself is not
+urgent — nothing in the core pipeline needs it. Defer that until Phase 7, only if RQ3
+is still in scope by then.
+Time-Series Lead: Extract Junaid et al. and Botha et al. into the literature table
+(below); shortlist irregular-time-series architectures (GRU-D, time-aware
+Transformers).
+Imaging/Fusion Lead: Extract Dentamaro et al. and Lim et al.; check which
+imaging-derived variables PPMI provides pre-computed vs. what would need raw
+processing.
+
+=== PAGE 6 ===
+Joint: Lock the exact RQ1 target (Section 2); decide the exact Big Data placement
+(Section 5.2); fill in Section 3's task definition together.
+Deliverable: Literature comparison table completed; this proposal finalized as a
+team; repo + environment ready; data access requests submitted.
+Literature extraction template (one row per paper):
+Paper Cohort
+/ N
+Exact
+target
+Fusion
+strategy
+Architecture Split
+protocol
+Result What
+they
+didn't
+handle
+Phase 2 — Data Engineering (Weeks 2–4)
+Goal: Clean, joined, leakage-safe modeling tables.
+Data Engineering Lead (owns this phase): Build the Spark pipeline — ingest raw
+PPMI exports, join clinical/biomarker/imaging-derived tables by patient + visit,
+engineer time-respecting rolling/windowed features, handle missing visits (masks,
+time-delta features for GRU-D), create the canonical patient-level split and save it
+as the shared artifact.
+Time-Series Lead: Define the clinical/biomarker feature list with the Data Lead;
+build the time-series data loader; run EDA on visit frequency, missingness patterns,
+and target-score distributions.
+Imaging/Fusion Lead: Extract the specific imaging-derived variables to use; if raw
+imaging is a later stretch goal, research the preprocessing tooling now (don't
+discover this in week 10).
+Joint: Review the split and EDA together; freeze the feature list per modality before
+modeling starts.
+Deliverable: Clean modeling tables per modality + saved patient-level split + EDA
+summary.
+Phase 3 — Baselines (Weeks 4–6)
+Goal: Simple, working, single-modality baselines — the pipeline proven end-to-end,
+and a real yardstick for later.
+Data Engineering Lead: Build the shared evaluation harness (given predictions +
+targets, computes MAE/RMSE/R² and produces the comparison table everyone
+uses downstream).
+Time-Series Lead: Train a cross-sectional baseline (XGBoost/LightGBM on the
+latest visit only) and a longitudinal baseline (plain LSTM on the full
+clinical/biomarker history).
+
+=== PAGE 7 ===
+Imaging/Fusion Lead: Train a classical ML or simple NN baseline on imaging-
+derived features alone.
+Joint: Compare all baselines in the shared harness; check for anything
+suspiciously perfect (leakage) or suspiciously random.
+Deliverable: Baseline comparison table — a good candidate for a mid-semester
+supervisor check-in.
+Phase 4 — Modality-Specific Deep Encoders (Weeks 6–9)
+Goal: A real deep encoder per modality, each beating its own baseline.
+Time-Series Lead (owns): Implement GRU-D or a time-embedded Transformer;
+tune against the Phase 3 LSTM baseline.
+Imaging/Fusion Lead (owns): Implement the imaging-derived feature encoder;
+only after this is solid, prototype a raw-imaging 3D CNN as a stretch add-on.
+Data Engineering Lead: Support both with pipeline adjustments as needed; if
+RQ3 is still in scope, start the mPower raw-signal Spark pipeline now, since it's the
+most time-consuming Big Data piece.
+Joint: Short weekly sync to catch integration issues (ID format mismatches,
+inconsistent scaling) before fusion time.
+Deliverable: Two validated modality encoders, each beating its Phase 3 baseline
+(or a documented reason why not).
+Phase 5 — Fusion & Comparison (Weeks 9–11)
+Goal: Answer RQ2 rigorously.
+Imaging/Fusion Lead (owns): Implement early, late, and attention-based fusion
+combining both encoders.
+Time-Series Lead: Support the clinical/biomarker side of fusion; help run the multi-
+horizon (12 vs. 24 month) evaluation.
+Data Engineering Lead: Run paired significance testing between fusion strategies
+and baselines using the shared harness.
+Joint: Interpret results honestly — a marginal fusion gain over the best single
+modality is a legitimate, expected finding, not a failure.
+Deliverable: Full fusion comparison table + significance tests — RQ2 answered.
+Phase 6 — Explainability & Stability (Weeks 11–12)
+Goal: Interpret the winning model; verify the stability claim in RQ2.
+Imaging/Fusion Lead: SHAP for feature contributions; Grad-CAM if a raw-imaging
+CNN was built.
+
+=== PAGE 8 ===
+Time-Series Lead: Attention-weight visualization — which visits/timepoints
+mattered most.
+Data Engineering Lead: Re-run the fusion comparison across both horizons (and
+ideally multiple seeds) to produce the stability evidence.
+Deliverable: Explainability figures + stability results table.
+Phase 7 — mPower / RQ3 (Stretch — only if ahead of schedule)
+Data Engineering Lead: Finish/scale the Spark-based mPower feature extraction
+(voice, tapping, gait).
+Whoever has capacity: Domain-adaptive integration of mPower as an auxiliary
+modality, following Botha et al.'s general direction.
+Deliverable: RQ3 answered — does mPower add signal despite the noise?
+Phase 8 — Report, Demo & Presentation
+(Weeks 12–14, writing threaded throughout)
+All three: draft your own methodology subsection as you finish that piece — not all
+in the last week.
+Data Engineering Lead: Compiles the report structure; writes the Big Data
+pipeline and ethics sections.
+Time-Series Lead: Writes the RQ1 results section.
+Imaging/Fusion Lead: Writes the RQ2 (and RQ3 if applicable) results and
+explainability section; builds the Streamlit/Gradio internal demo (2–3 days, local
+only, not deployed).
+Joint: Final polish; rehearse the defense together so all three can answer
+questions about the whole pipeline, not just their own piece.
+12. Risk Register
+Risk Mitigation
+PPMI/mPower access delayed Phase 1 has non-data-dependent work queued
+(infra, literature) so nobody is blocked
+Imaging too time-consuming MVP uses derived features only; raw 3D CNN is
+a pure stretch goal
+Data leakage from bad splitting One shared patient-level split, created once in
+Phase 2, used by everyone
+Fusion only marginally beats
+best single modality
+Expected outcome — report it honestly as a
+finding, not a failure
+
+=== PAGE 9 ===
+Risk Mitigation
+Vague prediction target Resolved in Phase 1 by locking one precise,
+specific target
+Scope creep into a deployed
+"product"
+Explicitly out of scope per Section 8
+13. Milestones & Check-ins
+End of Phase 1: Proposal finalized, environment ready, access submitted
+End of Phase 3: Baseline results — good moment for a supervisor check-in
+End of Phase 5: Fusion results — RQ2 answered
+End of Phase 8: Final submission and defense
+

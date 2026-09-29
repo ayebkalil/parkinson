@@ -1,0 +1,50 @@
+TOTAL PAGES: 2
+
+=== PAGE 1 ===
+Page 1 
+Détection de l’évolution de la maladie de parkinson 
+ 
+1. Objectif du projet 
+Modéliser l'évolution de la maladie de Parkinson en combinant données cliniques, capteurs, voix, 
+imagerie et/ou biomarqueurs au cours du temps, avec un périmètre central construit sur PPMI. 
+2. Questions de recherche 
+• RQ1 : Peut -on prédire la progression ou la sévérité de Parkinson en exploitant les trajectoires 
+longitudinales multimodales de PPMI plutôt qu'une seule visite ? 
+• RQ2 : Quelle stratégie de fusion des modalités (clinique, imagerie, biomarqueurs) est la plus 
+performante et la plus stable dans le temps ? 
+• RQ3 (extension optionnelle) : L'ajout de données smartphone (mPower) apporte -t-il un signal 
+complémentaire malgré l'hétérogénéité des dispositifs et le bruit crowdsourcé ? 
+3. Contexte scientifique et actualité de la recherche 
+PPMI (Parkinson's Progression Markers Initiative) est une cohorte clinique longitudinale de référence.  
+mPower est un jeu de données crowdsourcé (voix, frappe, démarche, tremblement) issu de 
+smartphones, à la fois riche en volume/fréquence mais bruité et hétérogène.  
+4. Références académiques sélectionnées 
+• Dentamaro, V. et al. (2024). Enhancing early Parkinson's disease detection through multimodal 
+deep learning and explainable AI: insights from the PPMI database. Scientific Reports, 100 
+citations. — Fusion co-apprise imagerie 3D + clinique sur PPMI avec IA explicable ; référence 
+directe pour l'architecture de fusion et l'identification de biomarqueurs (RQ1/RQ2). 
+• Junaid, M. et al. (2025). Multitask Deep Learning for Predicting Parkinson's Progression and 
+Depression From Multimodal Time Series Data. IEEE Access, 8 citations. — Modèle BiLSTM 
+multitâche sur 1059 patients PPMI (données démographiques, motrices, non motrices, IRM) ; 
+référence méthodologique proche du modèle longitudinal recommandé. 
+• Botha, H. et al. (2026). Longitudinal voice biomarker trajectory modelling for Parkinson's disease 
+severity: domain-adaptive transfer learning on mPower real-world smartphone data. Frontiers in 
+Digital Health. — Utilise directement le corpus mPower (58 247 enregistrements, 5 800 
+participants) avec adaptation de domaine pour gérer l'hétérogénéité des appareils ; référence clé 
+pour l'extension optionnelle RQ3. 
+• Lim, W. et al. (2025). Smartphone-derived multidomain features including voice, finger-tapping 
+movement and gait aid early identification of Parkinson's disease. NPJ Parkinson's Disease, 17 
+citations. — Démontre la valeur ajoutée de la fusion multimodale de capteurs smartphone (voix 
+
+=== PAGE 2 ===
+Page 2 
++ mouvement + démarche) par rapport aux modalités isolées ; pertinent pour cadrer l'extension 
+mPower. 
+• Dritsas, E. et al. (2025). Applying Machine Learning on Big Data With Apache Spark. IEEE 
+Access. — Référence méthodologique transverse : montre le passage à l'échelle quasi linéaire 
+d'Apache Spark pour l'entraînement de modèles sur données volumineuses, à citer dans la partie 
+« pipeline Big Data » de chaque projet. 
+5. Dataset(s) et accès 
+• Principal : PPMI - demande d'accès/enregistrement. 
+• mPower 
+
