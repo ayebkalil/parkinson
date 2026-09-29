@@ -1,0 +1,4 @@
+timestamp,model_name,target_horizon,modalities,n_samples,mae,rmse,r2,pearson_r,bias,roc_auc,pr_auc,balanced_acc,sensitivity,specificity,brier_score,notes,mae_on,r_on,mae_off,r_off,mae_untreated,r_untreated
+2026-09-29 09:47:33,Model 1: Tabular XGBoost,+12 Months (NP3TOT),Multimodal Tabular Snapshot (Latest Visit),583,4.711,6.867,0.774,0.8808,-0.483,,,,,,,"Trained on 2683 pats, evaluated on held-out test set.",7.549,0.7705,,,3.538,0.8309
+2026-09-29 09:47:34,Model 1: Tabular XGBoost,+24 Months (NP3TOT),Multimodal Tabular Snapshot (Latest Visit),462,4.971,7.319,0.7506,0.8674,-0.601,,,,,,,Trained on 2155 pats with valid 24m targets.,7.907,0.6942,,,3.399,0.8205
+2026-09-29 09:47:34,Model 1: Tabular XGBoost Classifier,+12m Worsening (MCID >= 3.5),Multimodal Tabular Snapshot (Latest Visit),583,0.432,0.458,0.0155,0.3435,0.148,0.7099,0.5521,0.6508,0.5944,0.7072,0.2101,Classification of rapid motor worsening (MCID >= 3.5 points).,0.481,0.266,,,0.411,0.2464
