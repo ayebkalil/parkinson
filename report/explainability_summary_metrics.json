@@ -1,0 +1,9 @@
+{
+  "mean_clinical_weight_pct": 95.0844955444336,
+  "mean_imaging_weight_pct": 4.9155073165893555,
+  "std_clinical_weight_pct": 7.110164165496826,
+  "std_imaging_weight_pct": 7.110165119171143,
+  "min_imaging_weight_pct": 3.302426421214477e-07,
+  "max_imaging_weight_pct": 24.66754913330078,
+  "n_patients": 583
+}

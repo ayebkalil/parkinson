@@ -1,0 +1,252 @@
+{
+  "all_models_ci": {
+    "Model 1: XGBoost": {
+      "12m": {
+        "mae": 4.710925760440925,
+        "ci": [
+          4.319967762842186,
+          5.131801142240675
+        ]
+      },
+      "24m": {
+        "mae": 4.971281502928052,
+        "ci": [
+          4.48524807951538,
+          5.469510667929144
+        ]
+      }
+    },
+    "Model 3: Neuroimaging XGBoost": {
+      "12m": {
+        "mae": 7.9204648199457655,
+        "ci": [
+          7.3119696369915435,
+          8.560454982273779
+        ]
+      },
+      "24m": {
+        "mae": 8.508249065060637,
+        "ci": [
+          7.8184547512046185,
+          9.266411373793305
+        ]
+      }
+    },
+    "Model 2: Longitudinal BiLSTM": {
+      "12m": {
+        "mae": 4.583375577758965,
+        "ci": [
+          4.254123384271641,
+          4.933408435875004
+        ]
+      },
+      "24m": {
+        "mae": 4.966802898810539,
+        "ci": [
+          4.572676907657158,
+          5.370380112325604
+        ]
+      }
+    },
+    "Fusion: Early Fusion": {
+      "12m": {
+        "mae": 4.250380081950493,
+        "ci": [
+          3.849745202251098,
+          4.669023622569866
+        ]
+      },
+      "24m": {
+        "mae": 5.141857127993654,
+        "ci": [
+          4.654681141942223,
+          5.657890634590284
+        ]
+      }
+    },
+    "Fusion: Late Gated Fusion": {
+      "12m": {
+        "mae": 3.9963040974495954,
+        "ci": [
+          3.6272072670888633,
+          4.371287882054547
+        ]
+      },
+      "24m": {
+        "mae": 4.893556294761178,
+        "ci": [
+          4.437366942816224,
+          5.407794981157948
+        ]
+      }
+    },
+    "Fusion: Cross-Attention Transformer": {
+      "12m": {
+        "mae": 4.272479622584878,
+        "ci": [
+          3.881723733225879,
+          4.675171110695979
+        ]
+      },
+      "24m": {
+        "mae": 5.37433722937778,
+        "ci": [
+          4.8590008946821035,
+          5.903321845481148
+        ]
+      }
+    }
+  },
+  "pairwise_tests": {
+    "RQ1: Model 1 XGBoost vs Model 2 BiLSTM (+24m)": {
+      "comparison": "Model 1: XGBoost vs. Model 2: Longitudinal BiLSTM",
+      "horizon": "+24 Months",
+      "n_samples": 462,
+      "mae_model_a": 4.971281502928052,
+      "ci95_a": [
+        4.497160565749907,
+        5.462201247096577
+      ],
+      "mae_model_b": 4.966802898810539,
+      "ci95_b": [
+        4.557503909833761,
+        5.363056378550344
+      ],
+      "delta_mae (A - B)": 0.0044786041175131075,
+      "ci95_delta": [
+        -0.44158973141988656,
+        0.45663457269663416
+      ],
+      "wilcoxon_stat": 50736.0,
+      "wilcoxon_p": 0.3398560235857152,
+      "ttest_p": 0.9839929494428861,
+      "bootstrap_p": 0.494,
+      "winner": "Not Significant (p = 0.3399)"
+    },
+    "Near-Term: Model 1 XGBoost vs Model 2 BiLSTM (+12m)": {
+      "comparison": "Model 1: XGBoost vs. Model 2: Longitudinal BiLSTM",
+      "horizon": "+12 Months",
+      "n_samples": 583,
+      "mae_model_a": 4.710925760440925,
+      "ci95_a": [
+        4.286132494141675,
+        5.122573564489137
+      ],
+      "mae_model_b": 4.583375577758965,
+      "ci95_b": [
+        4.2211643889853105,
+        4.928598366498845
+      ],
+      "delta_mae (A - B)": 0.1275501826819596,
+      "ci95_delta": [
+        -0.2260156251809612,
+        0.5207061569543484
+      ],
+      "wilcoxon_stat": 83569.0,
+      "wilcoxon_p": 0.7034271485572188,
+      "ttest_p": 0.508909336639966,
+      "bootstrap_p": 0.233,
+      "winner": "Not Significant (p = 0.7034)"
+    },
+    "RQ2: Early Fusion vs Late Fusion (+24m)": {
+      "comparison": "Fusion: Early Fusion vs. Fusion: Late Gated Fusion",
+      "horizon": "+24 Months",
+      "n_samples": 462,
+      "mae_model_a": 5.141857127993654,
+      "ci95_a": [
+        4.666345085035929,
+        5.654551761649001
+      ],
+      "mae_model_b": 4.893556294761178,
+      "ci95_b": [
+        4.411532847651027,
+        5.415083403975675
+      ],
+      "delta_mae (A - B)": 0.24830083323247543,
+      "ci95_delta": [
+        -0.1884985115701629,
+        0.6863178294023006
+      ],
+      "wilcoxon_stat": 49861.0,
+      "wilcoxon_p": 0.20796132417766078,
+      "ttest_p": 0.2883490241384505,
+      "bootstrap_p": 0.127,
+      "winner": "Not Significant (p = 0.2080)"
+    },
+    "RQ2: Cross-Attention vs Late Fusion (+24m)": {
+      "comparison": "Fusion: Cross-Attention vs. Fusion: Late Gated Fusion",
+      "horizon": "+24 Months",
+      "n_samples": 462,
+      "mae_model_a": 5.37433722937778,
+      "ci95_a": [
+        4.849266588313755,
+        5.90634035660978
+      ],
+      "mae_model_b": 4.893556294761178,
+      "ci95_b": [
+        4.382417274098763,
+        5.410382881001025
+      ],
+      "delta_mae (A - B)": 0.4807809346166012,
+      "ci95_delta": [
+        0.14769988210621848,
+        0.7979222006063695
+      ],
+      "wilcoxon_stat": 46918.0,
+      "wilcoxon_p": 0.022361736348340953,
+      "ttest_p": 0.0050379138760622034,
+      "bootstrap_p": 0.005,
+      "winner": "Fusion: Late Gated Fusion (p = 2.2362e-02)"
+    },
+    "RQ2: Early Fusion vs Late Fusion (+12m)": {
+      "comparison": "Fusion: Early Fusion vs. Fusion: Late Gated Fusion",
+      "horizon": "+12 Months",
+      "n_samples": 583,
+      "mae_model_a": 4.250380081950493,
+      "ci95_a": [
+        3.861698187302357,
+        4.653756071049496
+      ],
+      "mae_model_b": 3.9963040974495954,
+      "ci95_b": [
+        3.6519586588516444,
+        4.372342088739316
+      ],
+      "delta_mae (A - B)": 0.25407598450089797,
+      "ci95_delta": [
+        -0.04317021163030298,
+        0.5636917536908932
+      ],
+      "wilcoxon_stat": 78083.0,
+      "wilcoxon_p": 0.08381009234029692,
+      "ttest_p": 0.10362929355653905,
+      "bootstrap_p": 0.045,
+      "winner": "Not Significant (p = 0.0838)"
+    },
+    "Synergy: Imaging Alone vs Late Fusion (+24m)": {
+      "comparison": "Model 3: Neuroimaging vs. Fusion: Late Gated Fusion",
+      "horizon": "+24 Months",
+      "n_samples": 462,
+      "mae_model_a": 8.508249065060637,
+      "ci95_a": [
+        7.7745574198759995,
+        9.314647557879939
+      ],
+      "mae_model_b": 4.893556294761178,
+      "ci95_b": [
+        4.440954798601923,
+        5.388130288571119
+      ],
+      "delta_mae (A - B)": 3.6146927702994587,
+      "ci95_delta": [
+        2.80800700128014,
+        4.423036060959616
+      ],
+      "wilcoxon_stat": 27277.0,
+      "wilcoxon_p": 7.196759632958971e-20,
+      "ttest_p": 6.021404875920217e-20,
+      "bootstrap_p": 0.0,
+      "winner": "Fusion: Late Gated Fusion (p = 7.1968e-20)"
+    }
+  }
+}
