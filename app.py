@@ -254,6 +254,7 @@ def main():
 
     # Metric Cards
     m1, m2, m3, m4 = st.columns(4)
+    cur_score = res["cur_score"]
     if "Late" in selected_model:
         p12 = res["pred12_lf"]
         p24 = res["pred24_lf"]
