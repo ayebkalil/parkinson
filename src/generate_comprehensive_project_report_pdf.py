@@ -493,6 +493,24 @@ def build_pdf():
          Paragraph("<b>0.8742</b>", table_cell),
          Paragraph("<b>-0.347</b>", table_cell),
          Paragraph("<b>DECISIVE WINNER (+24m)</b>: Trajectory velocity beats snapshot.", table_cell)],
+
+        [Paragraph("Model 3: Neuroimaging (XGB)", table_cell),
+         Paragraph("+12 Months", table_cell),
+         Paragraph("7.920", table_cell),
+         Paragraph("11.345", table_cell),
+         Paragraph("38.3%", table_cell),
+         Paragraph("0.6215", table_cell),
+         Paragraph("+0.324", table_cell),
+         Paragraph("Brain imaging alone; strong biological signal.", table_cell)],
+
+        [Paragraph("Model 3: Neuroimaging (XGB)", table_cell),
+         Paragraph("+24 Months", table_cell),
+         Paragraph("8.508", table_cell),
+         Paragraph("11.733", table_cell),
+         Paragraph("35.9%", table_cell),
+         Paragraph("0.6082", table_cell),
+         Paragraph("+0.856", table_cell),
+         Paragraph("DaTSCAN + MRI alone over 24-month horizon.", table_cell)],
     ]
     bench_table = Table(bench_table_data, colWidths=[120, 50, 45, 40, 45, 50, 40, 114])
     bench_table.setStyle(TableStyle([
