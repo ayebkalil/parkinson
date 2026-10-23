@@ -1,0 +1,6 @@
+{
+  "decision_before_test": true,
+  "bilstm": "Repeat baseline and all three screened candidates on seeds 17 and 2026, then choose task-specific configurations on the three-seed validation means.",
+  "reason": "balanced_mae and classification_huber have classification ranking scores within 0.0001 on seed42; avoid discarding a near tie.",
+  "xgboost": "Repeat baseline and screen winner per task as planned."
+}

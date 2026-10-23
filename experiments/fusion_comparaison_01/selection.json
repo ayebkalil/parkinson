@@ -1,0 +1,8 @@
+{
+  "criterion": "mean aligned MAE12/MAE24; seed42 screening",
+  "configurations": {
+    "early": "compact_mae",
+    "late": "compact_mae"
+  },
+  "warning": "24m selection uses only 14 aligned validation labels; high uncertainty"
+}

@@ -152,3 +152,58 @@ type report\benchmark_results.csv  # (Windows) or cat report/benchmark_results.c
 1. **Dentamaro et al. (2024):** Deep learning on longitudinal clinical datasets for Parkinson's disease progression.
 2. **Junaid et al. (2025):** Multimodal fusion of neuroimaging and biomarkers in neurodegeneration.
 3. **PPMI Consortium:** *The Parkinson Progression Marker Initiative (PPMI).* Progress in Neurobiology, 2011.
+
+## Expériences Early / Late Fusion auditées — 13 octobre 2026
+
+Le pipeline isolé `src/fusion_experiments.py` conserve les architectures Early
+et Late Fusion et les checkpoints historiques. Il corrige l'ancrage résiduel
+en points NP3TOT, la lecture du padding de Late Fusion et la sauvegarde des
+meilleurs poids. Les modèles de référence et leurs scripts sont inchangés.
+
+Résultats, configurations, checkpoints et commandes détaillées :
+[`experiments/fusion_20261013/RAPPORT_FR.txt`](experiments/fusion_20261013/RAPPORT_FR.txt).
+La configuration retenue est indiquée dans `selected_checkpoints.json` du même dossier.
+
+**Limite importante :** 435 des 449 cibles tabulaires de validation à 24 mois
+proviennent d'une visite antérieure. Le rapport distingue les scores sur ces
+cibles historiques des scores sur les 14 cibles correctement rattachées à la
+visite index. Les données communes sont conservées. Les anciens tests de
+`run_statistical_tests.py` utilisent aussi des visites au-delà de la visite
+index et ne constituent pas une confirmation des nouveaux résultats.
+
+Depuis la racine du projet dans PowerShell :
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s src -p test_fusion_experiments.py -v
+.\.venv\Scripts\python.exe src/fusion_experiments.py --stage verify
+```
+
+Pour réentraîner, utiliser `--stage screen`, puis `--stage repeat`, avec un
+nouveau `--output` (voir le rapport). Ces expériences sélectionnent uniquement
+sur la validation et ne recalculent aucune performance de test.
+
+Pour entraîner une seule fusion avec la configuration `compact_mae` et la graine
+42, utiliser successivement :
+
+```powershell
+.\.venv\Scripts\python.exe src/fusion_experiments.py --stage run --architecture early --experiment compact_mae --seed 42 --output experiments/fusion_individual
+.\.venv\Scripts\python.exe src/fusion_experiments.py --stage run --architecture late --experiment compact_mae --seed 42 --output experiments/fusion_individual
+.\.venv\Scripts\python.exe src/fusion_experiments.py --stage verify --output experiments/fusion_individual
+```
+
+Choisir un nouveau dossier `--output` pour une nouvelle série. Les commandes
+enregistrent un checkpoint et les métriques de validation propres à chaque
+fusion dans des sous-dossiers distincts.
+
+La commande historique est aussi un point d'entrée simple pour les deux
+fusions améliorées, entraînées une fois chacune avec `compact_mae` et la graine
+42, puis vérifiées :
+
+```powershell
+python src/train_fusion_models.py
+```
+
+Elle crée automatiquement un nouveau dossier `experiments/fusion_run_*` pour
+préserver les anciens checkpoints et rapports. Le code d'entraînement
+historique reste disponible dans `legacy_main()` pour inspection, mais n'est
+plus exécuté par cette commande. Cross-Attention n'est pas réentraîné.

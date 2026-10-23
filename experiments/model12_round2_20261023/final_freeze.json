@@ -1,0 +1,29 @@
+{
+  "selection_sha256": "3655ba80b86a8032e02aa9654b200637cd0c6040f43a6efc83307ad3054fee78",
+  "checkpoints": {
+    "final\\runs\\xgboost\\cls\\regular3\\17\\best.json": "5c4f8c47c3d1134b1e9d1017b70b03c42f3a19f5fc633e3cd89d5d51b6889d4d",
+    "final\\runs\\xgboost\\cls\\regular3\\2026\\best.json": "f76ed6e26a639e8695ecee4a0a97719280437060d683e4da86449bba5ae1af3d",
+    "final\\runs\\xgboost\\cls\\regular3\\42\\best.json": "145e7b1c202954c3d62265e91abb4b24cbad63f4e4b14da060268fd904beae46",
+    "final\\runs\\xgboost\\cls\\baseline\\17\\best.json": "ac2430c98664bf0faf83a5c454571f91db6eeda2ace8d68ba7e2ce5dc51aaea0",
+    "final\\runs\\xgboost\\cls\\baseline\\2026\\best.json": "b936602cac7339caad0302bc1f44374c94cfd512a27128d56f875fa169ee17ad",
+    "final\\runs\\xgboost\\cls\\baseline\\42\\best.json": "c8518626200b7ca73a83dcdbf72511e91df8cb040f60a2447a600b2ca93c4a7f",
+    "final\\runs\\xgboost\\24m\\regular4\\17\\best.json": "3dc64c51037478cd58d842a2ce47a2e7042b5803fd7fea1038a6408b96f4d014",
+    "final\\runs\\xgboost\\24m\\regular4\\2026\\best.json": "8426f8a481b96d2b857d67aed6a2165ed0d92e06b498fc4d157cf866bf4c105b",
+    "final\\runs\\xgboost\\24m\\regular4\\42\\best.json": "bec1722acfd9be49c90b5562b2b201504eb2e8e6b58c20674acb06413e0260cd",
+    "final\\runs\\xgboost\\24m\\baseline\\17\\best.json": "6a1de7c10c002a40e59e8e5cfc0ee205d986c5cab794ce5e2afa49ad277c1ca8",
+    "final\\runs\\xgboost\\24m\\baseline\\2026\\best.json": "debbb18db255d29e09bf3157e1f8b41c5d45a3123b99c59dc440a61dc95afb03",
+    "final\\runs\\xgboost\\24m\\baseline\\42\\best.json": "a723eb4d172cd979378c57a11d6761c7665130b9dd2893766655ad19b5a41edd",
+    "final\\runs\\xgboost\\12m\\regular3\\17\\best.json": "9f91817b4e1ab436e882ac0303f8840a3edd0c22bc130fb32787ac07527adb42",
+    "final\\runs\\xgboost\\12m\\regular3\\2026\\best.json": "7993a53978a4882e6656da255030cd5ec18467bdc9d7c795133092f86bf95e07",
+    "final\\runs\\xgboost\\12m\\regular3\\42\\best.json": "27b5c953ea9f6edcc38070c4fd0bb7e2e24ae0cbfbaa1b166883ac830dfdfc50",
+    "final\\runs\\xgboost\\12m\\baseline\\17\\best.json": "800d12a0bc98206e4da06036d714229ceb045670a67e16a206155ed0b3c48d2d",
+    "final\\runs\\xgboost\\12m\\baseline\\2026\\best.json": "4233f4f53be4844d61c6321ba020063ec3416f4f92def232e96849153580bae4",
+    "final\\runs\\xgboost\\12m\\baseline\\42\\best.json": "a1f493be73fd39cc91007eab0a9f44e9e79bbb50ab98f5f2c113e02cc5fa8f9a",
+    "final\\runs\\bilstm\\slow_huber\\17\\best.pt": "cef0cc7da2e381fbad198eb36bbd7f4d88992eca9273afc39e9e2eda2bb01703",
+    "final\\runs\\bilstm\\slow_huber\\2026\\best.pt": "b9e48d3366579a792bb3fd28643e9fa5901eb2021d1d5926b18c5e8127ded7c0",
+    "final\\runs\\bilstm\\slow_huber\\42\\best.pt": "7e8051e01bcaa522d84417b4db49256cbe5d6cc8a62234b119d16d33b8dad9f6",
+    "final\\runs\\bilstm\\baseline\\17\\best.pt": "8321266b6e943b0b9c15160d64d171b5ac734cb8af82a0062d942cd2c087acad",
+    "final\\runs\\bilstm\\baseline\\2026\\best.pt": "25cf741a34a263899a43b566030a617a9cf5a4cec6f48e242c566e7f4dded02c",
+    "final\\runs\\bilstm\\baseline\\42\\best.pt": "60a50648d8c004c120684cedf9278b0f1973fca353502e0acc6c11eb11b1f660"
+  }
+}

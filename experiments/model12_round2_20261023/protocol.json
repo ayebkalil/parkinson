@@ -1,0 +1,15 @@
+{
+  "test_evaluation": false,
+  "test_data_present": false,
+  "patient_partition": "original train/val/test unchanged; inner folds use original train PATNO only",
+  "preprocessing": "separately fitted inside each training fold",
+  "single_multitask_bilstm": true,
+  "baseline_correction": "same aligned targets and raw residual as first round",
+  "selection": {
+    "bilstm": "One whole multitask checkpoint/configuration. Challenger minimizes the mean of three baseline-normalized losses: MAE12, MAE24, and 1-mean(ROC-AUC, AP).",
+    "retention": "Keep corrected baseline unless challenger improves both regression MAEs, class ROC-AUC/AP mean and balanced accuracy on both internal fold means and original validation seed means.",
+    "xgboost": "Separate challenger per task from mean inner-fold MAE or ROC-AUC/AP with nondecreasing balanced accuracy. Keep baseline unless also improved on original validation seed mean.",
+    "test": "No test evaluation, no new test score. Internal CV and original validation are development estimates, not independent confirmation."
+  },
+  "raw_acquisition_dates_certified": false
+}

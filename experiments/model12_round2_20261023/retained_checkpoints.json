@@ -1,0 +1,98 @@
+[
+  {
+    "model": "xgboost",
+    "task": "12m",
+    "config": "regular3",
+    "seed": 42,
+    "checkpoint": "experiments\\model12_round2_20261023\\final\\runs\\xgboost\\12m\\regular3\\42\\best.json",
+    "classification_threshold": null
+  },
+  {
+    "model": "xgboost",
+    "task": "24m",
+    "config": "regular4",
+    "seed": 42,
+    "checkpoint": "experiments\\model12_round2_20261023\\final\\runs\\xgboost\\24m\\regular4\\42\\best.json",
+    "classification_threshold": null
+  },
+  {
+    "model": "xgboost",
+    "task": "cls",
+    "config": "baseline",
+    "seed": 42,
+    "checkpoint": "experiments\\model12_round2_20261023\\final\\runs\\xgboost\\cls\\baseline\\42\\best.json",
+    "classification_threshold": 0.49204981327056885
+  },
+  {
+    "model": "xgboost",
+    "task": "12m",
+    "config": "regular3",
+    "seed": 17,
+    "checkpoint": "experiments\\model12_round2_20261023\\final\\runs\\xgboost\\12m\\regular3\\17\\best.json",
+    "classification_threshold": null
+  },
+  {
+    "model": "xgboost",
+    "task": "24m",
+    "config": "regular4",
+    "seed": 17,
+    "checkpoint": "experiments\\model12_round2_20261023\\final\\runs\\xgboost\\24m\\regular4\\17\\best.json",
+    "classification_threshold": null
+  },
+  {
+    "model": "xgboost",
+    "task": "cls",
+    "config": "baseline",
+    "seed": 17,
+    "checkpoint": "experiments\\model12_round2_20261023\\final\\runs\\xgboost\\cls\\baseline\\17\\best.json",
+    "classification_threshold": 0.4823112487792969
+  },
+  {
+    "model": "xgboost",
+    "task": "12m",
+    "config": "regular3",
+    "seed": 2026,
+    "checkpoint": "experiments\\model12_round2_20261023\\final\\runs\\xgboost\\12m\\regular3\\2026\\best.json",
+    "classification_threshold": null
+  },
+  {
+    "model": "xgboost",
+    "task": "24m",
+    "config": "regular4",
+    "seed": 2026,
+    "checkpoint": "experiments\\model12_round2_20261023\\final\\runs\\xgboost\\24m\\regular4\\2026\\best.json",
+    "classification_threshold": null
+  },
+  {
+    "model": "xgboost",
+    "task": "cls",
+    "config": "baseline",
+    "seed": 2026,
+    "checkpoint": "experiments\\model12_round2_20261023\\final\\runs\\xgboost\\cls\\baseline\\2026\\best.json",
+    "classification_threshold": 0.45321720838546753
+  },
+  {
+    "model": "bilstm",
+    "task": "all_three_heads",
+    "config": "baseline",
+    "seed": 42,
+    "checkpoint": "experiments\\model12_round2_20261023\\final\\runs\\bilstm\\baseline\\42\\best.pt",
+    "classification_threshold": 0.33868077397346497
+  },
+  {
+    "model": "bilstm",
+    "task": "all_three_heads",
+    "config": "baseline",
+    "seed": 17,
+    "checkpoint": "experiments\\model12_round2_20261023\\final\\runs\\bilstm\\baseline\\17\\best.pt",
+    "classification_threshold": 0.22181527316570282
+  },
+  {
+    "model": "bilstm",
+    "task": "all_three_heads",
+    "config": "baseline",
+    "seed": 2026,
+    "checkpoint": "experiments\\model12_round2_20261023\\final\\runs\\bilstm\\baseline\\2026\\best.pt",
+    "classification_threshold": 0.1997612714767456
+  }
+]

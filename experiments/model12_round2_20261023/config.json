@@ -1,0 +1,160 @@
+{
+  "source_experiment": "experiments/model12_20261023",
+  "threads": 2,
+  "cv_folds": 3,
+  "cv_split_seed": 271828,
+  "cv_training_seed": 42,
+  "final_seeds": [
+    42,
+    17,
+    2026
+  ],
+  "lstm_defaults": {
+    "lr": 0.0015,
+    "batch_size": 64,
+    "weight_decay": 0.0001,
+    "dropout": 0.2,
+    "clip": 2.0,
+    "loss": "huber",
+    "beta": 1.0,
+    "weight24": 0.6,
+    "classification_weight": 0.4,
+    "balanced_loss": false,
+    "epochs": 45,
+    "patience": 12,
+    "scheduler_factor": 0.5,
+    "scheduler_patience": 4,
+    "selection": "mae12"
+  },
+  "lstm_trials": [
+    {
+      "name": "baseline"
+    },
+    {
+      "name": "slow_huber",
+      "lr": 0.0004,
+      "batch_size": 64,
+      "weight_decay": 0.003,
+      "dropout": 0.35,
+      "clip": 1.0,
+      "beta": 2.0,
+      "weight24": 1.0,
+      "classification_weight": 0.4,
+      "epochs": 28,
+      "patience": 6,
+      "scheduler_patience": 2,
+      "selection": "mean_mae"
+    },
+    {
+      "name": "slow_mae",
+      "lr": 0.0005,
+      "batch_size": 128,
+      "weight_decay": 0.005,
+      "dropout": 0.3,
+      "clip": 1.0,
+      "loss": "mae",
+      "weight24": 1.0,
+      "classification_weight": 0.6,
+      "epochs": 28,
+      "patience": 6,
+      "scheduler_patience": 2,
+      "selection": "mean_mae"
+    },
+    {
+      "name": "moderate_balanced",
+      "lr": 0.0004,
+      "batch_size": 128,
+      "weight_decay": 0.003,
+      "dropout": 0.3,
+      "clip": 1.5,
+      "beta": 2.0,
+      "weight24": 1.0,
+      "classification_weight": 0.6,
+      "balanced_loss": true,
+      "epochs": 28,
+      "patience": 6,
+      "scheduler_patience": 2,
+      "selection": "mean_mae"
+    }
+  ],
+  "xgb_trials": [
+    {
+      "name": "shallow",
+      "n_estimators": 1500,
+      "learning_rate": 0.02,
+      "max_depth": 2,
+      "min_child_weight": 8,
+      "subsample": 0.9,
+      "colsample_bytree": 1.0,
+      "reg_alpha": 0.5,
+      "reg_lambda": 10.0,
+      "gamma": 0.0
+    },
+    {
+      "name": "regular3",
+      "n_estimators": 1200,
+      "learning_rate": 0.03,
+      "max_depth": 3,
+      "min_child_weight": 10,
+      "subsample": 0.85,
+      "colsample_bytree": 0.85,
+      "reg_alpha": 2.0,
+      "reg_lambda": 20.0,
+      "gamma": 0.1
+    },
+    {
+      "name": "regular4",
+      "n_estimators": 1200,
+      "learning_rate": 0.03,
+      "max_depth": 4,
+      "min_child_weight": 20,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "reg_alpha": 5.0,
+      "reg_lambda": 30.0,
+      "gamma": 0.5
+    },
+    {
+      "name": "slow3",
+      "n_estimators": 1800,
+      "learning_rate": 0.015,
+      "max_depth": 3,
+      "min_child_weight": 4,
+      "subsample": 1.0,
+      "colsample_bytree": 1.0,
+      "reg_alpha": 1.0,
+      "reg_lambda": 10.0,
+      "gamma": 0.0
+    },
+    {
+      "name": "previous12",
+      "n_estimators": 1600,
+      "learning_rate": 0.05,
+      "max_depth": 4,
+      "min_child_weight": 1,
+      "subsample": 0.65,
+      "colsample_bytree": 0.8,
+      "reg_alpha": 5.0,
+      "reg_lambda": 1.0,
+      "gamma": 0.1
+    },
+    {
+      "name": "previous24",
+      "n_estimators": 700,
+      "learning_rate": 0.05,
+      "max_depth": 4,
+      "min_child_weight": 4,
+      "subsample": 0.8,
+      "colsample_bytree": 0.65,
+      "reg_alpha": 5.0,
+      "reg_lambda": 15.0,
+      "gamma": 0.0
+    }
+  ],
+  "selection_policy": {
+    "bilstm": "One whole multitask checkpoint/configuration. Challenger minimizes the mean of three baseline-normalized losses: MAE12, MAE24, and 1-mean(ROC-AUC, AP).",
+    "retention": "Keep corrected baseline unless challenger improves both regression MAEs, class ROC-AUC/AP mean and balanced accuracy on both internal fold means and original validation seed means.",
+    "xgboost": "Separate challenger per task from mean inner-fold MAE or ROC-AUC/AP with nondecreasing balanced accuracy. Keep baseline unless also improved on original validation seed mean.",
+    "test": "No test evaluation, no new test score. Internal CV and original validation are development estimates, not independent confirmation."
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "model": "xgboost",
+  "task": "24m",
+  "name": "baseline",
+  "seed": 42,
+  "config": {
+    "name": "baseline",
+    "n_estimators": 600,
+    "learning_rate": 0.03,
+    "max_depth": 4,
+    "min_child_weight": 1,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_alpha": 0.5,
+    "reg_lambda": 1.5,
+    "gamma": 0,
+    "early_stopping_rounds": 40,
+    "eval_metric": "rmse",
+    "objective": "reg:squarederror"
+  },
+  "fitted_params": {
+    "n_estimators": 600,
+    "learning_rate": 0.03,
+    "max_depth": 4,
+    "min_child_weight": 1,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_alpha": 0.5,
+    "reg_lambda": 1.5,
+    "gamma": 0,
+    "early_stopping_rounds": 40,
+    "eval_metric": "rmse",
+    "objective": "reg:squarederror",
+    "n_jobs": 2,
+    "random_state": 42,
+    "tree_method": "hist"
+  },
+  "best_iteration": 113,
+  "threshold": 0.5,
+  "threshold_feasible": true,
+  "metrics": {
+    "n": 729,
+    "mae": 5.74734230296602,
+    "rmse": 8.250747674466064,
+    "r2": 0.6877133304481804,
+    "bias": 0.6566315727469362
+  },
+  "elapsed_seconds": 0.8088343143463135
+}

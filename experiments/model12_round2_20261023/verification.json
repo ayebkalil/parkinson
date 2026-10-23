@@ -1,0 +1,14 @@
+{
+  "protected_artifacts_unchanged": true,
+  "source_snapshot_verified": true,
+  "final_preprocessing_fitted_on_train": true,
+  "saved_metrics_reproduced": true,
+  "patient_folds_disjoint": true,
+  "preprocessing_fitted_per_fold": true,
+  "architecture_identical": true,
+  "parameter_count": 243651,
+  "single_complete_bilstm": true,
+  "test_evaluated": false,
+  "test_data_absent": true,
+  "replay_max_abs_error": 1.8762207005806886e-06
+}

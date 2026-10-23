@@ -1,0 +1,12 @@
+{
+  "xgboost": {
+    "12m": "trial_05",
+    "24m": "trial_02",
+    "cls": "trial_03"
+  },
+  "bilstm": {
+    "12m": "baseline",
+    "24m": "balanced_huber",
+    "cls": "classification_huber"
+  }
+}

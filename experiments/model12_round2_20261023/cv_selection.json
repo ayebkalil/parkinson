@@ -1,0 +1,30 @@
+{
+  "xgboost": {
+    "12m": {
+      "challenger": "regular3",
+      "passed_cv": true
+    },
+    "24m": {
+      "challenger": "regular4",
+      "passed_cv": true
+    },
+    "cls": {
+      "challenger": "regular3",
+      "passed_cv": true
+    }
+  },
+  "bilstm": {
+    "challenger": "slow_huber",
+    "joint_scores": {
+      "slow_huber": 1.0056830357463178,
+      "slow_mae": 1.0107720682826118,
+      "moderate_balanced": 1.0079910398238754
+    },
+    "passed_cv": false,
+    "passed_cv_by_task": {
+      "12m": true,
+      "24m": false,
+      "cls": false
+    }
+  }
+}

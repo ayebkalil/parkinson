@@ -35,7 +35,7 @@ from train_model2_lstm import LongitudinalBiLSTM
 from train_fusion_models import LateFusionModel, ALL_FEATURE_COLS, CLINICAL_COLS, IMAGING_COLS, DEMO_COLS
 from train_model2_lstm import FEATURE_COLS as LSTM_COLS
 from sklearn.preprocessing import StandardScaler
-import xgboost as xgb
+from retained_xgboost import load_retained_regressors, predict_patient as predict_retained_xgboost
 
 st.set_page_config(
     page_title="Parkinson's AI Prognosis | Decision Support",
@@ -88,11 +88,8 @@ def load_all_artifacts():
         bilstm_model.load_state_dict(ckpt2)
     bilstm_model.eval()
 
-    # Load Model 1 XGBoost
-    m1_12 = xgb.XGBRegressor()
-    m1_12.load_model(os.path.join(MODELS_DIR, "model1_xgboost_12m.json"))
-    m1_24 = xgb.XGBRegressor()
-    m1_24.load_model(os.path.join(MODELS_DIR, "model1_xgboost_24m.json"))
+    # Selected validation checkpoints, with exact aligned rows for each horizon.
+    retained_xgboost = load_retained_regressors(seed=42)
 
     # Load Benchmark CSV if exists
     bench_df = None
@@ -112,8 +109,7 @@ def load_all_artifacts():
         "df_lstm": df_lstm,
         "late_model": late_model,
         "bilstm_model": bilstm_model,
-        "m1_12": m1_12,
-        "m1_24": m1_24,
+        "retained_xgboost": retained_xgboost,
         "bench_df": bench_df,
         "stat_df": stat_df
     }
@@ -162,11 +158,7 @@ def predict_patient(patno, artifacts):
         p12_bi, p24_bi, logits_bi, attn = artifacts["bilstm_model"](x_lstm, mask, lengths, cur_score_lstm_scaled)
         attn_weights = attn[0].numpy()
 
-    # Model 1 XGBoost
-    from train_model1_xgboost import FEATURE_COLS as XGB_COLS
-    x_xgb = pd.DataFrame([pat_row[XGB_COLS]])
-    p12_xgb = float(artifacts["m1_12"].predict(x_xgb)[0])
-    p24_xgb = float(artifacts["m1_24"].predict(x_xgb)[0])
+    xgb_predictions = predict_retained_xgboost(patno, artifacts["retained_xgboost"])
 
     return {
         "pat_row": pat_row,
@@ -178,8 +170,7 @@ def predict_patient(patno, artifacts):
         "w_img": w_img,
         "pred12_bi": p12_bi.item(),
         "pred24_bi": p24_bi.item(),
-        "pred12_xgb": p12_xgb,
-        "pred24_xgb": p24_xgb,
+        "xgb_predictions": xgb_predictions,
         "attn_weights": attn_weights,
         "cur_score": cur_score_raw
     }
@@ -223,13 +214,14 @@ def main():
 
     selected_model = st.sidebar.radio(
         "Active AI Model:",
-        ["Multimodal Late Gated Fusion (Best Multimodal)", "Longitudinal BiLSTM (Best 24m Sequence)", "Static Tabular Baseline"]
+        ["Multimodal Late Gated Fusion (Best Multimodal)", "Longitudinal BiLSTM (Best 24m Sequence)", "XGBoost (aligned visits)"]
     )
 
     st.sidebar.markdown("---")
     st.sidebar.info(
-        "**Zero-Leakage Assurance:**\n"
-        "This patient was held out during all training and hyperparameter optimization steps."
+        "This patient's split was excluded from model fitting and validation tuning. "
+        "The historical test cohort has been consulted during this project, so "
+        "these predictions are not an independent confirmation of performance."
     )
 
     # -------------------------------------------------------------
@@ -262,15 +254,26 @@ def main():
         p12 = res["pred12_bi"]
         p24 = res["pred24_bi"]
     else:
-        p12 = res["pred12_xgb"]
-        p24 = res["pred24_xgb"]
+        p12_data = res["xgb_predictions"]["12m"]
+        p12 = p12_data["score"]
+        p24_data = res["xgb_predictions"]["24m"]
+        p24 = p24_data["score"] if p24_data is not None else None
+        date24 = f"{p24_data['index_date']:%Y-%m-%d}" if p24_data is not None else "unavailable"
+        st.caption(f"XGBoost index visits: 12 months {p12_data['index_date']:%Y-%m-%d}; "
+                   f"24 months {date24}. Validation gains await independent confirmation.")
 
-    delta12 = p12 - cur_score
-    delta24 = p24 - cur_score
+    if "XGBoost" in selected_model:
+        delta12 = p12 - p12_data["index_score"]
+        delta24 = p24 - p24_data["index_score"] if p24_data is not None else None
+    else:
+        delta12 = p12 - cur_score
+        delta24 = p24 - cur_score
 
     m1.metric("Current MDS-UPDRS III", f"{cur_score:.1f} pts", help="Motor score at the latest recorded clinic visit.")
-    m2.metric("+12 Months Forecast", f"{p12:.1f} pts", f"{delta12:+.1f} pts", help="Projected motor total 1 year from today.")
-    m3.metric("+24 Months Forecast", f"{p24:.1f} pts", f"{delta24:+.1f} pts", help="Projected motor total 2 years from today.")
+    m2.metric("+12 Months Forecast", f"{p12:.1f} pts", f"{delta12:+.1f} pts", help="Projected motor total one year after the prediction's index visit.")
+    m3.metric("+24 Months Forecast", f"{p24:.1f} pts" if p24 is not None else "N/A",
+              f"{delta24:+.1f} pts" if delta24 is not None else None,
+              help="XGBoost uses its own eligible index visit; N/A means none was available.")
     m4.metric("DaTSCAN Putamen SBR", f"{p_row['datscan_putamen_sbr']:.2f}" if not pd.isna(p_row['datscan_putamen_sbr']) else "N/A",
               "Severe Loss" if not pd.isna(p_row['datscan_putamen_sbr']) and p_row['datscan_putamen_sbr'] < 0.8 else "Moderate/Preserved",
               delta_color="inverse")
@@ -304,37 +307,51 @@ def main():
             hovertemplate="<b>Visit Month:</b> %{x}<br><b>MDS-UPDRS III:</b> %{y:.1f}<br><b>Attention Weight:</b> %{marker.color:.1f}%<extra></extra>"
         ))
 
-        # AI Forecast
+        # Each XGBoost horizon has its own eligible index visit.
         last_m = months[-1]
-        forecast_x = [last_m, last_m + 12, last_m + 24]
-        forecast_y = [cur_score, p12, p24]
+        if "XGBoost" in selected_model:
+            for horizon in (12, 24):
+                prediction = res["xgb_predictions"][f"{horizon}m"]
+                if prediction is None:
+                    continue
+                fig.add_trace(go.Scatter(
+                    x=[prediction["index_month"], prediction["index_month"] + horizon],
+                    y=[prediction["index_score"], prediction["score"]],
+                    mode='lines+markers',
+                    name=f'XGBoost +{horizon}m (index {prediction["index_date"]:%Y-%m-%d})',
+                    line=dict(width=3, dash='dash'),
+                    marker=dict(size=10, symbol='diamond')
+                ))
+        else:
+            forecast_x = [last_m, last_m + 12, last_m + 24]
+            forecast_y = [cur_score, p12, p24]
 
-        # 95% Confidence Interval band (+- 1.96 * SE)
-        se = 0.85  # Based on bootstrap standard error
-        fig.add_trace(go.Scatter(
-            x=[last_m + 12, last_m + 24, last_m + 24, last_m + 12],
-            y=[p12 - 1.96*se, p24 - 1.96*se*1.2, p24 + 1.96*se*1.2, p12 + 1.96*se],
-            fill='toself',
-            fillcolor='rgba(239, 68, 68, 0.15)',
-            line=dict(color='rgba(255,255,255,0)'),
-            name='95% Forecast Confidence Interval',
-            hoverinfo='skip'
-        ))
+            # Existing visualization for the unchanged sequence/fusion models.
+            se = 0.85
+            fig.add_trace(go.Scatter(
+                x=[last_m + 12, last_m + 24, last_m + 24, last_m + 12],
+                y=[p12 - 1.96*se, p24 - 1.96*se*1.2, p24 + 1.96*se*1.2, p12 + 1.96*se],
+                fill='toself',
+                fillcolor='rgba(239, 68, 68, 0.15)',
+                line=dict(color='rgba(255,255,255,0)'),
+                name='95% Forecast Confidence Interval',
+                hoverinfo='skip'
+            ))
 
-        fig.add_trace(go.Scatter(
-            x=forecast_x,
-            y=forecast_y,
-            mode='lines+markers',
-            name='AI Multimodal Projection',
-            line=dict(color='#ef4444', width=3, dash='dash'),
-            marker=dict(size=10, symbol='diamond', color='#ef4444'),
-            hovertemplate="<b>Projected Month:</b> %{x}<br><b>Predicted Score:</b> %{y:.1f} pts<extra></extra>"
-        ))
+            fig.add_trace(go.Scatter(
+                x=forecast_x,
+                y=forecast_y,
+                mode='lines+markers',
+                name='AI Multimodal Projection',
+                line=dict(color='#ef4444', width=3, dash='dash'),
+                marker=dict(size=10, symbol='diamond', color='#ef4444'),
+                hovertemplate="<b>Projected Month:</b> %{x}<br><b>Predicted Score:</b> %{y:.1f} pts<extra></extra>"
+            ))
 
         # Ground truth if available
         t12 = p_row.get("target_np3tot_12m", np.nan)
         t24 = p_row.get("target_np3tot_24m", np.nan)
-        if not pd.isna(t12) and not pd.isna(t24):
+        if "XGBoost" not in selected_model and not pd.isna(t12) and not pd.isna(t24):
             fig.add_trace(go.Scatter(
                 x=[last_m + 12, last_m + 24],
                 y=[t12, t24],
@@ -352,7 +369,7 @@ def main():
             margin=dict(l=40, r=40, t=40, b=40),
             height=440
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch", alt="Patient motor score history and model forecasts")
 
     with col_explain:
         st.subheader("Multimodal Attribution")
@@ -396,18 +413,19 @@ def main():
 
         with tab1:
             if artifacts["bench_df"] is not None:
-                st.dataframe(artifacts["bench_df"][["model_name", "target_horizon", "mae", "rmse", "r2", "pearson_r", "roc_auc", "notes"]], use_container_width=True)
+                st.caption("Historical benchmark: it does not evaluate the newly retained XGBoost checkpoints.")
+                st.dataframe(artifacts["bench_df"][["model_name", "target_horizon", "mae", "rmse", "r2", "pearson_r", "roc_auc", "notes"]], width="stretch", alt="Historical model benchmark")
             else:
                 st.info("Benchmark ledger not loaded.")
 
         with tab2:
             if artifacts["stat_df"] is not None:
-                st.dataframe(artifacts["stat_df"][["comparison", "horizon", "delta_mae_a_minus_b", "ci95_delta_low", "ci95_delta_high", "wilcoxon_p", "winner"]], use_container_width=True)
+                st.dataframe(artifacts["stat_df"][["comparison", "horizon", "delta_mae_a_minus_b", "ci95_delta_low", "ci95_delta_high", "wilcoxon_p", "winner"]], width="stretch", alt="Historical statistical comparisons")
             else:
                 st.info("Statistical tests table not loaded.")
 
         with tab3:
-            st.dataframe(raw_df[["visit_date", "NP3TOT", "nhy_stage", "ledd", "pd_state_on", "moca_total", "datscan_putamen_sbr"]], use_container_width=True)
+            st.dataframe(raw_df[["visit_date", "NP3TOT", "nhy_stage", "ledd", "pd_state_on", "moca_total", "datscan_putamen_sbr"]], width="stretch", alt="Patient visit history")
 
 
 if __name__ == "__main__":

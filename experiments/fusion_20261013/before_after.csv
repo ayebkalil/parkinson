@@ -1,0 +1,9 @@
+architecture,protocol,horizon,n,before,after,gain,config
+early,aligned,12,574,5.017,4.458,0.559,compact_mae
+early,aligned,24,14,5.336,3.54,1.796,compact_mae
+early,canonical,12,574,5.017,4.458,0.559,compact_mae
+early,canonical,24,449,5.541,4.729,0.812,compact_mae
+late,aligned,12,574,4.921,4.448,0.473,compact_mae
+late,aligned,24,14,5.073,3.667,1.406,compact_mae
+late,canonical,12,574,4.921,4.448,0.473,compact_mae
+late,canonical,24,449,5.319,4.644,0.675,compact_mae

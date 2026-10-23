@@ -1,0 +1,73 @@
+{
+  "checkpoint": "models/model2_bilstm.pt",
+  "epoch": 2,
+  "note": "Validation only. Classification does not depend on the raw residual anchor. No regression comparison using old weights with a changed anchor.",
+  "at_05": {
+    "n": 574,
+    "accuracy": 0.6707317073170732,
+    "balanced_accuracy": 0.5,
+    "sensitivity": 0.0,
+    "specificity": 1.0,
+    "roc_auc": 0.6742389885247029,
+    "average_precision": 0.46163929295007455,
+    "brier_score": 0.2024608820616894,
+    "threshold": 0.5,
+    "tn": 385,
+    "fp": 0,
+    "fn": 189,
+    "tp": 0,
+    "confusion_matrix": [
+      [
+        385,
+        0
+      ],
+      [
+        189,
+        0
+      ]
+    ],
+    "probability_quantiles": [
+      0.03369975462555885,
+      0.07584953978657723,
+      0.13578874617815018,
+      0.32271140813827515,
+      0.4102156385779381,
+      0.4172592431306839,
+      0.41979050636291504
+    ]
+  },
+  "validation_threshold": {
+    "n": 574,
+    "accuracy": 0.6515679442508711,
+    "balanced_accuracy": 0.6675324675324675,
+    "sensitivity": 0.7142857142857143,
+    "specificity": 0.6207792207792208,
+    "roc_auc": 0.6742389885247029,
+    "average_precision": 0.46163929295007455,
+    "brier_score": 0.2024608820616894,
+    "threshold": 0.3287173807621002,
+    "tn": 239,
+    "fp": 146,
+    "fn": 54,
+    "tp": 135,
+    "confusion_matrix": [
+      [
+        239,
+        146
+      ],
+      [
+        54,
+        135
+      ]
+    ],
+    "probability_quantiles": [
+      0.03369975462555885,
+      0.07584953978657723,
+      0.13578874617815018,
+      0.32271140813827515,
+      0.4102156385779381,
+      0.4172592431306839,
+      0.41979050636291504
+    ]
+  }
+}

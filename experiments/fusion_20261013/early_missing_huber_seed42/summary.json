@@ -1,0 +1,9 @@
+{
+  "architecture": "early",
+  "config": "missing_huber",
+  "seed": 42,
+  "epoch": 5,
+  "selection_mae": 4.024974346160889,
+  "seconds": 35.55795839987695,
+  "parameters": 30371
+}

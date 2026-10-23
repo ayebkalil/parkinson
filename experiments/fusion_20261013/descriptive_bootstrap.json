@@ -1,0 +1,74 @@
+[
+  {
+    "architecture": "early",
+    "protocol": "aligned",
+    "horizon": 12,
+    "n": 574,
+    "improvement": 0.5590007126263536,
+    "low": 0.23355452041365396,
+    "high": 0.8778799596526332
+  },
+  {
+    "architecture": "early",
+    "protocol": "aligned",
+    "horizon": 24,
+    "n": 14,
+    "improvement": 1.7954508992142852,
+    "low": 0.22502111949107098,
+    "high": 3.5275943762767845
+  },
+  {
+    "architecture": "early",
+    "protocol": "canonical",
+    "horizon": 12,
+    "n": 574,
+    "improvement": 0.5590007126263536,
+    "low": 0.23355452041365396,
+    "high": 0.8778799596526332
+  },
+  {
+    "architecture": "early",
+    "protocol": "canonical",
+    "horizon": 24,
+    "n": 449,
+    "improvement": 0.8121016025828509,
+    "low": 0.3529181573068353,
+    "high": 1.2644888874093558
+  },
+  {
+    "architecture": "late",
+    "protocol": "aligned",
+    "horizon": 12,
+    "n": 574,
+    "improvement": 0.47240893044268295,
+    "low": 0.1677605515868206,
+    "high": 0.7722061145840504
+  },
+  {
+    "architecture": "late",
+    "protocol": "aligned",
+    "horizon": 24,
+    "n": 14,
+    "improvement": 1.4059728404285725,
+    "low": 0.4061350918678579,
+    "high": 2.372687285142858
+  },
+  {
+    "architecture": "late",
+    "protocol": "canonical",
+    "horizon": 12,
+    "n": 574,
+    "improvement": 0.47240893044268295,
+    "low": 0.1677605515868206,
+    "high": 0.7722061145840504
+  },
+  {
+    "architecture": "late",
+    "protocol": "canonical",
+    "horizon": 24,
+    "n": 449,
+    "improvement": 0.6749049378608017,
+    "low": 0.30332486045584633,
+    "high": 1.0588669918183455
+  }
+]

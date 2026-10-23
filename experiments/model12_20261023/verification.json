@@ -1,0 +1,274 @@
+{
+  "protected_files_unchanged": true,
+  "prepared_data_unchanged": true,
+  "selection_frozen": true,
+  "checkpoints_unchanged": true,
+  "replay_max_abs_error": 1.4210854715202004e-14,
+  "architecture_identical": true,
+  "architecture": {
+    "modules": [
+      [
+        "",
+        "LongitudinalBiLSTM"
+      ],
+      [
+        "input_proj",
+        "Sequential"
+      ],
+      [
+        "input_proj.0",
+        "Linear"
+      ],
+      [
+        "input_proj.1",
+        "LayerNorm"
+      ],
+      [
+        "input_proj.2",
+        "ReLU"
+      ],
+      [
+        "input_proj.3",
+        "Dropout"
+      ],
+      [
+        "lstm",
+        "LSTM"
+      ],
+      [
+        "attention",
+        "TemporalAttention"
+      ],
+      [
+        "attention.proj",
+        "Linear"
+      ],
+      [
+        "attention.v",
+        "Linear"
+      ],
+      [
+        "fusion_fc",
+        "Sequential"
+      ],
+      [
+        "fusion_fc.0",
+        "Linear"
+      ],
+      [
+        "fusion_fc.1",
+        "LayerNorm"
+      ],
+      [
+        "fusion_fc.2",
+        "ReLU"
+      ],
+      [
+        "fusion_fc.3",
+        "Dropout"
+      ],
+      [
+        "head_delta_12m",
+        "Sequential"
+      ],
+      [
+        "head_delta_12m.0",
+        "Linear"
+      ],
+      [
+        "head_delta_12m.1",
+        "ReLU"
+      ],
+      [
+        "head_delta_12m.2",
+        "Dropout"
+      ],
+      [
+        "head_delta_12m.3",
+        "Linear"
+      ],
+      [
+        "head_delta_24m",
+        "Sequential"
+      ],
+      [
+        "head_delta_24m.0",
+        "Linear"
+      ],
+      [
+        "head_delta_24m.1",
+        "ReLU"
+      ],
+      [
+        "head_delta_24m.2",
+        "Dropout"
+      ],
+      [
+        "head_delta_24m.3",
+        "Linear"
+      ],
+      [
+        "head_mcid",
+        "Sequential"
+      ],
+      [
+        "head_mcid.0",
+        "Linear"
+      ],
+      [
+        "head_mcid.1",
+        "ReLU"
+      ],
+      [
+        "head_mcid.2",
+        "Dropout"
+      ],
+      [
+        "head_mcid.3",
+        "Linear"
+      ]
+    ],
+    "parameters": {
+      "input_proj.0.weight": [
+        64,
+        44
+      ],
+      "input_proj.0.bias": [
+        64
+      ],
+      "input_proj.1.weight": [
+        64
+      ],
+      "input_proj.1.bias": [
+        64
+      ],
+      "lstm.weight_ih_l0": [
+        256,
+        64
+      ],
+      "lstm.weight_hh_l0": [
+        256,
+        64
+      ],
+      "lstm.bias_ih_l0": [
+        256
+      ],
+      "lstm.bias_hh_l0": [
+        256
+      ],
+      "lstm.weight_ih_l0_reverse": [
+        256,
+        64
+      ],
+      "lstm.weight_hh_l0_reverse": [
+        256,
+        64
+      ],
+      "lstm.bias_ih_l0_reverse": [
+        256
+      ],
+      "lstm.bias_hh_l0_reverse": [
+        256
+      ],
+      "lstm.weight_ih_l1": [
+        256,
+        128
+      ],
+      "lstm.weight_hh_l1": [
+        256,
+        64
+      ],
+      "lstm.bias_ih_l1": [
+        256
+      ],
+      "lstm.bias_hh_l1": [
+        256
+      ],
+      "lstm.weight_ih_l1_reverse": [
+        256,
+        128
+      ],
+      "lstm.weight_hh_l1_reverse": [
+        256,
+        64
+      ],
+      "lstm.bias_ih_l1_reverse": [
+        256
+      ],
+      "lstm.bias_hh_l1_reverse": [
+        256
+      ],
+      "attention.proj.weight": [
+        128,
+        128
+      ],
+      "attention.proj.bias": [
+        128
+      ],
+      "attention.v.weight": [
+        1,
+        128
+      ],
+      "fusion_fc.0.weight": [
+        128,
+        256
+      ],
+      "fusion_fc.0.bias": [
+        128
+      ],
+      "fusion_fc.1.weight": [
+        128
+      ],
+      "fusion_fc.1.bias": [
+        128
+      ],
+      "head_delta_12m.0.weight": [
+        64,
+        128
+      ],
+      "head_delta_12m.0.bias": [
+        64
+      ],
+      "head_delta_12m.3.weight": [
+        1,
+        64
+      ],
+      "head_delta_12m.3.bias": [
+        1
+      ],
+      "head_delta_24m.0.weight": [
+        64,
+        128
+      ],
+      "head_delta_24m.0.bias": [
+        64
+      ],
+      "head_delta_24m.3.weight": [
+        1,
+        64
+      ],
+      "head_delta_24m.3.bias": [
+        1
+      ],
+      "head_mcid.0.weight": [
+        64,
+        128
+      ],
+      "head_mcid.0.bias": [
+        64
+      ],
+      "head_mcid.3.weight": [
+        1,
+        64
+      ],
+      "head_mcid.3.bias": [
+        1
+      ]
+    },
+    "count": 243651,
+    "input_dim": 44,
+    "hidden_dim": 64,
+    "layers": 2,
+    "bidirectional": true
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "checkpoints_reloaded": [
+    "experiments\\fusion_comparaison_01\\early_compact_mae_seed42\\checkpoint.pt",
+    "experiments\\fusion_comparaison_01\\early_corrected_seed42\\checkpoint.pt",
+    "experiments\\fusion_comparaison_01\\early_missing_huber_seed42\\checkpoint.pt",
+    "experiments\\fusion_comparaison_01\\late_compact_mae_seed42\\checkpoint.pt",
+    "experiments\\fusion_comparaison_01\\late_corrected_seed42\\checkpoint.pt",
+    "experiments\\fusion_comparaison_01\\late_missing_huber_seed42\\checkpoint.pt"
+  ],
+  "original_artifacts_unchanged": 58,
+  "prediction_rtol": 1e-06,
+  "prediction_atol": 1e-06,
+  "passed": true
+}

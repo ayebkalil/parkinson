@@ -1,0 +1,13 @@
+architecture,seed,horizon,gain_vs_corrected
+early,17,12,-0.047
+early,17,24,0.236
+early,2026,12,-0.099
+early,2026,24,-0.614
+early,42,12,0.04
+early,42,24,0.296
+late,17,12,-0.148
+late,17,24,-0.244
+late,2026,12,-0.088
+late,2026,24,0.101
+late,42,12,0.18
+late,42,24,0.157

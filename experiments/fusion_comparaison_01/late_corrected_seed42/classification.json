@@ -1,0 +1,9 @@
+{
+  "n_samples": 574,
+  "roc_auc": 0.742,
+  "pr_auc": 0.6141,
+  "balanced_acc": 0.6184,
+  "sensitivity": 0.3122,
+  "specificity": 0.9247,
+  "brier_score": 0.1854
+}

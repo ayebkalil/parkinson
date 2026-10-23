@@ -1,0 +1,322 @@
+XGBOOST ET BILSTM — EXPÉRIENCES DU 23 OCTOBRE 2026
+
+Les résultats ci-dessous sont mesurés. Ils ne constituent pas une validation
+clinique indépendante : le test historique a déjà été consulté dans ce projet.
+Aucune donnée commune, aucun ancien checkpoint et aucun code de fusion n'a été
+modifié par ces expériences. Les changements déjà présents au début sont conservés.
+
+RÉSULTAT PRINCIPAL : 63 entraînements exécutés, trois graines pour chaque
+configuration finaliste. Aucun gain global robuste des hyperparamètres n'est
+démontré sur ce test. XGB 24m passe de 5.157 à 5.086 de MAE,
+mais le gain de 0.071 point a un intervalle patient à 95 %
+[-0.016; 0.156] qui couvre zéro.
+Les candidats BiLSTM ne battent pas la référence corrigée sur le test. Leur
+classification passe de 0.6644 à 0.6480 de balanced accuracy.
+Les gains de validation ne se sont donc pas généralisés.
+
+Les références corrigées sont conservées dans retained_reference_checkpoints.json;
+aucun candidat ne les remplace automatiquement. selected_checkpoints.json décrit
+uniquement la sélection faite sur VALIDATION AVANT le test, conservée telle quelle
+pour la traçabilité; ce n'est pas une recommandation de déploiement. Il n'y a eu
+ni nouvel essai ni resélection après lecture du test. Les corrections de données,
+d'unités et d'évaluation sont utiles même en l'absence de gain d'hyperparamètres.
+
+1. Audit et correction des données
+
+split  patients  visits  samples12  samples24  labelled_train_prefixes  prevalence12  historical_n12  same_index_valid12  stale_or_wrong12  historical_n24  same_index_valid24  stale_or_wrong24  mixed_feature_cells
+train      3787   22980       2683       2155                    14850      0.294447            2683                2683                 0            2155                  80              2075                18753
+  val       827    4831        574        449                     3057      0.329268             574                 574                 0             449                  14               435                 4185
+ test       812    4932        583        462                     3171      0.308748             583                 583                 0             462                  18               444                 3850
+
+Le problème groupby(PATNO).last() est confirmé : chaque colonne prend sa dernière
+valeur non nulle, et les cibles 24m peuvent provenir d'une autre visite. Les
+cibles 12m des tables historiques concordent avec les lignes longitudinales.
+Les lignes tabulaires historiques mélangent également des valeurs de variables
+prises à des visites antérieures. Cette mémoire implicite n'est pas une preuve
+de fuite future; elle est remplacée par une sélection de ligne exacte pour XGB.
+
+Le nouveau protocole principal utilise la dernière ligne complète éligible par
+horizon, avec une cible 12m disponible comme dans l'entraînement historique.
+À 24m, la visite index peut donc être plus ancienne que celle de 12m. Les patients
+24m sont ceux ayant les deux cibles à une visite. Les horizons, fenêtres (250–480
+jours et 550–910 jours), moyenne des états moteurs au jour cible et seuil +3,5
+sont inchangés. Les dates des cibles sont conservées pour audit, jamais en entrée.
+Toutes les cibles longitudinales ont été recalculées et comparées; labels =
+(cible brute - NP3TOT brut >= 3,5), avec NaN quand la cible manque. Le choix de
+visite sur disponibilité d'un suivi est rétrospectif et peut induire un biais
+de suivi; il est identique pour toutes les références et tous les candidats.
+
+Référence et candidat sont réentraînés sur ces mêmes tables corrigées. Aucune
+comparaison de gain n'utilise directement les anciens chiffres du README.
+Le contrôle secondaire conserve la visite index historique 12m et n'évalue
+24m que lorsqu'une vraie cible existe : 14 patients val et 18 test. Ce contrôle
+n'a pas servi à sélectionner les modèles (same_historical_index_24m.csv).
+
+Les ensembles PATNO sont disjoints et conformes au patient_split.csv original.
+Les séquences s'arrêtent à la ligne index exacte, y compris en cas de plusieurs
+états médicamenteux dans un même mois. LOCF seulement vers l'avant, médianes et
+StandardScaler appris exclusivement sur train; paramètres sauvegardés et repris
+à l'inférence. XGB conserve ses valeurs manquantes natives. Ni cibles ni dates
+futures n'entrent dans les variables. Le choix déterministe intra-mois ne permet
+pas de reconstituer l'ordre réel des examens, absent des sources préparées.
+
+LIMITE DE PROVENANCE : data/raw est absent. Les jointures de modalités par
+PATNO/EVENT_ID ne conservent pas leurs dates d'acquisition; l'ETL prend aussi les
+dernières données démographiques/années d'études sans date par visite. Une fuite
+à ce niveau ne peut être ni exclue ni corrigée rigoureusement avec les seuls
+Parquet. Il faut vérifier les dates d'acquisition/disponibilité et faire des
+jointures causales sur les fichiers bruts avant toute évaluation prospective.
+Les valeurs utilisées sont laissées identiques pour références et candidats.
+
+2. BiLSTM : fonctionnement et architecture
+
+Le score moteur brut est conservé séparément des 44 variables standardisées.
+L'ancien extracteur utilisait NP3TOT standardisé dans la connexion résiduelle;
+la cible restait en points bruts. Les références corrigées incluent cette
+réparation AVANT toute optimisation. La structure est strictement la classe
+LongitudinalBiLSTM existante, sans sous-classe ni remplacement de forward.
+
+44 entrées; projection 44->64 + LayerNorm/ReLU/Dropout; LSTM à 2 couches,
+64 unités, bidirectionnel; attention additive sur 128; concaténation contexte
+et vraie dernière visite (256); projection 256->128; trois têtes 128->64->1,
+deux additions résiduelles NP3TOT brut et un logit. 243,651 paramètres.
+Les noms, types, dimensions et directions sont vérifiés pour chaque réglage.
+Les 42 variables XGB et les 44 variables BiLSTM sont celles des scripts initiaux.
+Le dropout existant est réglable; aucune couche ou variable n'est ajoutée.
+
+Le packing, le masque d'attention et lengths-1 de ce BiLSTM étaient déjà corrects.
+La sauvegarde historique immédiate torch.save était déjà une vraie sauvegarde.
+Le nouveau pipeline sauvegarde aussi immédiatement une copie profonde au meilleur
+score de validation, puis recharge le fichier pour l'évaluation. Tests de padding,
+invariance au futur, unités du résidu et gradients avec cibles absentes inclus.
+
+3. Recherche et règles fixées avant le test
+
+CPU, 2 threads, algorithmes PyTorch déterministes. Graines
+[42, 17, 2026] : aucune sélection de la meilleure graine, aucune moyenne
+de prédictions présentée comme un modèle unique. Les tables donnent les moyennes
+des MÉTRIQUES de trois entraînements et leurs écarts types séparément.
+Temps cumulé d'entraînement des runs conservés : 24.7 minutes.
+
+XGB : référence historique (600 arbres, lr .03, profondeur 4, régularisation
+.5/1.5; classifieur 500 arbres, alpha 0/lambda 1), puis 12 tirages déterministes
+par tâche. Recherche de lr, plafond arbres, profondeur, min_child_weight,
+subsample, colsample_bytree, alpha, lambda, gamma. Objectifs inchangés :
+reg:squarederror / binary:logistic. Régression : arrêt anticipé MAE pour les
+candidats, RMSE historique pour référence. Classification : AUC pour référence,
+aire PR XGB (aucpr) pour les candidats; sélection finale selon la moyenne
+ROC-AUC/AP calculée par sklearn. Le poids positif provient du train seulement.
+Les paramètres et le numéro de la meilleure itération sont conservés par run.
+
+BiLSTM : référence aux réglages initiaux corrigée (AdamW .0015, batch64,
+wd .0001, dropout .2, clipping2, SmoothL1 beta1, poids 1/.6/.4, 45 époques,
+patience12, scheduler facteur .5/patience4; checkpoint choisi sur MAE12).
+Trois candidats : balanced_huber, balanced_mae, classification_huber. Ils testent
+lr, batch128, scheduler/patience, wd, dropout, clipping, MAE/Huber et poids tâches.
+Les deux premiers utilisent la moyenne MAE12/MAE24 pour le checkpoint; le dernier
+la moyenne ROC-AUC/AP. Aucun réglage ni époque n'est choisi sur le test.
+Pertes par horizon calculées sur cibles finies seulement. Le poids positif BCE
+est négatifs/positifs des 14 850 préfixes train (prévalence ~30,6 %).
+
+Après le criblage graine42, la meilleure configuration XGB par tâche et sa référence
+sont répétées aux graines17/2026. Pour BiLSTM les trois candidats sont répétés :
+MAE et classification-Huber étaient presque ex aequo en classement classification
+(écart de moyenne ROC-AUC/AP < 0,0001), justifiant ces deux runs supplémentaires.
+Cette extension a été décidée uniquement sur validation, avant l'ouverture du test.
+Sélection sur moyenne validation des 3 graines, parmi les configurations répétées.
+Régression : MAE plus faible. Classification : moyenne ROC-AUC/AP plus élevée
+ET balanced accuracy au moins égale à la référence au seuil de validation.
+Les sorties d'un multitâche peuvent donc être servies par différents checkpoints
+complets de même architecture; il ne s'agit pas d'une modification des têtes.
+Il n'existe pas de nouveau réseau combinant ces têtes : chaque checkpoint reste
+un BiLSTM complet à trois sorties. Pour utiliser un seul réseau pour les trois
+tâches, examiner ci-dessous ses performances complètes et le compromis entre
+horizons. Aucun assemblage de poids ni fusion de prédictions n'est effectué.
+
+- xgboost / 12m : candidat trial_05, retenu trial_05; gain validation multigraines=True.
+- xgboost / 24m : candidat trial_02, retenu trial_02; gain validation multigraines=True.
+- xgboost / cls : candidat baseline, retenu baseline; gain validation multigraines=False.
+- bilstm / 12m : candidat balanced_mae, retenu balanced_mae; gain validation multigraines=True.
+- bilstm / 24m : candidat balanced_huber, retenu balanced_huber; gain validation multigraines=True.
+- bilstm / cls : candidat classification_huber, retenu classification_huber; gain validation multigraines=True.
+
+Pour le classifieur XGB, trial_03 avait un classement ROC-AUC/AP légèrement meilleur,
+mais une balanced accuracy validation moyenne inférieure et davantage de faux
+positifs. Il est rejeté par la règle prévue; les paramètres de référence restent
+retenus, avec le seuil de validation documenté.
+
+Toutes les expériences, y compris celles sans gain, restent dans runs/ et
+validation_all_experiments.csv. selection.json a été enregistré avant ouverture
+du test; test_freeze.json interdit ensuite réglages et resélection dans ce dossier.
+Les hashes protègent modèles/données sources; verify recharge les checkpoints
+et reproduit les prédictions. Le code et les dépendances sont archivés.
+
+4. Cause du classifieur historique « tout négatif »
+
+Sur les 574 patients de validation, 189 positifs (32,9 %). Checkpoint historique
+époque 2, probabilités maximum 0.419791,
+seuil .5 : sensibilité 0.000, spécificité 1.000,
+ROC-AUC 0.6742, AP 0.4616.
+La discrimination existe mais aucune probabilité ne dépasse .5. Le déséquilibre
+modéré, la BCE non pondérée et son poids .4 accompagnent ce phénomène; on ne peut
+pas attribuer causalement l'échec à chacun sans ablations supplémentaires. Le bug
+d'unités du résidu obligeait en outre la régression à apprendre le niveau absolu.
+
+Un simple seuil de validation 0.328717 sur
+le checkpoint historique donne sensibilité 0.7143,
+spécificité 0.6208, balanced accuracy
+0.6675. Ce gain de seuil n'est pas
+un gain de ROC-AUC/AP. Le diagnostic sauvegarde les quantiles de probabilité.
+
+Nouveaux seuils : maximum balanced accuracy validation sous sensibilité >= .5
+et spécificité >= .5; égalité départagée par proximité de .5. La référence reçoit
+elle aussi ce réglage pour une comparaison équitable. Les contraintes sont de
+développement, pas des exigences cliniques approuvées; elles ne sont pas garanties
+sur le test. Pondération BCE peut dégrader la calibration : Brier est rapporté,
+sans recalibration opportuniste sur le test.
+
+5. Résultats de test — moyenne des trois graines
+
+Régression : MAE/RMSE/biais en points NP3TOT; plus petit MAE = mieux.
+  model task     role         config     n     mae    rmse      r2     bias
+ bilstm  12m baseline       baseline 583.0 4.49683 6.65687 0.78765 -0.89911
+ bilstm  12m selected   balanced_mae 583.0 4.58078 6.77400 0.78010 -0.99955
+ bilstm  24m baseline       baseline 462.0 4.88991 7.23928 0.75603 -0.72354
+ bilstm  24m selected balanced_huber 462.0 4.90064 7.24546 0.75556 -0.56704
+xgboost  12m baseline       baseline 583.0 4.65625 6.83719 0.77600 -0.49957
+xgboost  12m selected       trial_05 583.0 4.66665 6.86380 0.77425 -0.43355
+xgboost  24m baseline       baseline 462.0 5.15689 7.31318 0.75103  0.00430
+xgboost  24m selected       trial_02 462.0 5.08636 7.28804 0.75274 -0.03785
+
+Les trois sorties de chaque checkpoint BiLSTM retenu (moyenne 3 graines), pour
+rendre visibles les compromis si l'on utilise UN SEUL réseau multitâche :
+              config task     mae  roc_auc  average_precision  balanced_accuracy
+      balanced_huber  12m 4.58099      NaN                NaN                NaN
+      balanced_huber  24m 4.90064      NaN                NaN                NaN
+      balanced_huber  cls     NaN  0.71003            0.54113            0.65702
+        balanced_mae  12m 4.58078      NaN                NaN                NaN
+        balanced_mae  24m 5.09287      NaN                NaN                NaN
+        balanced_mae  cls     NaN  0.70685            0.52631            0.65098
+            baseline  12m 4.49683      NaN                NaN                NaN
+            baseline  24m 4.88991      NaN                NaN                NaN
+            baseline  cls     NaN  0.71725            0.54481            0.66440
+classification_huber  12m 4.55141      NaN                NaN                NaN
+classification_huber  24m 4.89622      NaN                NaN                NaN
+classification_huber  cls     NaN  0.71182            0.53389            0.64796
+
+Classification, seuil fixé sur validation; 583 patients par graine. La colonne
+threshold est une moyenne descriptive : utiliser le seuil individuel du run :
+  model     role               config  accuracy  balanced_accuracy  sensitivity  specificity  roc_auc  average_precision  brier_score  threshold
+ bilstm baseline             baseline   0.66495            0.66440      0.66296      0.66584  0.71725            0.54481      0.18850    0.25342
+ bilstm selected classification_huber   0.64151            0.64796      0.66481      0.63110  0.71182            0.53389      0.21077    0.42220
+xgboost baseline             baseline   0.65638            0.65051      0.63519      0.66584  0.70155            0.53123      0.21100    0.47586
+xgboost selected             baseline   0.65638            0.65051      0.63519      0.66584  0.70155            0.53123      0.21100    0.47586
+
+Contrôle au seuil fixe .5, mêmes prédictions :
+  model     role  accuracy  balanced_accuracy  sensitivity  specificity
+ bilstm baseline   0.72670            0.63324      0.38889      0.87758
+ bilstm selected   0.68268            0.65621      0.58704      0.72539
+xgboost baseline   0.67353            0.65062      0.59074      0.71050
+xgboost selected   0.67353            0.65062      0.59074      0.71050
+
+Matrices de confusion individuelles [[TN, FP], [FN, TP]] et seuils :
+  model     role  seed               policy  threshold    tn    fp    fn    tp
+xgboost baseline    42 validation_threshold   0.492050 276.0 127.0  69.0 111.0
+xgboost baseline    42            fixed_0.5   0.500000 286.0 117.0  74.0 106.0
+xgboost selected    42 validation_threshold   0.492050 276.0 127.0  69.0 111.0
+xgboost selected    42            fixed_0.5   0.500000 286.0 117.0  74.0 106.0
+xgboost baseline    17 validation_threshold   0.482311 273.0 130.0  70.0 110.0
+xgboost baseline    17            fixed_0.5   0.500000 287.0 116.0  73.0 107.0
+xgboost selected    17 validation_threshold   0.482311 273.0 130.0  70.0 110.0
+xgboost selected    17            fixed_0.5   0.500000 287.0 116.0  73.0 107.0
+xgboost baseline  2026 validation_threshold   0.453217 256.0 147.0  58.0 122.0
+xgboost baseline  2026            fixed_0.5   0.500000 286.0 117.0  74.0 106.0
+xgboost selected  2026 validation_threshold   0.453217 256.0 147.0  58.0 122.0
+xgboost selected  2026            fixed_0.5   0.500000 286.0 117.0  74.0 106.0
+ bilstm baseline    42 validation_threshold   0.338681 290.0 113.0  71.0 109.0
+ bilstm baseline    42            fixed_0.5   0.500000 356.0  47.0 109.0  71.0
+ bilstm selected    42 validation_threshold   0.392239 226.0 177.0  51.0 129.0
+ bilstm selected    42            fixed_0.5   0.500000 275.0 128.0  68.0 112.0
+ bilstm baseline    17 validation_threshold   0.221815 274.0 129.0  62.0 118.0
+ bilstm baseline    17            fixed_0.5   0.500000 348.0  55.0 112.0  68.0
+ bilstm selected    17 validation_threshold   0.376933 252.0 151.0  58.0 122.0
+ bilstm selected    17            fixed_0.5   0.500000 316.0  87.0  83.0  97.0
+ bilstm baseline  2026 validation_threshold   0.199761 241.0 162.0  49.0 131.0
+ bilstm baseline  2026            fixed_0.5   0.500000 357.0  46.0 109.0  71.0
+ bilstm selected  2026 validation_threshold   0.497414 285.0 118.0  72.0 108.0
+ bilstm selected  2026            fixed_0.5   0.500000 286.0 117.0  72.0 108.0
+
+Gains appariés et intervalles bootstrap patients (2 000 tirages, graine901) :
+positif = amélioration, négatif = régression.
+  model task   n     gain  ci95_low  ci95_high                     metric
+xgboost  12m 583 -0.01040  -0.06586    0.04901              MAE reduction
+xgboost  24m 462  0.07053  -0.01567    0.15588              MAE reduction
+xgboost  cls 583  0.00000   0.00000    0.00000 balanced accuracy increase
+ bilstm  12m 583 -0.08395  -0.16519   -0.00181              MAE reduction
+ bilstm  24m 462 -0.01073  -0.11870    0.09639              MAE reduction
+ bilstm  cls 583 -0.01644  -0.03171   -0.00133 balanced accuracy increase
+
+Ces intervalles conditionnent sur les trois entraînements retenus et n'intègrent
+pas toute l'incertitude de sélection ni de provenance. Les graines sont peu
+nombreuses. Un intervalle couvrant zéro ne démontre pas un gain stable. Un gain
+validation qui ne se retrouve pas sur le test est un échec de généralisation;
+on ne remplace pas le modèle après coup en sélectionnant sur ce même test.
+Le checkpoint de référence reste conservé et utilisable.
+
+Contrôle simple « aucun changement » : prédiction = score moteur courant. Il
+ne participe pas à la sélection des architectures ou des configurations :
+split  horizon   n     mae    rmse      r2     bias
+  val       12 574 5.03920 7.39894 0.72793 -1.93641
+  val       24 449 5.89198 8.79414 0.64209 -1.88307
+ test       12 583 5.02487 7.69423 0.71633 -2.25129
+ test       24 462 5.57900 8.44049 0.66836 -2.72403
+
+L'étude inclut les cohortes originales (PD, prodromaux, contrôles), et ne doit pas
+être interprétée comme une validation restreinte à des patients PD diagnostiqués.
+
+6. Confirmation indépendante proposée
+
+Geler le pipeline, les variables, les hyperparamètres et la règle de seuil.
+Vérifier les acquisitions brutes et années d'études, puis tester sur de nouveaux
+PATNO d'une cohorte externe ou d'une extraction ultérieure, jamais utilisés ici.
+Définir prospectivement les visites index et le suivi 12/24m, gérer l'attrition,
+conserver les états ON/OFF comparables, et rapporter les sous-groupes PD/traitement.
+En complément, validation croisée imbriquée par PATNO avec ajustement complet
+dans chaque pli; elle apporte une estimation interne, pas un nouveau test externe.
+
+7. Reproduction dans PowerShell ou le terminal PowerShell de VS Code
+
+Depuis C:\Users\MSI\Desktop\parkinson :
+
+.\.venv\Scripts\python.exe -m unittest discover -s src -p test_model12_experiments.py -v
+.\.venv\Scripts\python.exe src/model12_experiments.py --stage verify --output experiments/model12_20261023
+.\.venv\Scripts\python.exe src/summarize_model12_experiments.py --output experiments/model12_20261023
+
+Nouvelle série complète, avec un dossier inexistant (ne pas écraser celle-ci) :
+
+$run = 'experiments/model12_reproduction'
+.\.venv\Scripts\python.exe src/model12_experiments.py --stage prepare --output $run
+.\.venv\Scripts\python.exe -u src/model12_experiments.py --stage screen --output $run
+.\.venv\Scripts\python.exe -u src/model12_experiments.py --stage repeat --output $run
+.\.venv\Scripts\python.exe src/model12_experiments.py --stage select --output $run
+.\.venv\Scripts\python.exe src/model12_experiments.py --stage test --output $run
+.\.venv\Scripts\python.exe src/model12_experiments.py --stage verify --output $run
+.\.venv\Scripts\python.exe src/summarize_model12_experiments.py --output $run
+
+screen/repeat peuvent reprendre les runs terminés avant ouverture du test. Ils
+doivent utiliser la même configuration figée dans output/config.json. Chaque
+run incomplet est réentraîné déterministement; aucun résultat n'est supprimé.
+L'environnement installé est documenté dans environment.json et requirements-lock.txt.
+Une égalité bit à bit sur d'autres versions/matériels n'est pas garantie.
+
+Livrables : data/ (copies corrigées), target_audit.csv, architecture.json,
+validation_all_experiments.csv, validation_finalists_mean.csv,
+before_after_test_mean.csv, before_after_test_std.csv, test_metrics.csv,
+paired_patient_intervals.csv, same_historical_index_24m.csv,
+selected_checkpoints.json, runs/ (poids, config, courbes, prédictions),
+retained_reference_checkpoints.json, test_conclusions.json, test_predictions/,
+verification.json, source_snapshot/ et source_sha256.json.
+
+Références techniques consultées :
+https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.api.typing.DataFrameGroupBy.last.html
+https://xgboost.readthedocs.io/en/stable/python/python_api.html

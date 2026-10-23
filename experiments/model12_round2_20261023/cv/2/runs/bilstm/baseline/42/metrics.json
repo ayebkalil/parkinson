@@ -1,0 +1,113 @@
+{
+  "model": "bilstm",
+  "name": "baseline",
+  "seed": 42,
+  "config": {
+    "lr": 0.0015,
+    "batch_size": 64,
+    "weight_decay": 0.0001,
+    "dropout": 0.2,
+    "clip": 2.0,
+    "loss": "huber",
+    "beta": 1.0,
+    "weight24": 0.6,
+    "classification_weight": 0.4,
+    "balanced_loss": false,
+    "epochs": 45,
+    "patience": 12,
+    "scheduler_factor": 0.5,
+    "scheduler_patience": 4,
+    "selection": "mae12",
+    "name": "baseline"
+  },
+  "epoch": 9,
+  "elapsed_seconds": 394.1302857398987,
+  "pos_weight": 1.0,
+  "train_prevalence": 0.3045048660579914,
+  "threshold_feasible": true,
+  "threshold": 0.2617834508419037,
+  "metrics": {
+    "12m": {
+      "n": 894,
+      "mae": 4.420235304324419,
+      "rmse": 6.713812123665868,
+      "r2": 0.8022939633072188,
+      "bias": -0.4415843363442944
+    },
+    "24m": {
+      "n": 704,
+      "mae": 5.458338032899932,
+      "rmse": 8.117567621767554,
+      "r2": 0.7444723940451039,
+      "bias": -0.8229164994237098
+    },
+    "cls": {
+      "n": 894,
+      "accuracy": 0.7192393736017897,
+      "balanced_accuracy": 0.7135182852976445,
+      "sensitivity": 0.6996197718631179,
+      "specificity": 0.7274167987321711,
+      "roc_auc": 0.7809138732050642,
+      "average_precision": 0.6417979987541239,
+      "brier_score": 0.1608803889919633,
+      "threshold": 0.2617834508419037,
+      "tn": 459,
+      "fp": 172,
+      "fn": 79,
+      "tp": 184,
+      "confusion_matrix": [
+        [
+          459,
+          172
+        ],
+        [
+          79,
+          184
+        ]
+      ],
+      "probability_quantiles": [
+        0.03513406962156296,
+        0.07543394267559052,
+        0.10761396214365959,
+        0.19576924294233322,
+        0.437630757689476,
+        0.6862622618675233,
+        0.9129924774169922
+      ]
+    },
+    "cls_at_05": {
+      "n": 894,
+      "accuracy": 0.772930648769575,
+      "balanced_accuracy": 0.681702048170265,
+      "sensitivity": 0.4600760456273764,
+      "specificity": 0.9033280507131537,
+      "roc_auc": 0.7809138732050642,
+      "average_precision": 0.6417979987541239,
+      "brier_score": 0.1608803889919633,
+      "threshold": 0.5,
+      "tn": 570,
+      "fp": 61,
+      "fn": 142,
+      "tp": 121,
+      "confusion_matrix": [
+        [
+          570,
+          61
+        ],
+        [
+          142,
+          121
+        ]
+      ],
+      "probability_quantiles": [
+        0.03513406962156296,
+        0.07543394267559052,
+        0.10761396214365959,
+        0.19576924294233322,
+        0.437630757689476,
+        0.6862622618675233,
+        0.9129924774169922
+      ]
+    }
+  }
+}

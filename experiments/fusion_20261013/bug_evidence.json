@@ -1,0 +1,17 @@
+{
+  "legacy_late_batch1_vs64": {
+    "12": {
+      "mean_absolute_prediction_difference": 0.018711826502558645,
+      "max_absolute_prediction_difference": 0.1855482455055847
+    },
+    "24": {
+      "mean_absolute_prediction_difference": 0.015713109782563447,
+      "max_absolute_prediction_difference": 0.14965843649902322
+    }
+  },
+  "train_labeled_prefixes": 14850,
+  "legacy_current_score_mean": -0.27732872303562295,
+  "raw_current_score_mean": 12.318815331010454,
+  "shallow_snapshot_changed_after_parameter_update": true,
+  "same_month_visits_have_no_intra_month_timestamp": true
+}

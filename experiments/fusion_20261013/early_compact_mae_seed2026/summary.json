@@ -1,0 +1,9 @@
+{
+  "architecture": "early",
+  "config": "compact_mae",
+  "seed": 2026,
+  "epoch": 2,
+  "selection_mae": 4.2444071769714355,
+  "seconds": 25.44917119992897,
+  "parameters": 28963
+}

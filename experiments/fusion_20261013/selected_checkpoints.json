@@ -1,0 +1,14 @@
+{
+  "early": {
+    "path": "experiments\\fusion_20261013\\early_compact_mae_seed42\\checkpoint.pt",
+    "config": "compact_mae",
+    "seed": 42,
+    "seed_policy": "Fixed delivery seed 42; never choose the best repeat seed"
+  },
+  "late": {
+    "path": "experiments\\fusion_20261013\\late_compact_mae_seed42\\checkpoint.pt",
+    "config": "compact_mae",
+    "seed": 42,
+    "seed_policy": "Fixed delivery seed 42; never choose the best repeat seed"
+  }
+}

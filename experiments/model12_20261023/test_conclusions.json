@@ -1,0 +1,68 @@
+[
+  {
+    "model": "xgboost",
+    "task": "12m",
+    "test_gain": -0.010401491542214116,
+    "ci95": [
+      -0.06585766972985647,
+      0.04900711242848624
+    ],
+    "test_gain_confirmed": false,
+    "automatic_replacement_of_reference": false
+  },
+  {
+    "model": "xgboost",
+    "task": "24m",
+    "test_gain": 0.07052518988584537,
+    "ci95": [
+      -0.015669066453564952,
+      0.15587892222499086
+    ],
+    "test_gain_confirmed": false,
+    "automatic_replacement_of_reference": false
+  },
+  {
+    "model": "xgboost",
+    "task": "cls",
+    "test_gain": 0.0,
+    "ci95": [
+      0.0,
+      0.0
+    ],
+    "test_gain_confirmed": false,
+    "automatic_replacement_of_reference": false
+  },
+  {
+    "model": "bilstm",
+    "task": "12m",
+    "test_gain": -0.08394598736492427,
+    "ci95": [
+      -0.16519018771352556,
+      -0.0018117870160770095
+    ],
+    "test_gain_confirmed": false,
+    "automatic_replacement_of_reference": false
+  },
+  {
+    "model": "bilstm",
+    "task": "24m",
+    "test_gain": -0.010731636590900906,
+    "ci95": [
+      -0.1186964149525037,
+      0.09638830764960993
+    ],
+    "test_gain_confirmed": false,
+    "automatic_replacement_of_reference": false
+  },
+  {
+    "model": "bilstm",
+    "task": "cls",
+    "test_gain": -0.016443801121220472,
+    "ci95": [
+      -0.03170894219281316,
+      -0.0013321385902031063
+    ],
+    "test_gain_confirmed": false,
+    "automatic_replacement_of_reference": false
+  }
+]

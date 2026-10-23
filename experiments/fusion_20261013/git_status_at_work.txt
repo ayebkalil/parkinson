@@ -1,0 +1,26 @@
+ M models/cross-attention_transformer.pt
+ M models/early_fusion.pt
+ M models/late_fusion.pt
+ M models/model1_xgboost_12m.json
+ M models/model1_xgboost_24m.json
+ M models/model2_bilstm.pt
+ M models/model3_imaging_mlp.pt
+ M models/model3_imaging_xgboost_12m.json
+ M models/model3_imaging_xgboost_24m.json
+ M models/model3_imaging_xgboost_classifier.json
+ M report/baseline_models_comparison.png
+ M report/benchmark_results.csv
+ M report/fusion_strategies_comparison.png
+ M report/model1_vs_model2_comparison.png
+ M report/model1_xgboost_shap_importance.png
+ M report/model2_lstm_attention_trajectories.png
+ M report/model3_imaging_shap_importance.png
+ M report/statistical_significance_distributions.png
+ M report/statistical_significance_results.csv
+ M report/statistical_significance_results.json
+?? configs/
+?? experiments/
+?? experiments_screen.log
+?? src/fusion_experiments.py
+?? src/summarize_fusion_experiments.py
+?? src/test_fusion_experiments.py

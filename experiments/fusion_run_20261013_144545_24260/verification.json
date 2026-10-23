@@ -1,0 +1,10 @@
+{
+  "checkpoints_reloaded": [
+    "experiments\\fusion_run_20261013_144545_24260\\early_compact_mae_seed42\\checkpoint.pt",
+    "experiments\\fusion_run_20261013_144545_24260\\late_compact_mae_seed42\\checkpoint.pt"
+  ],
+  "original_artifacts_unchanged": 58,
+  "prediction_rtol": 1e-06,
+  "prediction_atol": 1e-06,
+  "passed": true
+}

@@ -1,0 +1,4 @@
+fold,train_patients,val_patients,train_prefixes,val12,val24
+0,2524,1263,9962,895,722
+1,2525,1262,9771,894,729
+2,2525,1262,9967,894,704

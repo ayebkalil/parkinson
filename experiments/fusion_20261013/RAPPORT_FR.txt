@@ -1,0 +1,340 @@
+CONTRIBUTION AUX FUSIONS — 13 OCTOBRE 2026
+
+Résultats de validation uniquement. Aucun score de test recalculé. Les gains
+ci-dessous sont des observations de développement, pas une validation clinique.
+
+1. Fonctionnement initial vérifié dans le code
+
+Early Fusion : 44 variables (30 cliniques, incluant les biomarqueurs et deux
+délais temporels, 11 d'imagerie, 3 démographiques), projection Linear/LayerNorm/
+ReLU/Dropout, BiLSTM à deux couches de largeur 64, attention temporelle, deux
+têtes de régression résiduelle et une tête de classification.
+
+Late Fusion : branche clinique+démographie (33 variables), projection puis
+BiLSTM à deux couches de largeur 48 avec attention; branche MLP imagerie+
+démographie (14 variables) à la dernière visite. Les deux branches prédisent
+deux scores résiduels. Un réseau Linear(144,32)/ReLU/Linear(32,2)/Softmax pondère
+leurs prédictions, avec les mêmes poids pour les deux horizons. Ce réseau est
+appris conjointement avec les branches sur le train; aucun empilement appris
+séparément sur des prédictions d'entraînement. La branche dite « imagerie »
+utilise aussi démographie ET score moteur actuel via l'ancrage résiduel : elle
+n'est donc pas un modèle d'imagerie pure.
+
+Entraînement initial : tous les préfixes avec cible 12 mois; AdamW, lr=0,001,
+weight_decay=0,001, batch=32, dropout=0,25, 35 époques; SmoothL1(beta=1),
+poids 1 / 1,2 / 0,5 pour 12m / 24m / classification, clipping 1,5,
+ReduceLROnPlateau. Validation sur la dernière visite canonique par patient.
+La sélection utilisait une moyenne non pondérée des pertes de minibatches.
+Pas d'arrêt anticipé. Le checkpoint dit « meilleur » finissait avec les poids
+finaux à cause d'une copie superficielle.
+
+Références examinées et laissées intactes : XGBoost tabulaire (arbres sur visite
+unique), BiLSTM de référence (attention + état de dernière visite + têtes
+résiduelles), imagerie XGBoost/MLP (13 variables), Cross-Attention (requêtes
+cliniques et jetons DaTSCAN/MRI/démographie). Aucune nouvelle modalité ajoutée.
+
+2. Audit et corrections
+
+- Score résiduel : conserver NP3TOT brut séparément du tableau standardisé.
+  L'ancien extracteur passait NP3TOT standardisé aux têtes prédisant des points.
+- Late Fusion : index lengths-1 par patient, au lieu de x[:,-1] qui lisait le
+  padding des séquences courtes; invariance au contenu du minibatch testée.
+- Sauvegarde : copie profonde des poids au meilleur score de validation.
+- Normalisation : médianes et StandardScaler appris uniquement sur train;
+  scaler ajusté sur la même LOCF causale que celle appliquée à l'inférence.
+- Imagerie jamais observée dans le préfixe : poids forcés à [1,0], pour ne pas
+  confier une prédiction à une branche alimentée uniquement par l'imputation.
+  En cas d'absence partielle, LOCF puis médiane du train. Les indicateurs de
+  manque de l'essai missing_huber décrivent la visite courante avant LOCF.
+- Pertes : cibles non finies exclues à chaque horizon; perte nulle connectée
+  au graphe lorsque toutes les cibles d'un minibatch sont absentes.
+- Prédictions exportées avec PATNO, date, cibles et masques; ordre et valeurs
+  comparés explicitement. Régression et classification dans des fichiers séparés.
+
+Les partitions sont disjointes et concordent avec patient_split.csv. Train :
+3787 patients / 22980 lignes; validation :
+827 patients / 4831 lignes. Les cibles longitudinales
+ont été recalculées pour audit sur train et validation : zéro discordance.
+Les entrées sont des préfixes jusqu'à la visite de prédiction; les cibles et
+leurs deltas sont exclus des 44 variables. Les délais delta_t_days et
+elapsed_months_bl sont conservés. Packing du BiLSTM et masque d'attention
+écartent le padding. Les visites d'un même mois/état médicamenteux ne sont pas
+réagrégées : les partitions et le protocole longitudinal sont conservés.
+
+PROBLÈME NON CORRIGÉ DANS LES DONNÉES COMMUNES : groupby(PATNO).last() construit
+les tables tabulaires en prenant la dernière valeur non nulle par colonne.
+À 24 mois, 435 des 449 cibles de validation sont héritées d'une visite passée
+alors que la visite index ne possède pas de cible 24 mois. À 12 mois, les 574
+cibles sont concordantes. Les fichiers originaux ne sont pas modifiés.
+Le protocole « aligned » exclut seulement les cibles non rattachées à la date
+index, sans inventer ni remplacer une cible; à 24 mois il reste 14 patients.
+Le protocole « canonical » conserve exactement les étiquettes historiques :
+son score 24 mois N=449 n'est PAS une mesure fiable de prévision à +24 mois.
+Les 14 patients alignés comprennent seulement 6 patients diagnostiqués Parkinson,
+7 prodromaux et 1 contrôle sain : cet effectif n'est pas représentatif à lui seul.
+Tous les avant/après comparent les mêmes patients ET les mêmes cibles à
+l'intérieur du protocole indiqué. Les deux effectifs ne sont pas confondus.
+
+Autre anomalie trouvée : run_statistical_tests.py passe l'historique COMPLET
+des patients aux modèles, au-delà de la visite index, et reconstruit des
+prétraitements différents de ceux de certains checkpoints. Ses tests existants
+ne prouvent pas les nouveaux gains. Ce script est laissé intact; les nouveaux
+exports sont bornés à la visite index et le bootstrap est apparié sur PATNO/date.
+
+Disponibilité des modalités : l'ETL les associe par PATNO/EVENT_ID, sans garder
+leurs dates d'acquisition. data/raw est absent. L'absence de mesure acquise
+après la visite à l'intérieur d'un même événement ne peut donc pas être
+certifiée ici. Même limite pour l'ordre intra-mois ON/OFF. Les préfixes, LOCF
+et données dérivées contrôlables ont été audités; la provenance brute reste à
+vérifier avant toute conclusion prospective.
+
+3. Protocole expérimental et budget
+
+Environnement .venv existant, CPU, 2 threads PyTorch, déterminisme activé.
+Versions et processeur dans environment.json; dépendances dans requirements-lock.txt.
+Trois configurations, deux architectures, graine 42, maximum 24 époques et
+patience 6. Scheduler facteur 0,5 / patience 3, clipping 1,5.
+Critère fixé avant les essais : moyenne des MAE 12m et 24m alignées, calculées
+sur tous les patients valides, sans moyenner les moyennes de minibatches.
+ATTENTION : la moitié de ce critère repose sur seulement 14 patients à 24m.
+
+corrected : corrections ci-dessus, dimensions et paramètres initiaux conservés
+(sauf protocole de sélection, arrêt anticipé et budget).
+compact_mae : une couche, largeur 32, dropout 0,15, batch 64, MAE,
+weight_decay=0,0001, poids 24m=1 et classification=0,2.
+missing_huber : même taille compacte, indicateurs de manque, Huber beta=2;
+pour Late, supervision auxiliaire des branches (poids 0,1), branche imagerie
+supervisée uniquement lorsqu'une imagerie existe dans le préfixe.
+Ces essais sont des ensembles de réglages, pas des ablations permettant
+d'attribuer un gain à un hyperparamètre isolé. lr=0,001 et clipping inchangés :
+pas de grille exhaustive. Les médianes/standardisation sont déjà pertinentes;
+aucune recherche supplémentaire de normalisation n'a été engagée.
+
+Sélection graine 42 : Early=compact_mae; Late=compact_mae.
+Répétitions prévues de corrected et de la configuration retenue avec graines
+17 et 2026, sans resélection de configuration ni sélection de la meilleure
+graine. Checkpoint de livraison : graine 42 fixée pour les deux architectures.
+Entraînements effectivement terminés : 14; temps cumulé entraînement,
+préparation et validation : 14.5 minutes (hors audit et tests).
+Les checkpoints initiaux sont réévalués, pas réentraînés : leur graine et leur
+historique d'apprentissage complet ne sont pas enregistrés dans les anciens .pt.
+
+4. Avant / après — MAE en points NP3TOT
+
+architecture  protocol  horizon   n  before  after  gain      config
+       early   aligned       12 574   5.017  4.458 0.559 compact_mae
+       early   aligned       24  14   5.336  3.540 1.796 compact_mae
+       early canonical       12 574   5.017  4.458 0.559 compact_mae
+       early canonical       24 449   5.541  4.729 0.812 compact_mae
+        late   aligned       12 574   4.921  4.448 0.473 compact_mae
+        late   aligned       24  14   5.073  3.667 1.406 compact_mae
+        late canonical       12 574   4.921  4.448 0.473 compact_mae
+        late canonical       24 449   5.319  4.644 0.675 compact_mae
+
+« aligned » = cible correctement rattachée à la visite index.
+« canonical » = comparaison technique sur les cibles historiques, invalide
+comme mesure prospective à 24m pour les raisons décrites ci-dessus.
+
+Toutes les expériences, validation alignée (RMSE, R², biais et effectifs) :
+
+architecture                config    seed  horizon  n_samples   mae  rmse     r2   bias
+       early historical_checkpoint unknown       12        574 5.017 7.420 0.7264 -1.222
+       early historical_checkpoint unknown       24         14 5.336 8.277 0.7845 -2.162
+        late historical_checkpoint unknown       12        574 4.921 6.998 0.7566 -0.558
+        late historical_checkpoint unknown       24         14 5.073 7.630 0.8169 -0.564
+       early           compact_mae      17       12        574 4.520 6.473 0.7918 -1.060
+       early           compact_mae      17       24         14 3.650 6.380 0.8720 -0.009
+       early           compact_mae    2026       12        574 4.561 6.536 0.7877 -0.978
+       early           compact_mae    2026       24         14 3.928 6.837 0.8530  0.022
+       early           compact_mae      42       12        574 4.458 6.405 0.7961 -0.563
+       early           compact_mae      42       24         14 3.540 6.303 0.8750 -0.299
+       early             corrected      17       12        574 4.473 6.367 0.7985 -0.705
+       early             corrected      17       24         14 3.886 6.515 0.8665 -0.843
+       early             corrected    2026       12        574 4.462 6.343 0.8001 -0.846
+       early             corrected    2026       24         14 3.314 6.032 0.8856 -0.383
+       early             corrected      42       12        574 4.498 6.407 0.7960 -0.794
+       early             corrected      42       24         14 3.836 6.637 0.8615 -0.596
+       early         missing_huber      42       12        574 4.394 6.257 0.8054 -0.584
+       early         missing_huber      42       24         14 3.656 6.258 0.8768 -0.401
+        late           compact_mae      17       12        574 4.603 6.675 0.7786 -1.016
+        late           compact_mae      17       24         14 4.005 6.787 0.8551  0.002
+        late           compact_mae    2026       12        574 4.550 6.509 0.7894 -0.787
+        late           compact_mae    2026       24         14 3.882 6.393 0.8714  0.360
+        late           compact_mae      42       12        574 4.448 6.367 0.7986 -0.635
+        late           compact_mae      42       24         14 3.667 6.643 0.8612 -0.242
+        late             corrected      17       12        574 4.455 6.352 0.7995 -0.495
+        late             corrected      17       24         14 3.761 6.318 0.8745 -0.007
+        late             corrected    2026       12        574 4.462 6.357 0.7992 -0.766
+        late             corrected    2026       24         14 3.983 6.675 0.8599  0.059
+        late             corrected      42       12        574 4.628 6.720 0.7756 -1.050
+        late             corrected      42       24         14 3.824 6.253 0.8770 -0.438
+        late         missing_huber      42       12        574 4.445 6.378 0.7978 -1.189
+        late         missing_huber      42       24         14 4.078 7.016 0.8452  0.141
+
+Comparaison des réglages sur la graine de sélection :
+
+architecture        config  epoch  selection_mae  parameters    seconds
+       early   compact_mae      5       3.999430       28963  35.224270
+       early missing_huber      5       4.024974       30371  35.557958
+       early     corrected      6       4.166741      210499 117.732397
+        late   compact_mae      6       4.057399       27335  42.199816
+        late     corrected      1       4.226240      113143  64.291211
+        late missing_huber      7       4.261716       28839  45.780516
+
+early, compact_mae : gain de 0.167 sur le critère moyen aligné vs corrected (graine 42).
+early, missing_huber : gain de 0.142 sur le critère moyen aligné vs corrected (graine 42).
+late, compact_mae : gain de 0.169 sur le critère moyen aligné vs corrected (graine 42).
+late, missing_huber : dégradation de 0.035 sur le critère moyen aligné vs corrected (graine 42).
+
+Stabilité entre graines (écart-type d'échantillon, NaN si une seule graine) :
+
+architecture        config  horizon  count     mean      std   min   max
+       early   compact_mae       12      3 4.513000 0.051856 4.458 4.561
+       early   compact_mae       24      3 3.706000 0.199970 3.540 3.928
+       early     corrected       12      3 4.477667 0.018448 4.462 4.498
+       early     corrected       24      3 3.678667 0.316799 3.314 3.886
+       early missing_huber       12      1 4.394000      NaN 4.394 4.394
+       early missing_huber       24      1 3.656000      NaN 3.656 3.656
+        late   compact_mae       12      3 4.533667 0.078780 4.448 4.603
+        late   compact_mae       24      3 3.851333 0.171074 3.667 4.005
+        late     corrected       12      3 4.515000 0.097923 4.455 4.628
+        late     corrected       24      3 3.856000 0.114407 3.761 3.983
+        late missing_huber       12      1 4.445000      NaN 4.445 4.445
+        late missing_huber       24      1 4.078000      NaN 4.078 4.078
+
+Effet supplémentaire du réglage retenu vs corrections seules, à graine égale
+(positif = gain; négatif = dégradation; ce tableau n'a pas servi à resélectionner) :
+
+architecture  seed  horizon  gain_vs_corrected
+       early    17       12             -0.047
+       early    17       24              0.236
+       early  2026       12             -0.099
+       early  2026       24             -0.614
+       early    42       12              0.040
+       early    42       24              0.296
+        late    17       12             -0.148
+        late    17       24             -0.244
+        late  2026       12             -0.088
+        late  2026       24              0.101
+        late    42       12              0.180
+        late    42       24              0.157
+
+early à 12m : corrections seules 4.478; configuration retenue 4.513 (moyennes sur 3 graines).
+late à 12m : corrections seules 4.515; configuration retenue 4.534 (moyennes sur 3 graines).
+
+Conclusion des répétitions : les configurations compactes retenues au premier
+essai ne démontrent pas de gain supplémentaire stable sur les corrections
+seules. Sur trois graines, les corrections seules ont une MAE 12m moyenne
+légèrement meilleure pour les deux architectures. L'amélioration la mieux
+étayée porte donc sur les corrections; on ne doit pas attribuer tout le gain
+aux hyperparamètres. Les configurations de sélection restent figées, et les
+checkpoints corrected des trois graines sont également livrés. Aucune graine
+de répétition n'a été choisie après coup pour embellir le tableau avant/après.
+
+La dispersion entre graines n'est pas un intervalle de confiance clinique.
+Le diagnostic de persistance (prédire le NP3TOT actuel sans apprendre) donne
+une MAE alignée de 5.039 à 12 mois et 3.929 à 24 mois.
+Il permet de distinguer le gain sur les anciens checkpoints du gain au-delà
+de la simple conservation du score actuel; ce diagnostic ne remplace aucune fusion.
+descriptive_bootstrap.json contient 2000 rééchantillonnages appariés de patients,
+graine 31415, sur la différence MAE historique moins nouvelle MAE graine 42.
+Ces intervalles sont descriptifs : la validation a servi à choisir les époques
+et configurations; aucune significativité confirmatoire n'est revendiquée.
+
+5. Diagnostics Late Fusion
+
+late_diagnostics.csv compare les deux branches seules, la moyenne uniforme et
+la pondération finale, par disponibilité d'imagerie et horizon aligné : MAE,
+biais, écart-type des prédictions, poids min/moyen/max. Il s'agit des branches
+du modèle conjoint, pas de modèles autonomes réentraînés. La moyenne uniforme
+inclut la branche imputée même sans imagerie, volontairement comme diagnostic.
+Les deux branches ont les mêmes unités NP3TOT grâce au score moteur brut.
+Le gating reste appris sur le train; aucune calibration ou pondération n'a été
+ajustée aux cibles de test. Les gradients des deux branches et du gate sont
+testés lorsqu'une imagerie est disponible. Un poids nul est intentionnel
+lorsque l'imagerie est entièrement absente.
+
+Branches et combinaison de la configuration retenue, graine 42, même cohorte :
+
+ horizon predictor  n_samples   mae   rmse   bias
+      12      pred        574 4.448  6.367 -0.635
+      12  clinical        574 4.609  6.492  0.394
+      12   imaging        574 7.303  9.959 -6.151
+      12   uniform        574 5.248  7.522 -2.878
+      24      pred         14 3.667  6.643 -0.242
+      24  clinical         14 4.647  6.926  1.149
+      24   imaging         14 7.087 10.296 -6.873
+      24   uniform         14 4.559  7.441 -2.862
+
+Disponibilité et poids de l'imagerie, configuration retenue graine 42 :
+
+ imaging_available  patients  mean_weight_imaging  min_weight_imaging  max_weight_imaging      mae      bias
+              True       552             0.250952            0.000041            0.989556 4.309748 -0.612204
+             False        22             0.000000            0.000000            0.000000 7.921301 -1.214893
+
+La comparaison clinique/imagerie/uniforme permet de vérifier si le gate atténue
+une branche moins informative; elle ne démontre pas une causalité biologique.
+
+6. Fichiers et reproduction Windows / terminal VS Code
+
+src/fusion_experiments.py : préparation isolée, modèles dérivés des classes
+originales, audit, entraînement, export et rechargement des checkpoints.
+src/test_fusion_experiments.py : dix tests ciblés.
+src/summarize_fusion_experiments.py : tableaux/diagnostics/rapport issus des CSV.
+configs/fusion_experiments.json : paramètres fixés et graines.
+README.md : accès au nouveau pipeline et avertissement sur les anciens résultats.
+experiments\fusion_20261013 : résultats, checkpoints, prédictions, provenance et rapport.
+Aucun code des modèles de référence, données communes, résultat ou checkpoint
+historique n'est écrasé. Les empreintes SHA256 des artefacts initiaux sont
+vérifiées à la fin. Les checkpoints nouveaux contiennent modèle, configuration,
+prétraitement, graine, époque et empreintes des données train/validation.
+
+Commandes depuis C:\Users\MSI\Desktop\parkinson :
+
+.\.venv\Scripts\python.exe -m unittest discover -s src -p test_fusion_experiments.py -v
+.\.venv\Scripts\python.exe src/fusion_experiments.py --stage verify
+.\.venv\Scripts\python.exe src/summarize_fusion_experiments.py
+
+Pour une reproduction complète, utiliser un NOUVEAU dossier pour préserver
+les résultats livrés (les entraînements refusent d'écraser un dossier existant) :
+
+.\.venv\Scripts\python.exe src/fusion_experiments.py --stage screen --output experiments/reproduction_01
+.\.venv\Scripts\python.exe src/fusion_experiments.py --stage repeat --output experiments/reproduction_01
+.\.venv\Scripts\python.exe src/fusion_experiments.py --stage verify --output experiments/reproduction_01
+.\.venv\Scripts\python.exe src/summarize_fusion_experiments.py --output experiments/reproduction_01
+
+Compatibilité : réutilisation directe de evaluate_regression et
+evaluate_classification de src/evaluate.py; benchmark_validation.csv conserve
+ses noms de métriques. reload_validation() fournit l'adaptateur aux nouveaux
+checkpoints enrichis. Ne pas les charger avec l'ancien script qui reconstruit
+implicitement les entrées et n'accepte qu'un state_dict nu. Aucun résultat de
+classification (probabilités et labels 0/1) n'est présenté comme une MAE NP3TOT.
+
+7. Limites et suite
+
+Les gains mesurés incluent surtout des corrections de fonctionnement; ce ne
+sont pas uniquement des gains d'hyperparamètres. Le test a déjà été consulté
+pendant le développement initial et ne peut plus être décrit comme totalement
+indépendant. Il n'a pas été utilisé ici pour choisir quoi que ce soit.
+Un travail d'équipe doit reconstruire les tables tabulaires en conservant des
+lignes entières (tail(1), sans récupérer d'anciennes cibles), puis approuver
+un protocole avec un vrai suivi 24m et réévaluer toutes les références de façon
+identique. Les splits actuels ne doivent pas être changés silencieusement.
+Confirmation conseillée : cohorte externe ou nouveaux patients ultérieurs
+jamais consultés, protocole/paramètres figés et dates sources vérifiées.
+Les préfixes multiples surpondèrent les patients très suivis pendant
+l'apprentissage. La robustesse intercohortes/médications et la classification
+n'ont pas fait l'objet d'une nouvelle optimisation indépendante.
+
+Ma contribution a consisté à auditer les deux fusions existantes, corriger
+l'unité du score moteur résiduel, la lecture du padding en Late Fusion et la
+sauvegarde des meilleurs poids, puis exécuter des essais reproductibles sur
+la validation en conservant le BiLSTM commun d'Early Fusion et les branches
+avec pondération apprise de Late Fusion. J'ai aussi identifié des cibles
+24 mois rattachées à d'anciennes visites, que j'ai signalées sans modifier
+les données de l'équipe. Les tableaux ci-dessus décrivent les gains réellement
+mesurés et leur dispersion. À 12 mois, sur les mêmes 574 patients, les MAE des
+checkpoints retenus ont évolué ainsi : Early Fusion : 5.017 à 4.458; Late Fusion : 4.921 à 4.448 points NP3TOT.
+À 24 mois, l'effectif correctement rattaché est trop petit pour affirmer un
+gain solide. Ces résultats ne constituent pas une preuve de performance sur
+une cohorte indépendante.

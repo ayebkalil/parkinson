@@ -1,0 +1,164 @@
+[
+  {
+    "model": "xgboost",
+    "task": "12m",
+    "config": "trial_05",
+    "seed": 42,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\12m\\trial_05\\42\\best.json",
+    "threshold": null,
+    "selection_basis": "validation only; not a deployment recommendation"
+  },
+  {
+    "model": "xgboost",
+    "task": "12m",
+    "config": "trial_05",
+    "seed": 17,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\12m\\trial_05\\17\\best.json",
+    "threshold": null,
+    "selection_basis": "validation only; not a deployment recommendation"
+  },
+  {
+    "model": "xgboost",
+    "task": "12m",
+    "config": "trial_05",
+    "seed": 2026,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\12m\\trial_05\\2026\\best.json",
+    "threshold": null,
+    "selection_basis": "validation only; not a deployment recommendation"
+  },
+  {
+    "model": "xgboost",
+    "task": "24m",
+    "config": "trial_02",
+    "seed": 42,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\24m\\trial_02\\42\\best.json",
+    "threshold": null,
+    "selection_basis": "validation only; not a deployment recommendation"
+  },
+  {
+    "model": "xgboost",
+    "task": "24m",
+    "config": "trial_02",
+    "seed": 17,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\24m\\trial_02\\17\\best.json",
+    "threshold": null,
+    "selection_basis": "validation only; not a deployment recommendation"
+  },
+  {
+    "model": "xgboost",
+    "task": "24m",
+    "config": "trial_02",
+    "seed": 2026,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\24m\\trial_02\\2026\\best.json",
+    "threshold": null,
+    "selection_basis": "validation only; not a deployment recommendation"
+  },
+  {
+    "model": "xgboost",
+    "task": "cls",
+    "config": "baseline",
+    "seed": 42,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\cls\\baseline\\42\\best.json",
+    "threshold": 0.49204981327056885,
+    "selection_basis": "validation only; not a deployment recommendation"
+  },
+  {
+    "model": "xgboost",
+    "task": "cls",
+    "config": "baseline",
+    "seed": 17,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\cls\\baseline\\17\\best.json",
+    "threshold": 0.4823112487792969,
+    "selection_basis": "validation only; not a deployment recommendation"
+  },
+  {
+    "model": "xgboost",
+    "task": "cls",
+    "config": "baseline",
+    "seed": 2026,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\cls\\baseline\\2026\\best.json",
+    "threshold": 0.45321720838546753,
+    "selection_basis": "validation only; not a deployment recommendation"
+  },
+  {
+    "model": "bilstm",
+    "task": "12m",
+    "config": "balanced_mae",
+    "seed": 42,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\balanced_mae\\42\\best.pt",
+    "threshold": null,
+    "selection_basis": "validation only; not a deployment recommendation"
+  },
+  {
+    "model": "bilstm",
+    "task": "12m",
+    "config": "balanced_mae",
+    "seed": 17,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\balanced_mae\\17\\best.pt",
+    "threshold": null,
+    "selection_basis": "validation only; not a deployment recommendation"
+  },
+  {
+    "model": "bilstm",
+    "task": "12m",
+    "config": "balanced_mae",
+    "seed": 2026,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\balanced_mae\\2026\\best.pt",
+    "threshold": null,
+    "selection_basis": "validation only; not a deployment recommendation"
+  },
+  {
+    "model": "bilstm",
+    "task": "24m",
+    "config": "balanced_huber",
+    "seed": 42,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\balanced_huber\\42\\best.pt",
+    "threshold": null,
+    "selection_basis": "validation only; not a deployment recommendation"
+  },
+  {
+    "model": "bilstm",
+    "task": "24m",
+    "config": "balanced_huber",
+    "seed": 17,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\balanced_huber\\17\\best.pt",
+    "threshold": null,
+    "selection_basis": "validation only; not a deployment recommendation"
+  },
+  {
+    "model": "bilstm",
+    "task": "24m",
+    "config": "balanced_huber",
+    "seed": 2026,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\balanced_huber\\2026\\best.pt",
+    "threshold": null,
+    "selection_basis": "validation only; not a deployment recommendation"
+  },
+  {
+    "model": "bilstm",
+    "task": "cls",
+    "config": "classification_huber",
+    "seed": 42,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\classification_huber\\42\\best.pt",
+    "threshold": 0.39223867654800415,
+    "selection_basis": "validation only; not a deployment recommendation"
+  },
+  {
+    "model": "bilstm",
+    "task": "cls",
+    "config": "classification_huber",
+    "seed": 17,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\classification_huber\\17\\best.pt",
+    "threshold": 0.3769327700138092,
+    "selection_basis": "validation only; not a deployment recommendation"
+  },
+  {
+    "model": "bilstm",
+    "task": "cls",
+    "config": "classification_huber",
+    "seed": 2026,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\classification_huber\\2026\\best.pt",
+    "threshold": 0.4974137246608734,
+    "selection_basis": "validation only; not a deployment recommendation"
+  }
+]

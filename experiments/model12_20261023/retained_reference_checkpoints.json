@@ -1,0 +1,128 @@
+[
+  {
+    "model": "xgboost",
+    "task": "12m",
+    "seed": 42,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\12m\\baseline\\42\\best.json",
+    "threshold": null
+  },
+  {
+    "model": "xgboost",
+    "task": "12m",
+    "seed": 17,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\12m\\baseline\\17\\best.json",
+    "threshold": null
+  },
+  {
+    "model": "xgboost",
+    "task": "12m",
+    "seed": 2026,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\12m\\baseline\\2026\\best.json",
+    "threshold": null
+  },
+  {
+    "model": "xgboost",
+    "task": "24m",
+    "seed": 42,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\24m\\baseline\\42\\best.json",
+    "threshold": null
+  },
+  {
+    "model": "xgboost",
+    "task": "24m",
+    "seed": 17,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\24m\\baseline\\17\\best.json",
+    "threshold": null
+  },
+  {
+    "model": "xgboost",
+    "task": "24m",
+    "seed": 2026,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\24m\\baseline\\2026\\best.json",
+    "threshold": null
+  },
+  {
+    "model": "xgboost",
+    "task": "cls",
+    "seed": 42,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\cls\\baseline\\42\\best.json",
+    "threshold": 0.49204981327056885
+  },
+  {
+    "model": "xgboost",
+    "task": "cls",
+    "seed": 17,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\cls\\baseline\\17\\best.json",
+    "threshold": 0.4823112487792969
+  },
+  {
+    "model": "xgboost",
+    "task": "cls",
+    "seed": 2026,
+    "path": "experiments\\model12_20261023\\runs\\xgboost\\cls\\baseline\\2026\\best.json",
+    "threshold": 0.45321720838546753
+  },
+  {
+    "model": "bilstm",
+    "task": "12m",
+    "seed": 42,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\baseline\\42\\best.pt",
+    "threshold": null
+  },
+  {
+    "model": "bilstm",
+    "task": "12m",
+    "seed": 17,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\baseline\\17\\best.pt",
+    "threshold": null
+  },
+  {
+    "model": "bilstm",
+    "task": "12m",
+    "seed": 2026,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\baseline\\2026\\best.pt",
+    "threshold": null
+  },
+  {
+    "model": "bilstm",
+    "task": "24m",
+    "seed": 42,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\baseline\\42\\best.pt",
+    "threshold": null
+  },
+  {
+    "model": "bilstm",
+    "task": "24m",
+    "seed": 17,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\baseline\\17\\best.pt",
+    "threshold": null
+  },
+  {
+    "model": "bilstm",
+    "task": "24m",
+    "seed": 2026,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\baseline\\2026\\best.pt",
+    "threshold": null
+  },
+  {
+    "model": "bilstm",
+    "task": "cls",
+    "seed": 42,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\baseline\\42\\best.pt",
+    "threshold": 0.33868077397346497
+  },
+  {
+    "model": "bilstm",
+    "task": "cls",
+    "seed": 17,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\baseline\\17\\best.pt",
+    "threshold": 0.22181527316570282
+  },
+  {
+    "model": "bilstm",
+    "task": "cls",
+    "seed": 2026,
+    "path": "experiments\\model12_20261023\\runs\\bilstm\\baseline\\2026\\best.pt",
+    "threshold": 0.1997612714767456
+  }
+]

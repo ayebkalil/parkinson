@@ -1,0 +1,9 @@
+﻿{
+    "action":  "Restart the same seed and configuration from epoch 1; completed runs remain unchanged",
+    "config":  "moderate_balanced",
+    "stage":  "cv",
+    "error":  "Windows torch.save open file error 1224",
+    "completed":  false,
+    "seed":  42,
+    "fold":  0
+}

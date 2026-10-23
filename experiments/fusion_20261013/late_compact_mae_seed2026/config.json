@@ -1,0 +1,25 @@
+{
+  "architecture": "late",
+  "config": {
+    "early_hidden": 32,
+    "late_hidden": 32,
+    "layers": 1,
+    "dropout": 0.15,
+    "lr": 0.001,
+    "batch_size": 64,
+    "weight_decay": 0.0001,
+    "clip": 1.5,
+    "loss": "mae",
+    "beta": 1.0,
+    "weight24": 1.0,
+    "classification_weight": 0.2,
+    "auxiliary_weight": 0.0,
+    "epochs": 24,
+    "patience": 6,
+    "missing": false,
+    "mask_absent": true,
+    "name": "compact_mae"
+  },
+  "seed": 2026,
+  "threads": 2
+}

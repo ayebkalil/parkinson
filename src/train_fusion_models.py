@@ -659,7 +659,7 @@ def generate_fusion_comparison_plot(results_dict):
     print(f"  Saved RQ2 Fusion Comparison figure to: {out_fig}")
 
 
-def main():
+def legacy_main():
     print("=" * 80)
     print("PHASE 4 & 5: MULTIMODAL DEEP FUSION ARCHITECTURES (ANSWERING RQ2)")
     print("=" * 80)
@@ -727,6 +727,23 @@ def main():
     print("\n" + "=" * 80)
     print("PHASE 4 & 5 MULTIMODAL DEEP FUSION BENCHMARK COMPLETE (RQ2 ANSWERED)!")
     print("=" * 80)
+
+
+def main():
+    """Train the two audited fusions with the familiar one-command entry point.
+
+    The original benchmark implementation remains above as legacy_main(), but
+    its fixed model/report paths would overwrite existing team artifacts.
+    """
+    from datetime import datetime
+    from fusion_experiments import main as experiment_main
+
+    output = os.path.join("experiments", f"fusion_run_{datetime.now():%Y%m%d_%H%M%S}_{os.getpid()}")
+    print(f"Training Early and Late Fusion; output: {output}", flush=True)
+    experiment_main(["--stage", "run", "--architecture", "both", "--experiment", "compact_mae",
+                     "--seed", "42", "--output", output])
+    experiment_main(["--stage", "verify", "--output", output])
+    print(f"Early/Late checkpoints and validation metrics: {output}", flush=True)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,25 @@
+{
+  "architecture": "early",
+  "config": {
+    "early_hidden": 64,
+    "late_hidden": 48,
+    "layers": 2,
+    "dropout": 0.25,
+    "lr": 0.001,
+    "batch_size": 32,
+    "weight_decay": 0.001,
+    "clip": 1.5,
+    "loss": "huber",
+    "beta": 1.0,
+    "weight24": 1.2,
+    "classification_weight": 0.5,
+    "auxiliary_weight": 0.0,
+    "epochs": 24,
+    "patience": 6,
+    "missing": false,
+    "mask_absent": true,
+    "name": "corrected"
+  },
+  "seed": 17,
+  "threads": 2
+}

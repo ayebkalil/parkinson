@@ -1,0 +1,9 @@
+{
+  "criterion": "configuration fixed before this run; no search performed",
+  "configurations": {
+    "early": "compact_mae",
+    "late": "compact_mae"
+  },
+  "seed": 42,
+  "warning": "24m validation has only 14 correctly aligned labels"
+}

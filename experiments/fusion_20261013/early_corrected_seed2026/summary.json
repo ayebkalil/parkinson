@@ -1,0 +1,9 @@
+{
+  "architecture": "early",
+  "config": "corrected",
+  "seed": 2026,
+  "epoch": 8,
+  "selection_mae": 3.887784481048584,
+  "seconds": 136.8741717999801,
+  "parameters": 210499
+}
