@@ -17,3 +17,9 @@ env/
 # System
 .DS_Store
 Thumbs.db
+
+# Scratch & temporary artifacts
+scratch/
+shot_*.png
+scratch_frame_*.jpg
+

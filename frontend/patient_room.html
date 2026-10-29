@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MEDIX | Patient Tele-Neurology Room</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #080c14;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --accent: #6366f1;
+      --success: #10b981;
+      --danger: #ef4444;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Top Patient Room Header */
+    .patient-header {
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.85);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      z-index: 50;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #fda4af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0f172a;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    .brand-text h1 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-text p {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .header-status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.7); opacity: 0.4; }
+    }
+
+    /* Main Video Stage */
+    .room-stage {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    @media (max-width: 900px) {
+      .room-stage {
+        grid-template-columns: 1fr;
+        padding: 12px;
+      }
+    }
+
+    .video-viewport {
+      position: relative;
+      background: #000000;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 480px;
+    }
+
+    /* Doctor Video on Patient Screen */
+    .remote-doctor-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    /* Waiting Standby State */
+    .standby-overlay {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 30px;
+      gap: 16px;
+      z-index: 5;
+    }
+
+    .doctor-avatar-circle {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      border: 3px solid #fda4af;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .doctor-avatar-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .standby-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+    }
+
+    .standby-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      max-width: 420px;
+      line-height: 1.5;
+    }
+
+    .btn-join-call {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #ffffff;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-join-call:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(99, 102, 241, 0.55);
+    }
+
+    /* Patient Self-View PiP */
+    .patient-pip {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 150px;
+      height: 112px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      background: #111827;
+      z-index: 20;
+    }
+
+    .patient-pip video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1); /* mirror selfie view */
+    }
+
+    .patient-pip-tag {
+      position: absolute;
+      bottom: 6px;
+      left: 6px;
+      background: rgba(15, 23, 42, 0.85);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.62rem;
+      font-weight: 700;
+    }
+
+    /* Floating Call Controls */
+    .call-controls {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(15, 23, 42, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(12px);
+      padding: 10px 20px;
+      border-radius: 40px;
+      z-index: 30;
+    }
+
+    .ctrl-btn {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .ctrl-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.06);
+    }
+
+    .ctrl-btn.active-muted {
+      background: #ef4444;
+      border-color: #ef4444;
+    }
+
+    .ctrl-btn.btn-hangup {
+      background: #ef4444;
+      border-color: #ef4444;
+    }
+
+    .ctrl-btn.btn-hangup:hover {
+      background: #dc2626;
+    }
+
+    /* Side Consultation Info Card */
+    .side-info-card {
+      background: rgba(15, 23, 42, 0.7);
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .info-card-header h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+
+    .info-card-header p {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .patient-meta-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 0.78rem;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .meta-label {
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .meta-val {
+      font-weight: 700;
+      text-align: right;
+      color: #e2e8f0;
+    }
+
+    .instruction-box {
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 0.74rem;
+      line-height: 1.5;
+      color: #c7d2fe;
+    }
+
+    /* Toast Notification in Patient Room */
+    .patient-toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1e293b;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 12px;
+      border-left: 4px solid var(--accent);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      font-size: 0.8rem;
+      font-weight: 600;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header class="patient-header">
+    <div class="brand-wrap">
+      <div class="brand-icon">M</div>
+      <div class="brand-text">
+        <h1>MEDIX Telehealth Portal</h1>
+        <p>Encrypted Clinical Consultation • Movement Disorders Unit</p>
+      </div>
+    </div>
+
+    <div class="header-status-badge" id="callStatusBadge">
+      <span class="pulse-dot"></span>
+      <span id="callStatusText">Standby • Ready to Connect</span>
+    </div>
+  </header>
+
+  <!-- Main Consultation Stage -->
+  <main class="room-stage">
+    
+    <!-- Video Viewport -->
+    <div class="video-viewport" id="videoViewport">
+      
+      <!-- Doctor's Stream (Shown when call is active) -->
+      <video id="remoteDoctorVideo" class="remote-doctor-video" autoplay playsinline></video>
+
+      <!-- Waiting / Standby Welcome Screen -->
+      <div class="standby-overlay" id="standbyOverlay">
+        <div class="doctor-avatar-circle">
+          <img src="assets/profile_user.jpg" alt="Dr. Liza Vance, MD">
+        </div>
+        <div>
+          <h2 class="standby-title">Dr. Liza Vance, MD</h2>
+          <p style="font-size: 0.8rem; color: #fda4af; font-weight: 700; margin-top: 2px;">Chief Neurologist • Movement Disorders Specialist</p>
+        </div>
+        <p class="standby-sub">
+          Welcome to your secure tele-neurology video room. Dr. Vance will conduct your MDS-UPDRS motor follow-up consultation.
+        </p>
+
+        <button class="btn-join-call" id="joinCallBtn" onclick="startPatientCall()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+          <span>Enable Camera & Join Consultation</span>
+        </button>
+      </div>
+
+      <!-- Patient Self-View PiP (Bottom-Right) -->
+      <div class="patient-pip" id="patientPip" style="display: none;">
+        <video id="patientLocalVideo" autoplay playsinline muted></video>
+        <span class="patient-pip-tag">Your Camera</span>
+      </div>
+
+      <!-- Floating Controls -->
+      <div class="call-controls" id="callControls" style="display: none;">
+        <button class="ctrl-btn" id="toggleMicBtn" title="Mute/Unmute Mic" onclick="toggleMic()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+        </button>
+
+        <button class="ctrl-btn" id="toggleCamBtn" title="Camera On/Off" onclick="toggleCam()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+        </button>
+
+        <button class="ctrl-btn" id="flipCamBtn" title="Flip Camera (Mobile Front/Back)" onclick="flipCamera()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 16v5h-5"></path><path d="M4 8V3h5"></path><path d="M4 3l7 7"></path><path d="M20 21l-7-7"></path></svg>
+        </button>
+
+        <button class="ctrl-btn btn-hangup" title="Leave Consultation" onclick="leaveCall()">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.42 19.42 0 0 1-6-6 19.86 19.86 0 0 1-3.12-8.68A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91"></path><line x1="23" y1="1" x2="1" y2="23"></line></svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Side Consultation Information -->
+    <aside class="side-info-card">
+      <div class="info-card-header">
+        <h2>Consultation Patient Record</h2>
+        <p>Verified PPMI Cohort Enrollment Information</p>
+      </div>
+
+      <div class="patient-meta-list">
+        <div class="meta-row">
+          <span class="meta-label">Patient Name:</span>
+          <span class="meta-val" id="patientNameLabel">Arthur Pendelton</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">PPMI Record ID:</span>
+          <span class="meta-val" id="patientIdLabel">PPMI-3203</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Age & Biological Sex:</span>
+          <span class="meta-val" id="patientAgeSexLabel">57 yrs • Male</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Primary Diagnosis:</span>
+          <span class="meta-val" style="color: #6366f1;">Parkinson's (Stage II)</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Contact Phone:</span>
+          <span class="meta-val" id="patientPhoneLabel">+1 (555) 382-9104</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Email:</span>
+          <span class="meta-val" id="patientEmailLabel" style="font-size: 0.72rem;">arthur.pendelton@ppmi-cohort.org</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">Residential Address:</span>
+          <span class="meta-val" id="patientAddressLabel" style="font-size: 0.7rem; max-width: 170px;">742 Evergreen Terrace, Springfield, OR</span>
+        </div>
+      </div>
+
+      <div class="instruction-box">
+        <strong>💡 Examination Instructions:</strong>
+        <p style="margin-top: 4px;">
+          Position your device so that your face and both hands are clearly visible in the camera frame. Dr. Vance will guide you through resting tremor and finger movement checks.
+        </p>
+      </div>
+    </aside>
+
+  </main>
+
+  <script>
+    // URL Parameter Extraction
+    const urlParams = new URLSearchParams(window.location.search);
+    const roomId = urlParams.get('room') || 'PPMI-3203';
+    const patientName = urlParams.get('name') || 'Arthur Pendelton';
+    const patientId = urlParams.get('id') || roomId;
+
+    // Apply URL params to UI
+    document.getElementById('patientNameLabel').textContent = patientName;
+    document.getElementById('patientIdLabel').textContent = patientId;
+
+    // Sync Doctor Profile Photo if modified
+    try {
+      const savedDocAvatar = localStorage.getItem('medix_active_doctor_avatar');
+      if (savedDocAvatar) {
+        const docImg = document.querySelector('.doctor-avatar-circle img');
+        if (docImg) docImg.src = savedDocAvatar;
+      }
+    } catch(e) {}
+
+    if (urlParams.get('phone')) document.getElementById('patientPhoneLabel').textContent = urlParams.get('phone');
+    if (urlParams.get('email')) document.getElementById('patientEmailLabel').textContent = urlParams.get('email');
+    if (urlParams.get('address')) document.getElementById('patientAddressLabel').textContent = urlParams.get('address');
+    if (urlParams.get('age') && urlParams.get('gender')) {
+      document.getElementById('patientAgeSexLabel').textContent = `${urlParams.get('age')} yrs • ${urlParams.get('gender')}`;
+    }
+
+        // Synthetic Patient Stream Fallback (when hardware camera is in use by Doctor tab on same PC)
+    function createSyntheticPatientStream(name) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 640;
+      canvas.height = 480;
+      const ctx = canvas.getContext('2d');
+      let frame = 0;
+      function draw() {
+        frame++;
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(0, 0, 640, 480);
+        
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < 640; x += 40) {
+          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 480); ctx.stroke();
+        }
+        for (let y = 0; y < 480; y += 40) {
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(640, y); ctx.stroke();
+        }
+
+        const pulse = Math.sin(frame * 0.05) * 4;
+        ctx.fillStyle = '#334155';
+        ctx.beginPath();
+        ctx.arc(320, 200 + pulse, 60, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(320, 340 + pulse, 110, 70, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#10b981';
+        ctx.beginPath();
+        ctx.arc(320, 200 + pulse, 8, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = 'bold 20px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(name || 'Arthur Pendelton (PPMI Patient)', 320, 390);
+
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = '14px monospace';
+        ctx.fillText(`● LIVE WEBRTC STREAM • ${new Date().toLocaleTimeString()}`, 320, 420);
+
+        requestAnimationFrame(draw);
+      }
+      draw();
+      const stream = canvas.captureStream(30);
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const dst = audioCtx.createMediaStreamDestination();
+        osc.connect(dst);
+        osc.start();
+        const audioTrack = dst.stream.getAudioTracks()[0];
+        if (audioTrack) stream.addTrack(audioTrack);
+      } catch(e) {}
+      return stream;
+    }
+
+    let localStream = null;
+    let peerConnection = null;
+    let broadcastChannel = null;
+    let pollInterval = null;
+    let currentFacingMode = 'user';
+    const clientId = 'patient_' + Math.random().toString(36).substring(2, 8);
+
+    const rtcConfig = {
+      iceServers: [
+        { urls: 'stun:stun.l.google.com:19302' },
+        { urls: 'stun:stun1.l.google.com:19302' }
+      ]
+    };
+
+    function showToast(msg) {
+      const toast = document.createElement('div');
+      toast.className = 'patient-toast';
+      toast.textContent = msg;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // -------------------------------------------------------------
+    // Signaling Setup (BroadcastChannel + Local Backend HTTP Poll)
+    // -------------------------------------------------------------
+    function setupSignaling() {
+      // 1. Same-device BroadcastChannel (instant for 2 tabs)
+      try {
+        broadcastChannel = new BroadcastChannel('medix_telehealth_' + roomId);
+        broadcastChannel.onmessage = (event) => {
+          if (event.data && event.data.sender !== clientId) {
+            handleSignalMessage(event.data);
+          }
+        };
+      } catch (e) {
+        console.warn('BroadcastChannel not supported:', e);
+      }
+
+      // 2. Cross-device Backend Poll (for mobile phones on Wi-Fi)
+      pollInterval = setInterval(async () => {
+        try {
+          const res = await fetch(`/api/signal?room=${encodeURIComponent(roomId)}&sender=${encodeURIComponent(clientId)}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.messages && data.messages.length > 0) {
+              data.messages.forEach(msg => handleSignalMessage(msg.data));
+            }
+          }
+        } catch(e) {}
+      }, 800);
+    }
+
+    function sendSignal(data) {
+      const payload = { room: roomId, sender: clientId, data: data };
+      if (broadcastChannel) {
+        try { broadcastChannel.postMessage(payload); } catch(e) {}
+      }
+      fetch('/api/signal', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(e => {});
+    }
+
+    // -------------------------------------------------------------
+    // WebRTC Peer Connection
+    // -------------------------------------------------------------
+    function createPeerConnection() {
+      if (peerConnection) return;
+      peerConnection = new RTCPeerConnection(rtcConfig);
+
+      if (localStream) {
+        localStream.getTracks().forEach(track => {
+          peerConnection.addTrack(track, localStream);
+        });
+      }
+
+      peerConnection.ontrack = (event) => {
+        const remoteVideo = document.getElementById('remoteDoctorVideo');
+        if (remoteVideo) {
+          remoteVideo.srcObject = event.streams[0];
+          remoteVideo.style.display = 'block';
+          document.getElementById('standbyOverlay').style.display = 'none';
+          document.getElementById('callStatusText').textContent = 'Connected with Dr. Liza Vance, MD';
+        }
+      };
+
+      peerConnection.onicecandidate = (event) => {
+        if (event.candidate) {
+          sendSignal({ type: 'candidate', candidate: event.candidate });
+        }
+      };
+
+      peerConnection.onconnectionstatechange = () => {
+        if (peerConnection.connectionState === 'connected') {
+          showToast('Connected to Dr. Liza Vance!');
+        }
+      };
+    }
+
+    async function handleSignalMessage(msg) {
+      if (!msg) return;
+      if (msg.type === 'doctor_ready') {
+        if (msg.doctorAvatar) {
+          const docImg = document.querySelector('.doctor-avatar-circle img');
+          if (docImg) docImg.src = msg.doctorAvatar;
+        }
+        if (msg.doctorName) {
+          const docName = document.querySelector('.doctor-standby-info h3');
+          if (docName) docName.textContent = msg.doctorName;
+        }
+      } else if (msg.type === 'offer') {
+        createPeerConnection();
+        await peerConnection.setRemoteDescription(new RTCSessionDescription(msg.sdp));
+        const answer = await peerConnection.createAnswer();
+        await peerConnection.setLocalDescription(answer);
+        sendSignal({ type: 'answer', sdp: answer });
+      } else if (msg.type === 'answer') {
+        if (peerConnection) {
+          await peerConnection.setRemoteDescription(new RTCSessionDescription(msg.sdp));
+        }
+      } else if (msg.type === 'candidate') {
+        if (peerConnection && msg.candidate) {
+          try {
+            await peerConnection.addIceCandidate(new RTCIceCandidate(msg.candidate));
+          } catch(e) {}
+        }
+      } else if (msg.type === 'end_call') {
+        showToast('Dr. Liza Vance ended the consultation.');
+        leaveCall(false);
+      }
+    }
+
+    // -------------------------------------------------------------
+    // User Action Handlers
+    // -------------------------------------------------------------
+    async function startPatientCall() {
+      try {
+        localStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: currentFacingMode, width: { ideal: 1280 }, height: { ideal: 720 } },
+          audio: true
+        });
+      } catch (err) {
+        console.warn('Physical camera unavailable (likely in use by doctor on same PC):', err);
+        localStream = createSyntheticPatientStream(patientName);
+        showToast('Hardware camera locked by Doctor tab: Switched to virtual patient camera stream for dual testing!');
+      }
+
+      const localVid = document.getElementById('patientLocalVideo');
+      if (localVid && localStream) localVid.srcObject = localStream;
+
+      document.getElementById('patientPip').style.display = 'block';
+      document.getElementById('callControls').style.display = 'flex';
+      document.getElementById('joinCallBtn').style.display = 'none';
+      document.getElementById('callStatusText').textContent = 'Camera Active • Waiting for Doctor';
+
+      setupSignaling();
+      createPeerConnection();
+
+      // Announce ready to doctor
+      sendSignal({ type: 'patient_ready', patientName: patientName });
+      showToast('Camera and microphone connected successfully!');
+    }
+
+    function toggleMic() {
+      if (!localStream) return;
+      const audioTrack = localStream.getAudioTracks()[0];
+      if (audioTrack) {
+        audioTrack.enabled = !audioTrack.enabled;
+        const btn = document.getElementById('toggleMicBtn');
+        btn.classList.toggle('active-muted', !audioTrack.enabled);
+        showToast(audioTrack.enabled ? 'Microphone unmuted' : 'Microphone muted');
+      }
+    }
+
+    function toggleCam() {
+      if (!localStream) return;
+      const videoTrack = localStream.getVideoTracks()[0];
+      if (videoTrack) {
+        videoTrack.enabled = !videoTrack.enabled;
+        const btn = document.getElementById('toggleCamBtn');
+        btn.classList.toggle('active-muted', !videoTrack.enabled);
+        showToast(videoTrack.enabled ? 'Camera turned on' : 'Camera turned off');
+      }
+    }
+
+    async function flipCamera() {
+      if (!localStream) return;
+      currentFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
+      try {
+        localStream.getTracks().forEach(t => t.stop());
+        localStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: currentFacingMode },
+          audio: true
+        });
+        document.getElementById('patientLocalVideo').srcObject = localStream;
+        if (peerConnection) {
+          const videoTrack = localStream.getVideoTracks()[0];
+          const sender = peerConnection.getSenders().find(s => s.track.kind === 'video');
+          if (sender) sender.replaceTrack(videoTrack);
+        }
+        showToast(`Switched camera to ${currentFacingMode === 'user' ? 'front' : 'rear'} lens`);
+      } catch (err) {
+        showToast('Could not flip camera on this device.');
+      }
+    }
+
+    function leaveCall(notify = true) {
+      if (notify) sendSignal({ type: 'end_call' });
+      if (localStream) {
+        localStream.getTracks().forEach(t => t.stop());
+        localStream = null;
+      }
+      if (peerConnection) {
+        peerConnection.close();
+        peerConnection = null;
+      }
+      if (pollInterval) clearInterval(pollInterval);
+      document.getElementById('remoteDoctorVideo').style.display = 'none';
+      document.getElementById('patientPip').style.display = 'none';
+      document.getElementById('callControls').style.display = 'none';
+      document.getElementById('standbyOverlay').style.display = 'flex';
+      document.getElementById('joinCallBtn').style.display = 'inline-flex';
+      document.getElementById('callStatusText').textContent = 'Consultation Concluded';
+      showToast('You have left the consultation.');
+    }
+  </script>
+</body>
+</html>

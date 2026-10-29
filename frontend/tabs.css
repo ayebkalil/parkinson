@@ -1,0 +1,1485 @@
+/**
+ * MEDIX CLINICAL WORKSPACE - TABS EXTENSION STYLES
+ * Matches the exact aesthetic: pure white canvas, soft rounded cards,
+ * Plus Jakarta Sans typography, vibrant medical accent badges, and clean layout.
+ */
+
+/* ==========================================================================
+   TAB PANEL CORE CONTAINER & ANIMATIONS
+   ========================================================================== */
+
+.tab-panel {
+  display: none;
+  width: 100%;
+  animation: fadeInTab 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+@keyframes fadeInTab {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Common Panel Header */
+.panel-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.panel-header-text .panel-title {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.panel-header-text .panel-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.panel-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Medical Button Pills */
+.medix-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.medix-btn-primary {
+  background: #0f172a;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+}
+
+.medix-btn-primary:hover {
+  background: #1e293b;
+  transform: translateY(-1px);
+}
+
+.medix-btn-secondary {
+  background: #f1f5f9;
+  color: var(--text-dark);
+  border: 1px solid #e2e8f0;
+}
+
+.medix-btn-secondary:hover {
+  background: #e2e8f0;
+}
+
+.medix-btn-accent {
+  background: #6366f1;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.25);
+}
+
+.medix-btn-accent:hover {
+  background: #4f46e5;
+  transform: translateY(-1px);
+}
+
+.medix-btn-rose {
+  background: #f43f5e;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(244, 63, 94, 0.25);
+}
+
+.medix-btn-rose:hover {
+  background: #e11d48;
+}
+
+.pill-filter-group {
+  display: inline-flex;
+  background: #f1f5f9;
+  padding: 3px;
+  border-radius: 20px;
+  gap: 2px;
+}
+
+.pill-filter-btn {
+  background: transparent;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 16px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pill-filter-btn.active {
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+/* Status Badges */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.status-pill.success { background: #dcfce7; color: #15803d; }
+.status-pill.in-progress { background: #e0e7ff; color: #4338ca; }
+.status-pill.upcoming { background: #cffafe; color: #0e7490; }
+.status-pill.confirmed { background: #f3e8ff; color: #7e22ce; }
+.status-pill.warning { background: #fef3c7; color: #b45309; }
+.status-pill.danger { background: #fee2e2; color: #b91c1c; }
+
+/* ==========================================================================
+   TAB 2: CLINICAL CALENDAR
+   ========================================================================== */
+
+.calendar-grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 22px;
+}
+
+.calendar-timeline-card {
+  padding: 22px;
+}
+
+.timeline-date-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 18px;
+}
+
+.timeline-date-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.timeline-slots-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.timeline-slot-row {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 1px dashed #f1f5f9;
+}
+
+.timeline-time-label {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #64748b;
+  padding-top: 6px;
+}
+
+.timeline-slot-item {
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-left: 4px solid #6366f1;
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  transition: all 0.2s ease;
+}
+
+.timeline-slot-item:hover {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transform: translateX(2px);
+}
+
+.timeline-slot-item.completed { border-left-color: #10b981; }
+.timeline-slot-item.in-progress { border-left-color: #6366f1; background: #faf5ff; }
+.timeline-slot-item.telehealth { border-left-color: #06b6d4; }
+.timeline-slot-item.scheduled { border-left-color: #f59e0b; }
+
+.slot-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.slot-patient-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.slot-exam-desc {
+  font-size: 0.76rem;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.slot-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.slot-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Mini Calendar Widget */
+.mini-calendar-widget {
+  padding: 20px;
+}
+
+.mini-cal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.mini-cal-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.mini-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  text-align: center;
+}
+
+.mini-cal-day-header {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #94a3b8;
+  padding: 4px 0;
+}
+
+.mini-cal-day-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text-dark);
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.mini-cal-day-cell:hover {
+  background: #f1f5f9;
+}
+
+.mini-cal-day-cell.active-day {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.mini-cal-day-cell.has-dot::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #6366f1;
+}
+
+.mini-cal-day-cell.active-day::after {
+  background: #fda4af;
+}
+
+/* ==========================================================================
+   TAB 3: PATIENT STATS & INFOS DASHBOARD
+   ========================================================================== */
+
+.patient-cohort-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-bottom: 22px;
+}
+
+.cohort-stat-card {
+  padding: 22px;
+}
+
+.cohort-chart-wrap {
+  height: 220px;
+  position: relative;
+  margin-top: 14px;
+}
+
+/* Patient Directory Table */
+.patient-table-card {
+  padding: 22px;
+}
+
+.table-search-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.search-input-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 380px;
+}
+
+.search-input-wrap svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+}
+
+.table-search-input {
+  width: 100%;
+  padding: 8px 12px 8px 36px;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  font-size: 0.78rem;
+  font-family: var(--font-sans);
+  background: #f8fafc;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.table-search-input:focus {
+  background: #ffffff;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.medix-data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.78rem;
+}
+
+.medix-data-table th {
+  background: #f8fafc;
+  color: #64748b;
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.7rem;
+  letter-spacing: 0.03em;
+}
+
+.medix-data-table th:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+.medix-data-table th:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+
+.medix-data-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f8fafc;
+  color: var(--text-dark);
+  vertical-align: middle;
+}
+
+.medix-data-table tr:hover td {
+  background: #f8fafc;
+  cursor: pointer;
+}
+
+.patient-identity-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.patient-row-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e2e8f0;
+}
+
+.patient-id-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: #64748b;
+}
+
+/* ==========================================================================
+   TAB 4: PATIENT CLINICAL DATA & TEST ENTRY
+   ========================================================================== */
+
+.clinical-entry-container {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 22px;
+}
+
+.form-section-card {
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.form-section-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-section-sub {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.form-fields-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.form-fields-grid.cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.clinical-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.clinical-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+.clinical-input,
+.clinical-select {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  color: var(--text-dark);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.clinical-input:focus,
+.clinical-select:focus {
+  background: #ffffff;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+/* Live UPDRS Range Slider Row */
+.updrs-slider-row {
+  display: grid;
+  grid-template-columns: 1fr 140px;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px dashed #f1f5f9;
+}
+
+.updrs-slider-label {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.slider-val-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.slider-val-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  background: #e0e7ff;
+  color: #4338ca;
+  border-radius: 6px;
+  min-width: 28px;
+  text-align: center;
+}
+
+/* Score Calculator Sidebar */
+.score-calculator-card {
+  padding: 22px;
+  position: sticky;
+  top: 20px;
+}
+
+.score-meter-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 16px 0;
+  padding: 16px;
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-radius: var(--radius-md);
+}
+
+.score-number {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #6366f1;
+  line-height: 1;
+}
+
+.score-max {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+.score-stage-tag {
+  margin-top: 8px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   TAB 5: AI MULTIMODAL PREDICTION & MODEL FORECAST
+   ========================================================================== */
+
+.ai-prediction-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 22px;
+}
+
+.ai-forecast-main-card {
+  padding: 24px;
+}
+
+.ai-chart-container {
+  height: 290px;
+  position: relative;
+  margin: 16px 0;
+}
+
+.ai-model-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.ai-stat-box {
+  background: #f8fafc;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #f1f5f9;
+}
+
+.ai-stat-box .box-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.ai-stat-box .box-val {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-top: 2px;
+}
+
+/* SHAP Feature Importance Bars */
+.shap-card {
+  padding: 22px;
+}
+
+.shap-bars-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.shap-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.shap-bar-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.shap-track {
+  height: 8px;
+  background: #f1f5f9;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.shap-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #6366f1, #fda4af);
+}
+
+/* Phenotype Subtype Card */
+.phenotype-gauge-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.subtype-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #f8fafc;
+  font-size: 0.74rem;
+}
+
+.subtype-row.highlighted {
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+}
+
+/* ==========================================================================
+   TAB 6: TELEHEALTH ONLINE VIDEO CONSULTATION
+   ========================================================================== */
+
+.telehealth-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 22px;
+}
+
+.video-stage-card {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.video-viewport-wrap {
+  position: relative;
+  width: 100%;
+  height: 440px;
+  background: #0f172a;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.patient-video-feed {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Professional Video Conference Terminal Screen */
+.video-conference-terminal {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, #111827 0%, #030712 100%);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.video-standby-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  z-index: 5;
+}
+
+.video-camera-avatar {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: rgba(30, 41, 59, 0.7);
+  border: 2px solid rgba(148, 163, 184, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  margin-bottom: 6px;
+  transition: all 0.3s ease;
+}
+
+.video-camera-avatar:hover {
+  transform: scale(1.04);
+  border-color: rgba(99, 102, 241, 0.6);
+}
+
+.video-standby-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #f8fafc;
+  letter-spacing: -0.01em;
+}
+
+.video-standby-id {
+  font-size: 0.74rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.video-standby-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #38bdf8;
+  margin-top: 6px;
+}
+
+.live-dot-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+  animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.pip-label {
+  position: absolute;
+  bottom: 4px;
+  left: 6px;
+  background: rgba(15, 23, 42, 0.75);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.cv-telemetry-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: #00f0ff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pip-doctor-preview {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  width: 120px;
+  height: 90px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid #ffffff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.pip-doctor-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Call Control Toolbar */
+.call-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.control-circle-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.control-circle-btn:hover {
+  background: #e2e8f0;
+  transform: translateY(-2px);
+}
+
+.control-circle-btn.danger {
+  background: #f43f5e;
+  border-color: #f43f5e;
+  color: #ffffff;
+}
+
+.control-circle-btn.danger:hover {
+  background: #e11d48;
+}
+
+.control-circle-btn.active-blue {
+  background: #e0e7ff;
+  border-color: #6366f1;
+  color: #6366f1;
+}
+
+/* ==========================================================================
+   TAB 7: NEUROIMAGING & MRI / DaTSCAN VIEWER
+   ========================================================================== */
+
+.mri-viewer-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 22px;
+}
+
+.mri-viewports-card {
+  padding: 22px;
+}
+
+.mri-modality-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.mri-mod-chip {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mri-mod-chip.active {
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+
+.mri-display-grid {
+  display: grid;
+  grid-template-columns: 1fr 180px;
+  gap: 14px;
+  height: 380px;
+}
+
+.mri-main-canvas-wrap {
+  position: relative;
+  background: #000000;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #1e293b;
+}
+
+.mri-canvas-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.datscan-heatmap-overlay {
+  position: absolute;
+  top: 42%;
+  left: 44%;
+  width: 90px;
+  height: 55px;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 35% 50%, rgba(255, 60, 0, 0.85) 0%, rgba(255, 180, 0, 0.6) 45%, transparent 75%),
+              radial-gradient(ellipse at 75% 50%, rgba(255, 120, 0, 0.45) 0%, rgba(255, 200, 0, 0.3) 30%, transparent 60%);
+  filter: blur(3px);
+  mix-blend-mode: screen;
+}
+
+.mri-sub-viewports {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mri-sub-plane {
+  flex: 1;
+  background: #000000;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #1e293b;
+}
+
+.mri-sub-plane img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.plane-label-tag {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+}
+
+.mri-controls-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.slice-slider-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.slice-slider-wrap input[type="range"] {
+  flex: 1;
+  accent-color: #6366f1;
+}
+
+/* SBR Metrics Card */
+.sbr-metrics-card {
+  padding: 22px;
+}
+
+.sbr-metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px dashed #f1f5f9;
+}
+
+.sbr-label {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.sbr-val {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   RESPONSIVE OVERRIDES FOR TABS
+   ========================================================================== */
+
+@media (max-width: 1180px) {
+  .calendar-grid-layout,
+  .patient-cohort-grid,
+  .clinical-entry-container,
+  .ai-prediction-layout,
+  .telehealth-layout,
+  .mri-viewer-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ==========================================================================
+   GLOBAL INTERACTIVE COMPONENTS (TOASTS, MODALS, FLYOUTS, HUDS)
+   ========================================================================== */
+
+/* 1. Toast Notification System */
+.toast-container {
+  position: fixed;
+  top: 24px;
+  right: 28px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  pointer-events: none;
+}
+
+.toast-item {
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #ffffff;
+  padding: 14px 18px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #6366f1;
+  position: relative;
+  overflow: hidden;
+  animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: all 0.25s ease;
+}
+
+@keyframes toastSlideIn {
+  from { opacity: 0; transform: translateX(40px) scale(0.95); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+.toast-item.toast-success { border-left-color: #10b981; }
+.toast-item.toast-info { border-left-color: #6366f1; }
+.toast-item.toast-warning { border-left-color: #f59e0b; }
+.toast-item.toast-error { border-left-color: #ef4444; }
+
+.toast-icon-wrap {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.toast-success .toast-icon-wrap { color: #10b981; }
+.toast-info .toast-icon-wrap { color: #6366f1; }
+.toast-warning .toast-icon-wrap { color: #f59e0b; }
+.toast-error .toast-icon-wrap { color: #ef4444; }
+
+.toast-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.toast-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 2px;
+}
+
+.toast-message {
+  font-size: 0.74rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.toast-close-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 2px;
+  line-height: 1;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+
+.toast-close-btn:hover {
+  color: #0f172a;
+}
+
+/* 2. Interactive Modals */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-dialog {
+  background: #ffffff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 560px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: 1px solid #f1f5f9;
+  overflow: hidden;
+  animation: modalPopUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalPopUp {
+  from { opacity: 0; transform: scale(0.94) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.modal-title-wrap h3 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.modal-title-wrap p {
+  font-size: 0.74rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.modal-close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.modal-body {
+  padding: 24px;
+  max-height: 72vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid #f1f5f9;
+  background: #f8fafc;
+}
+
+/* 3. Topbar Notifications Flyout */
+.notif-flyout {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 350px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.14);
+  border: 1px solid #e2e8f0;
+  z-index: 1000;
+  padding: 18px;
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notif-flyout.active {
+  display: flex;
+  animation: flyoutFade 0.2s ease;
+}
+
+@keyframes flyoutFade {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.notif-flyout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.notif-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 10px;
+  transition: background 0.15s ease;
+  cursor: pointer;
+}
+
+.notif-item:hover {
+  background: #f8fafc;
+}
+
+.notif-item-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.notif-item-icon.blue { background: #e0e7ff; color: #4338ca; }
+.notif-item-icon.green { background: #dcfce7; color: #15803d; }
+.notif-item-icon.purple { background: #f3e8ff; color: #7e22ce; }
+
+.notif-item-body {
+  flex: 1;
+  font-size: 0.74rem;
+}
+
+.notif-item-title {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.notif-item-desc {
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.notif-item-time {
+  font-size: 0.68rem;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+/* 4. Dropdown Menus */
+.custom-context-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e2e8f0;
+  z-index: 500;
+  min-width: 190px;
+  padding: 6px;
+  display: none;
+  flex-direction: column;
+}
+
+.custom-context-menu.active {
+  display: flex;
+  animation: flyoutFade 0.15s ease;
+}
+
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #334155;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: all 0.15s ease;
+}
+
+.context-menu-item:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+/* 5. Telehealth Camera Paused Overlay */
+.camera-paused-overlay {
+  position: absolute;
+  inset: 0;
+  background: #090d16;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  font-size: 0.84rem;
+  font-weight: 600;
+  gap: 10px;
+}
+
+.camera-paused-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  border: 2px dashed #475569;
+}
+
+/* 6. MRI Viewport Interactive HUD */
+.mri-cursor-hud {
+  position: absolute;
+  bottom: 38px;
+  left: 16px;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(8px);
+  color: #38bdf8;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  pointer-events: none;
+  z-index: 15;
+  display: flex;
+  gap: 16px;
+}
+
+/* 7. Timeline completed row styles */
+.timeline-slot-row.completed-check .timeline-slot-item {
+  opacity: 0.75;
+  background: #f8fafc;
+}
+
+.timeline-slot-row.completed-check .slot-patient-name {
+  text-decoration: line-through;
+  color: #64748b;
+}
+
+.patients-data-row {
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.patients-data-row:hover {
+  background: #f8fafc;
+}
+
+.patients-data-row.active-row {
+  background: #eef2ff !important;
+}
