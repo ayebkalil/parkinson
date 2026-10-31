@@ -1,0 +1,79 @@
+{
+  "decisions": {
+    "tabular_xgb": {
+      "12m": {
+        "challenger": "regularized",
+        "retained": "regularized",
+        "baseline_mae": 4.58856033344302,
+        "challenger_mae": 4.557069668232633
+      },
+      "24m": {
+        "challenger": "robust_causal_locf",
+        "retained": "robust_causal_locf",
+        "baseline_mae": 5.468205831098662,
+        "challenger_mae": 5.196172541216204
+      }
+    },
+    "bilstm": {
+      "joint": {
+        "challenger": "robust_regularized",
+        "retained": "baseline",
+        "baseline_mae": 4.826073441437345,
+        "challenger_mae": 4.865305370201303
+      }
+    },
+    "late": {
+      "joint": {
+        "challenger": "compact_mae",
+        "retained": "baseline",
+        "baseline_mae": 4.871582842082084,
+        "challenger_mae": 4.873145944865694
+      }
+    },
+    "early": {
+      "joint": {
+        "challenger": "compact_mae",
+        "retained": "compact_mae",
+        "baseline_mae": 4.850836260334665,
+        "challenger_mae": 4.828265735044116
+      }
+    },
+    "cross": {
+      "joint": {
+        "challenger": "robust_regularized",
+        "retained": "robust_regularized",
+        "baseline_mae": 4.876012051314712,
+        "challenger_mae": 4.875437526968118
+      }
+    },
+    "imaging_mlp": {
+      "joint": {
+        "challenger": "compact_mae",
+        "retained": "compact_mae",
+        "baseline_mae": 7.787065879404917,
+        "challenger_mae": 7.566705920280978
+      }
+    },
+    "imaging_xgb": {
+      "12m": {
+        "challenger": "robust_causal_locf",
+        "retained": "robust_causal_locf",
+        "baseline_mae": 9.694300555462897,
+        "challenger_mae": 7.673329480087577
+      },
+      "24m": {
+        "challenger": "robust_causal_locf",
+        "retained": "robust_causal_locf",
+        "baseline_mae": 10.145449234716146,
+        "challenger_mae": 7.7451151480211005
+      }
+    }
+  },
+  "policy": "Choose one whole multitask neural configuration by equal mean MAE12/MAE24 on validation. XGBoost configuration is chosen per horizon. Freeze choices before test. Retain baseline if challenger fails to improve mean validation MAE across the three prespecified seeds. No seed selection, no prediction ensemble.",
+  "seeds": [
+    42,
+    17,
+    2026
+  ],
+  "test_evaluated": false
+}

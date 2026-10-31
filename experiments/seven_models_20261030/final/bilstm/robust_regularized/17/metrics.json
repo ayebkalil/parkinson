@@ -1,0 +1,54 @@
+{
+  "family": "bilstm",
+  "name": "robust_regularized",
+  "seed": 17,
+  "metrics": {
+    "12m": {
+      "n_patients": 574,
+      "mae": 4.465929938532178,
+      "rmse": 6.337862932774736,
+      "r2": 0.8003675378667068,
+      "pearson_r": 0.8976568721238016,
+      "bias": -0.9797492794342053
+    },
+    "24m": {
+      "n_patients": 449,
+      "mae": 5.241238007002525,
+      "rmse": 7.471770098553553,
+      "r2": 0.7416321197993362,
+      "pearson_r": 0.8629036515727077,
+      "bias": -0.4927543918778477
+    }
+  },
+  "classification": {
+    "n_patients": 574,
+    "roc_auc": 0.7540988112416684,
+    "average_precision": 0.6310910793186407,
+    "threshold": 0.5,
+    "accuracy": 0.7299651567944251
+  },
+  "seconds": 117.42455434799194,
+  "best_epoch": 15,
+  "epochs": 21,
+  "checkpoint": "final\\bilstm\\robust_regularized\\17\\best.pt",
+  "config": {
+    "hidden": 48,
+    "layers": 2,
+    "dropout": 0.35,
+    "lr": 0.0005,
+    "batch": 128,
+    "weight_decay": 0.003,
+    "loss": "huber",
+    "beta": 2.0,
+    "weight24": 1.0,
+    "classification_weight": 0.2,
+    "clip_grad": 1.5,
+    "epochs": 24,
+    "patience": 6,
+    "clip": 8.0,
+    "missing": false,
+    "mask_absent": true,
+    "heads": 4,
+    "name": "robust_regularized"
+  }
+}

@@ -1,0 +1,41 @@
+DATA early baseline train_examples=14850 validation_rows=1009
+runs early baseline seed=42 epoch=1 valMAE=5.2616 sec=6.4
+runs early baseline seed=42 epoch=2 valMAE=5.0136 sec=6.2
+runs early baseline seed=42 epoch=3 valMAE=4.9310 sec=6.2
+runs early baseline seed=42 epoch=4 valMAE=4.9317 sec=6.5
+runs early baseline seed=42 epoch=5 valMAE=4.8932 sec=6.7
+runs early baseline seed=42 epoch=6 valMAE=4.9322 sec=6.3
+runs early baseline seed=42 epoch=7 valMAE=4.9166 sec=6.3
+runs early baseline seed=42 epoch=8 valMAE=4.9139 sec=6.1
+runs early baseline seed=42 epoch=9 valMAE=4.9659 sec=6.2
+runs early baseline seed=42 epoch=10 valMAE=4.9627 sec=6.1
+runs early baseline seed=42 epoch=11 valMAE=4.9477 sec=6.1
+DATA early compact_mae train_examples=14850 validation_rows=1009
+runs early compact_mae seed=42 epoch=1 valMAE=5.2640 sec=2.8
+runs early compact_mae seed=42 epoch=2 valMAE=5.0094 sec=2.8
+runs early compact_mae seed=42 epoch=3 valMAE=5.0224 sec=2.7
+runs early compact_mae seed=42 epoch=4 valMAE=4.9735 sec=2.7
+runs early compact_mae seed=42 epoch=5 valMAE=4.9145 sec=2.7
+runs early compact_mae seed=42 epoch=6 valMAE=4.8685 sec=2.7
+runs early compact_mae seed=42 epoch=7 valMAE=4.8372 sec=2.8
+runs early compact_mae seed=42 epoch=8 valMAE=4.8407 sec=2.7
+runs early compact_mae seed=42 epoch=9 valMAE=4.9157 sec=2.7
+runs early compact_mae seed=42 epoch=10 valMAE=4.9113 sec=2.7
+runs early compact_mae seed=42 epoch=11 valMAE=4.8764 sec=2.7
+runs early compact_mae seed=42 epoch=12 valMAE=4.8948 sec=2.7
+runs early compact_mae seed=42 epoch=13 valMAE=4.9035 sec=2.8
+DATA early robust_regularized train_examples=14850 validation_rows=1009
+runs early robust_regularized seed=42 epoch=1 valMAE=5.3218 sec=5.2
+runs early robust_regularized seed=42 epoch=2 valMAE=5.2795 sec=5.1
+runs early robust_regularized seed=42 epoch=3 valMAE=5.0505 sec=5.1
+runs early robust_regularized seed=42 epoch=4 valMAE=5.0331 sec=5.1
+runs early robust_regularized seed=42 epoch=5 valMAE=5.0146 sec=6.0
+runs early robust_regularized seed=42 epoch=6 valMAE=4.9803 sec=5.1
+runs early robust_regularized seed=42 epoch=7 valMAE=4.9978 sec=5.0
+runs early robust_regularized seed=42 epoch=8 valMAE=4.9398 sec=5.1
+runs early robust_regularized seed=42 epoch=9 valMAE=4.9730 sec=5.2
+runs early robust_regularized seed=42 epoch=10 valMAE=5.0178 sec=5.2
+runs early robust_regularized seed=42 epoch=11 valMAE=4.9611 sec=5.3
+runs early robust_regularized seed=42 epoch=12 valMAE=4.9747 sec=5.1
+runs early robust_regularized seed=42 epoch=13 valMAE=5.0013 sec=5.1
+runs early robust_regularized seed=42 epoch=14 valMAE=4.9820 sec=5.1

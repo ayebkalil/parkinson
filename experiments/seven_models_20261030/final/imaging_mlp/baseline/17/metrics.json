@@ -1,0 +1,54 @@
+{
+  "family": "imaging_mlp",
+  "name": "baseline",
+  "seed": 17,
+  "metrics": {
+    "12m": {
+      "n_patients": 574,
+      "mae": 7.767299843582126,
+      "rmse": 11.35825580364619,
+      "r2": 0.358836532938553,
+      "pearson_r": 0.6287373623443276,
+      "bias": -2.69221312119155
+    },
+    "24m": {
+      "n_patients": 449,
+      "mae": 7.87742418634865,
+      "rmse": 11.542581480097589,
+      "r2": 0.3834086625474684,
+      "pearson_r": 0.6456416814160644,
+      "bias": -2.6527611730093414
+    }
+  },
+  "classification": {
+    "n_patients": 574,
+    "roc_auc": 0.6690304404590117,
+    "average_precision": 0.4959962843982758,
+    "threshold": 0.5,
+    "accuracy": 0.6794425087108014
+  },
+  "seconds": 25.27477788925171,
+  "best_epoch": 19,
+  "epochs": 31,
+  "checkpoint": "final\\imaging_mlp\\baseline\\17\\best.pt",
+  "config": {
+    "hidden": 64,
+    "layers": 2,
+    "dropout": 0.25,
+    "lr": 0.001,
+    "batch": 128,
+    "weight_decay": 0.001,
+    "loss": "huber",
+    "beta": 1.0,
+    "weight24": 1.0,
+    "classification_weight": 0.2,
+    "clip_grad": 1.5,
+    "epochs": 60,
+    "patience": 12,
+    "clip": null,
+    "missing": false,
+    "mask_absent": true,
+    "heads": 4,
+    "name": "baseline"
+  }
+}

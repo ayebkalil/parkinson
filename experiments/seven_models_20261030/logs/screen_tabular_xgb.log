@@ -1,0 +1,8 @@
+runs tabular_xgb baseline seed=42 12m MAE=4.5724 sec=4.9
+runs tabular_xgb baseline seed=42 24m MAE=5.4676 sec=2.8
+runs tabular_xgb regularized seed=42 12m MAE=4.5339 sec=3.0
+runs tabular_xgb regularized seed=42 24m MAE=5.4343 sec=3.1
+runs tabular_xgb absolute seed=42 12m MAE=4.5414 sec=4.2
+runs tabular_xgb absolute seed=42 24m MAE=5.3195 sec=3.2
+runs tabular_xgb pseudo_huber seed=42 12m MAE=4.5804 sec=3.4
+runs tabular_xgb pseudo_huber seed=42 24m MAE=5.2907 sec=2.6

@@ -1,0 +1,11 @@
+{
+  "reason": "Development audit found ~76% missing imaging values at index visits",
+  "change": "Causal LOCF before the exact index row; same feature columns, patients and targets",
+  "seeds": [
+    42,
+    17,
+    2026
+  ],
+  "selection": "One candidate per horizon by screening seed 42, confirmed by mean of all three seeds",
+  "test_consulted": false
+}

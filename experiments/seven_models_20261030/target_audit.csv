@@ -1,0 +1,4 @@
+split,patients,visits,samples12,samples24,labelled_train_prefixes,prevalence12,historical_n12,same_index_valid12,stale_or_wrong12,historical_n24,same_index_valid24,stale_or_wrong24,mixed_feature_cells
+train,3787,22980,2683,2155,14850,0.2944465150950429,2683,2683,0,2155,80,2075,18753
+val,827,4831,574,449,3057,0.32926829268292684,574,574,0,449,14,435,4185
+test,812,4932,583,462,3171,0.30874785591766724,583,583,0,462,18,444,3850

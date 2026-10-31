@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "C:\Users\MSI\Desktop\parkinson\src\seven_model_experiments.py", line 384, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "C:\Users\MSI\Desktop\parkinson\src\seven_model_experiments.py", line 372, in main
+    elif args.stage=='test':test(root,config)
+                            ~~~~^^^^^^^^^^^^^
+  File "C:\Users\MSI\Desktop\parkinson\src\seven_model_experiments.py", line 242, in test
+    if p.sha(file)!=expected:raise ValueError('Training source changed: '+file)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Training source changed: src\seven_model_experiments.py

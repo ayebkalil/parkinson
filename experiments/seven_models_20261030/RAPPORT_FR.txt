@@ -1,0 +1,88 @@
+SEPT FAMILLES — AUDIT ET OPTIMISATION
+
+Cible : score moteur futur NP3TOT brut, et non variation. Horizons 12 et 24 mois distincts.
+Le tableau historique N=462 est exclusivement à 24 mois. Ses 444 cibles de test mal rattachées rendent la comparaison directe invalide.
+La référence corrigée et les candidats utilisent les mêmes patients, lignes index exactes et cibles. N=583 test à 12m ; N=462 test à 24m.
+Splits PATNO conservés. Préfixes bornés à la ligne index. Médianes/scalers appris sur train uniquement.
+Préfixes train équipondérés pour les modèles de séquence ; une observation par patient/horizon pour les modèles statiques et les métriques.
+Les deux modèles imagerie gardent uniquement les 11 mesures imagerie et les 2 contrôles normatifs âge/sexe déjà présents ; aucun score moteur ni résidu clinique.
+Sélection sur validation ; moyenne des métriques de trois seeds, aucun choix de seed, aucun ensemble de prédictions.
+Bootstrap apparié au niveau patient ; il est conditionnel aux trois graines utilisées.
+Le test historique a déjà guidé des choix du projet : ces scores ne constituent pas une confirmation indépendante.
+data/raw absent : les dates d’acquisition des modalités et l’ordre des examens intra-mois ne sont pas certifiés.
+Aucune modification manuelle du registre de benchmarks ou des anciens checkpoints.
+
+     split      family  horizon  n_patients baseline_config    selected_config  baseline_mae  selected_mae  delta_mae  relative_delta_percent  baseline_mae_std  selected_mae_std  baseline_rmse  selected_rmse  baseline_r2  selected_r2  baseline_pearson_r  selected_pearson_r
+validation tabular_xgb       12         574        baseline           baseline      4.588560      4.588560   0.000000                0.000000          0.035348          0.035348       6.539881       6.539881     0.787430     0.787430            0.887863            0.887863
+validation tabular_xgb       24         449        baseline robust_causal_locf      5.468206      5.196173  -0.272033               -4.974818          0.013071          0.020930       7.875637       7.560059     0.712945     0.735487            0.845650            0.858010
+validation      bilstm       12         574        baseline           baseline      4.462975      4.462975   0.000000                0.000000          0.024070          0.024070       6.349473       6.349473     0.799635     0.799635            0.897237            0.897237
+validation      bilstm       24         449        baseline           baseline      5.189172      5.189172   0.000000                0.000000          0.061662          0.061662       7.372833       7.372833     0.748391     0.748391            0.866618            0.866618
+validation        late       12         574        baseline           baseline      4.444907      4.444907   0.000000                0.000000          0.030870          0.030870       6.259454       6.259454     0.805267     0.805267            0.899443            0.899443
+validation        late       24         449        baseline           baseline      5.298259      5.298259   0.000000                0.000000          0.056702          0.056702       7.556319       7.556319     0.735730     0.735730            0.859847            0.859847
+validation       early       12         574        baseline           baseline      4.481538      4.481538   0.000000                0.000000          0.060786          0.060786       6.371464       6.371464     0.798219     0.798219            0.896009            0.896009
+validation       early       24         449        baseline           baseline      5.220135      5.220135   0.000000                0.000000          0.036805          0.036805       7.426624       7.426624     0.744734     0.744734            0.864873            0.864873
+validation       cross       12         574        baseline           baseline      4.446015      4.446015   0.000000                0.000000          0.036518          0.036518       6.311350       6.311350     0.802021     0.802021            0.898008            0.898008
+validation       cross       24         449        baseline           baseline      5.306009      5.306009   0.000000                0.000000          0.112235          0.112235       7.532554       7.532554     0.737368     0.737368            0.860238            0.860238
+validation imaging_mlp       12         574        baseline        compact_mae      7.733148      7.440669  -0.292478               -3.782136          0.037396          0.037333      11.304559      10.937057     0.364864     0.405506            0.633938            0.659202
+validation imaging_mlp       24         449        baseline        compact_mae      7.840984      7.692742  -0.148242               -1.890601          0.057218          0.055724      11.452829      11.198468     0.392918     0.419622            0.651723            0.669230
+validation imaging_xgb       12         574        baseline robust_causal_locf      9.694301      7.673329  -2.020971              -20.847002          0.014331          0.009044      12.596009      11.153479     0.211480     0.381746            0.460682            0.635278
+validation imaging_xgb       24         449        baseline robust_causal_locf     10.145449      7.745115  -2.400334              -23.659219          0.017266          0.010376      13.147416      11.237836     0.200032     0.415536            0.451986            0.656146
+      test tabular_xgb       12         583        baseline           baseline      4.650436      4.650436   0.000000                0.000000          0.012883          0.012883       6.833306       6.833306     0.776257     0.776257            0.881739            0.881739
+      test tabular_xgb       24         462        baseline robust_causal_locf      5.120997      5.094142  -0.026855               -0.524408          0.024427          0.013433       7.309505       7.416189     0.751274     0.743965            0.866862            0.865501
+      test      bilstm       12         583        baseline           baseline      4.460609      4.460609   0.000000                0.000000          0.051479          0.051479       6.598606       6.598606     0.791327     0.791327            0.892608            0.892608
+      test      bilstm       24         462        baseline           baseline      4.872505      4.872505   0.000000                0.000000          0.024340          0.024340       7.131770       7.131770     0.763225     0.763225            0.875569            0.875569
+      test        late       12         583        baseline           baseline      4.459262      4.459262   0.000000                0.000000          0.035799          0.035799       6.602874       6.602874     0.791064     0.791064            0.891300            0.891300
+      test        late       24         462        baseline           baseline      4.880827      4.880827   0.000000                0.000000          0.053234          0.053234       7.143658       7.143658     0.762416     0.762416            0.874183            0.874183
+      test       early       12         583        baseline           baseline      4.558268      4.558268   0.000000                0.000000          0.022065          0.022065       6.751670       6.751670     0.781535     0.781535            0.886789            0.886789
+      test       early       24         462        baseline           baseline      4.901879      4.901879   0.000000                0.000000          0.043684          0.043684       7.169545       7.169545     0.760676     0.760676            0.873512            0.873512
+      test       cross       12         583        baseline           baseline      4.521128      4.521128   0.000000                0.000000          0.034230          0.034230       6.740336       6.740336     0.782289     0.782289            0.887096            0.887096
+      test       cross       24         462        baseline           baseline      4.868521      4.868521   0.000000                0.000000          0.016421          0.016421       7.198174       7.198174     0.758787     0.758787            0.872840            0.872840
+      test imaging_mlp       12         583        baseline        compact_mae      7.952516      7.620331  -0.332185               -4.177102          0.034413          0.098595      12.307232      12.076574     0.274208     0.300821            0.560429            0.583810
+      test imaging_mlp       24         462        baseline        compact_mae      8.338420      8.038383  -0.300036               -3.598241          0.022857          0.064707      12.785365      12.562604     0.239018     0.264739            0.550648            0.568266
+      test imaging_xgb       12         583        baseline robust_causal_locf      9.226149      7.600881  -1.625268              -17.615888          0.013729          0.023924      12.587891      11.246788     0.240735     0.393899            0.491518            0.633566
+      test imaging_xgb       24         462        baseline robust_causal_locf      9.796027      7.978999  -1.817028              -18.548619          0.003640          0.010110      12.829649      11.456887     0.233760     0.388962            0.486555            0.628278
+
+Commandes : python src/seven_model_experiments.py --stage STAGE --output experiments\seven_models_20261030
+STAGE : prepare, reproduce, pilot, screen, repeat, select, test, report, verify.
+LECTURE DES RÉSULTATS
+MAE test plus faible en estimation ponctuelle : 5 / 14 comparaisons.
+Intervalle patient apparié entièrement sous zéro : 4 / 14 comparaisons.
+Ces intervalles sont conditionnels aux trois graines et ne corrigent pas le fait que le test historique a déjà été consulté.
+Un delta MAE négatif représente une baisse. Les configurations restent celles choisies sur validation, même si leur résultat de test est moins bon.
+La référence corrigée harmonise aussi le budget et certains paramètres multitâches ; aucun effet isolé des seules corrections n’est revendiqué par rapport au tableau historique invalide.
+Pour XGBoost, validation_preprocessing_chain.csv sépare les valeurs manquantes natives, le seul remplissage causal et l’ajout de régularisation/perte robuste. Le gain total ne doit pas être attribué à la seule perte.
+Les ablations de développement sont séparées et ne peuvent pas modifier rétroactivement la sélection.
+best_available_checkpoints.json compare également les anciens checkpoints retenus sur la même validation. Un ancien checkpoint réutilisé ne constitue pas un nouveau gain.
+Familles où une version antérieure est conservée dans ce manifeste : tabular_xgb
+Aucun checkpoint historique de production ni résultat du dashboard n’a été remplacé manuellement.
+
+SYNTHÈSE TEST :
+     family  horizon  n_patients  baseline_mae  selected_mae  delta_mae  ci95_low  ci95_high
+tabular_xgb       12         583      4.650436      4.650436   0.000000  0.000000   0.000000
+tabular_xgb       24         462      5.120997      5.094142  -0.026855 -0.186561   0.132851
+     bilstm       12         583      4.460609      4.460609   0.000000  0.000000   0.000000
+     bilstm       24         462      4.872505      4.872505   0.000000  0.000000   0.000000
+       late       12         583      4.459262      4.459262   0.000000  0.000000   0.000000
+       late       24         462      4.880827      4.880827   0.000000  0.000000   0.000000
+      early       12         583      4.558268      4.558268   0.000000  0.000000   0.000000
+      early       24         462      4.901879      4.901879   0.000000  0.000000   0.000000
+      cross       12         583      4.521128      4.521128   0.000000  0.000000   0.000000
+      cross       24         462      4.868521      4.868521   0.000000  0.000000   0.000000
+imaging_mlp       12         583      7.952516      7.620331  -0.332185 -0.535844  -0.126867
+imaging_mlp       24         462      8.338420      8.038383  -0.300036 -0.547871  -0.044823
+imaging_xgb       12         583      9.226149      7.600881  -1.625268 -2.116133  -1.180497
+imaging_xgb       24         462      9.796027      7.978999  -1.817028 -2.357098  -1.267578
+
+
+CLASSIFICATION S?PAR?E (seuil fixe 0,5 ; aucune optimisation de seuil dans cette ?tude)
+     family     role  seeds  roc_auc  average_precision  accuracy_at_05
+     bilstm baseline      3 0.725453           0.559701        0.724414
+      cross baseline      3 0.711005           0.550203        0.731847
+      early baseline      3 0.700648           0.534393        0.726701
+imaging_mlp baseline      3 0.593969           0.396126        0.691252
+imaging_mlp selected      3 0.605006           0.395284        0.687822
+       late baseline      3 0.714796           0.569835        0.740423
+Lorsqu?une r?f?rence est conserv?e, baseline et selected pointent vers le m?me checkpoint et les m?mes pr?dictions : une seule ligne de classification est stock?e par checkpoint unique. Les baisses de MAE ne prouvent pas une am?lioration de classification.
+Les dur?es enregistr?es sont murales et peuvent inclure la veille/suspension de la machine ; leur somme ne mesure pas du temps CPU.
+Les intervalles bootstrap sont descriptifs, conditionnels aux graines et non corrig?s pour toutes les comparaisons multiples.
+Le manifeste de s?lection pr?test reste immuable : son champ test_evaluated=false d?crit son ?tat au moment du gel. Les fichiers test_metrics.csv et verification.json documentent l??valuation ensuite effectivement r?alis?e.

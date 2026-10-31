@@ -7,6 +7,20 @@
 
 A comprehensive multimodal machine learning and deep learning framework to detect, track, and forecast **Parkinson's Disease (PD) motor progression** over 12- and 24-month horizons using longitudinal data from the **Parkinson's Progression Markers Initiative (PPMI)** cohort.
 
+## Interface web React + FastAPI
+
+Le nouveau tableau de bord **Neurovia** se lance depuis la racine avec
+`run_project.bat`, puis s’ouvre sur **http://127.0.0.1:8000**.
+Il intègre la vidéo neuronale pendant le chargement des modèles, l’exploration
+des patients, les prévisions à 12/24 mois et l’export CSV.
+Installation et développement : [WEB_APP.md](WEB_APP.md).
+Le tableau de bord Streamlit historique reste disponible dans `app.py`.
+
+Les expériences auditées des sept familles de modèles sont décrites dans
+[SEVEN_MODEL_EXPERIMENTS.md](SEVEN_MODEL_EXPERIMENTS.md). Elles conservent les
+checkpoints historiques et distinguent les horizons 12/24 mois ainsi que la
+validation et le test.
+
 ---
 
 ## 🎯 Project Overview & Research Questions
@@ -48,6 +62,11 @@ To maintain clinical validity and avoid inflated performance:
 ---
 
 ## 📈 Benchmark Results (Held-Out Test Set: 583 Patients)
+
+> Archive historique : ce tableau n'est pas la référence des nouvelles
+> comparaisons. Les cibles à 24 mois de la table tabulaire historique étaient
+> mal rattachées à la visite index. Consulter les résultats recalculés et le
+> protocole dans [SEVEN_MODEL_EXPERIMENTS.md](SEVEN_MODEL_EXPERIMENTS.md).
 
 All models are evaluated on the **held-out test set** using the unified harness (`src/evaluate.py`).
 

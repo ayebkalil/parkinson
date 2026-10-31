@@ -1,0 +1,30 @@
+{
+  "family": "imaging_xgb",
+  "name": "baseline",
+  "seed": 2026,
+  "horizon": 24,
+  "metrics": {
+    "n_patients": 449,
+    "mae": 10.154295448197223,
+    "rmse": 13.149011610578421,
+    "r2": 0.19983833888490599,
+    "pearson_r": 0.4519827679087657,
+    "bias": 0.9566611102087328
+  },
+  "seconds": 0.47394895553588867,
+  "best_iteration": 152,
+  "checkpoint": "final\\imaging_xgb\\baseline\\2026\\24m\\best.json",
+  "config": {
+    "n_estimators": 500,
+    "learning_rate": 0.03,
+    "max_depth": 3,
+    "min_child_weight": 1,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_alpha": 0.5,
+    "reg_lambda": 2.0,
+    "gamma": 0.0,
+    "objective": "reg:squarederror",
+    "name": "baseline"
+  }
+}

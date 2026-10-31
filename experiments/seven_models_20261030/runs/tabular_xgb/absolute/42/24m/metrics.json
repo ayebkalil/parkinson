@@ -1,0 +1,30 @@
+{
+  "family": "tabular_xgb",
+  "name": "absolute",
+  "seed": 42,
+  "horizon": 24,
+  "metrics": {
+    "n_patients": 449,
+    "mae": 5.319541717425221,
+    "rmse": 7.713695700026922,
+    "r2": 0.7246300627717637,
+    "pearson_r": 0.8516189389606654,
+    "bias": -0.3047724083431049
+  },
+  "seconds": 3.2126705646514893,
+  "best_iteration": 343,
+  "checkpoint": "runs\\tabular_xgb\\absolute\\42\\24m\\best.json",
+  "config": {
+    "n_estimators": 900,
+    "learning_rate": 0.03,
+    "max_depth": 3,
+    "min_child_weight": 8,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_alpha": 1.0,
+    "reg_lambda": 10.0,
+    "gamma": 0.0,
+    "objective": "reg:absoluteerror",
+    "name": "absolute"
+  }
+}

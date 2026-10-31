@@ -1,0 +1,4 @@
+final imaging_xgb baseline seed=17 12m MAE=9.7107 sec=0.9
+final imaging_xgb baseline seed=17 24m MAE=10.1256 sec=0.5
+final imaging_xgb baseline seed=2026 12m MAE=9.6880 sec=0.5
+final imaging_xgb baseline seed=2026 24m MAE=10.1543 sec=0.5

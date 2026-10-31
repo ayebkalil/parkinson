@@ -1,0 +1,54 @@
+{
+  "family": "imaging_mlp",
+  "name": "absolute_loss_only",
+  "seed": 42,
+  "metrics": {
+    "12m": {
+      "n_patients": 574,
+      "mae": 7.724542893599135,
+      "rmse": 11.31453567028723,
+      "r2": 0.3637629587803538,
+      "pearson_r": 0.6340217279921487,
+      "bias": -2.7420830597860886
+    },
+    "24m": {
+      "n_patients": 449,
+      "mae": 7.851582570038818,
+      "rmse": 11.462845431189724,
+      "r2": 0.39189805341122697,
+      "pearson_r": 0.6502113285531267,
+      "bias": -2.5561469677827406
+    }
+  },
+  "classification": {
+    "n_patients": 574,
+    "roc_auc": 0.655631141345427,
+    "average_precision": 0.4509931308689619,
+    "threshold": 0.5,
+    "accuracy": 0.6724738675958188
+  },
+  "seconds": 36.714839458465576,
+  "best_epoch": 29,
+  "epochs": 41,
+  "checkpoint": "ablations\\imaging_mlp\\absolute_loss_only\\42\\best.pt",
+  "config": {
+    "hidden": 64,
+    "layers": 2,
+    "dropout": 0.25,
+    "lr": 0.001,
+    "batch": 128,
+    "weight_decay": 0.001,
+    "loss": "mae",
+    "beta": 1.0,
+    "weight24": 1.0,
+    "classification_weight": 0.2,
+    "clip_grad": 1.5,
+    "epochs": 60,
+    "patience": 12,
+    "clip": null,
+    "missing": false,
+    "mask_absent": true,
+    "heads": 4,
+    "name": "absolute_loss_only"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "reason": "User requires reliable gains; Cross-Attention development mean gain was only about 0.0006 point",
+  "new_test_predictions_exist": false,
+  "previous_manifests_preserved": true,
+  "source_manifest_issue": "Duplicate Windows path spellings; record_source now rebuilds canonical Path keys before freeze",
+  "test_scores_used_for_amendment": false
+}

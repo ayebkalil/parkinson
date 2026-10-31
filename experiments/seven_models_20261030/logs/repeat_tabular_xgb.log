@@ -1,0 +1,12 @@
+final tabular_xgb baseline seed=17 12m MAE=4.5642 sec=2.6
+final tabular_xgb baseline seed=17 24m MAE=5.4555 sec=1.3
+final tabular_xgb baseline seed=2026 12m MAE=4.6291 sec=1.4
+final tabular_xgb baseline seed=2026 24m MAE=5.4816 sec=1.4
+final tabular_xgb pseudo_huber seed=17 12m MAE=4.5765 sec=1.6
+final tabular_xgb pseudo_huber seed=17 24m MAE=5.2640 sec=1.9
+final tabular_xgb pseudo_huber seed=2026 12m MAE=4.6071 sec=3.2
+final tabular_xgb pseudo_huber seed=2026 24m MAE=5.2356 sec=1.1
+final tabular_xgb regularized seed=17 12m MAE=4.5809 sec=1.1
+final tabular_xgb regularized seed=17 24m MAE=5.4816 sec=1.5
+final tabular_xgb regularized seed=2026 12m MAE=4.5564 sec=1.7
+final tabular_xgb regularized seed=2026 24m MAE=5.4419 sec=1.4

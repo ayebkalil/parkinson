@@ -1,0 +1,30 @@
+{
+  "family": "imaging_xgb",
+  "name": "regularized",
+  "seed": 42,
+  "horizon": 12,
+  "metrics": {
+    "n_patients": 574,
+    "mae": 9.708670131005476,
+    "rmse": 12.590011815464717,
+    "r2": 0.2122330557301796,
+    "pearson_r": 0.4611956478109459,
+    "bias": 0.22368568576586786
+  },
+  "seconds": 0.19228696823120117,
+  "best_iteration": 273,
+  "checkpoint": "runs\\imaging_xgb\\regularized\\42\\12m\\best.json",
+  "config": {
+    "n_estimators": 900,
+    "learning_rate": 0.03,
+    "max_depth": 2,
+    "min_child_weight": 20,
+    "subsample": 0.9,
+    "colsample_bytree": 1.0,
+    "reg_alpha": 3.0,
+    "reg_lambda": 30.0,
+    "gamma": 0.0,
+    "objective": "reg:squarederror",
+    "name": "regularized"
+  }
+}

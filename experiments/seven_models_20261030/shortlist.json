@@ -1,0 +1,18 @@
+{
+  "challengers": {
+    "tabular_xgb": {
+      "12m": "regularized",
+      "24m": "robust_causal_locf"
+    },
+    "bilstm": "robust_regularized",
+    "late": "compact_mae",
+    "early": "compact_mae",
+    "cross": "robust_regularized",
+    "imaging_mlp": "compact_mae",
+    "imaging_xgb": {
+      "12m": "robust_causal_locf",
+      "24m": "robust_causal_locf"
+    }
+  },
+  "policy": "Choose one whole multitask neural configuration by equal mean MAE12/MAE24 on validation. XGBoost configuration is chosen per horizon. Freeze choices before test. Retain baseline if challenger fails to improve mean validation MAE across the three prespecified seeds. No seed selection, no prediction ensemble."
+}

@@ -1,0 +1,30 @@
+{
+  "family": "tabular_xgb",
+  "name": "baseline",
+  "seed": 17,
+  "horizon": 24,
+  "metrics": {
+    "n_patients": 449,
+    "mae": 5.455450025857955,
+    "rmse": 7.861815620928351,
+    "r2": 0.7139531104015706,
+    "pearson_r": 0.8464460433032402,
+    "bias": 0.4439746922002338
+  },
+  "seconds": 1.272158145904541,
+  "best_iteration": 180,
+  "checkpoint": "final\\tabular_xgb\\baseline\\17\\24m\\best.json",
+  "config": {
+    "n_estimators": 600,
+    "learning_rate": 0.03,
+    "max_depth": 4,
+    "min_child_weight": 1,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_alpha": 0.5,
+    "reg_lambda": 1.5,
+    "gamma": 0.0,
+    "objective": "reg:squarederror",
+    "name": "baseline"
+  }
+}

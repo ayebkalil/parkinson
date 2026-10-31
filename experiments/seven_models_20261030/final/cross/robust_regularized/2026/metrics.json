@@ -1,0 +1,54 @@
+{
+  "family": "cross",
+  "name": "robust_regularized",
+  "seed": 2026,
+  "metrics": {
+    "12m": {
+      "n_patients": 574,
+      "mae": 4.432860851962808,
+      "rmse": 6.332703556489752,
+      "r2": 0.800692429639028,
+      "pearson_r": 0.8975125497438329,
+      "bias": -0.8156999071819857
+    },
+    "24m": {
+      "n_patients": 449,
+      "mae": 5.410346883952717,
+      "rmse": 7.646985890894744,
+      "r2": 0.7293723920558919,
+      "pearson_r": 0.8561081136376192,
+      "bias": -0.38648933876214553
+    }
+  },
+  "classification": {
+    "n_patients": 574,
+    "roc_auc": 0.7618360475503332,
+    "average_precision": 0.6341537280954473,
+    "threshold": 0.5,
+    "accuracy": 0.7317073170731707
+  },
+  "seconds": 430.536657333374,
+  "best_epoch": 14,
+  "epochs": 20,
+  "checkpoint": "final\\cross\\robust_regularized\\2026\\best.pt",
+  "config": {
+    "hidden": 48,
+    "layers": 2,
+    "dropout": 0.35,
+    "lr": 0.0005,
+    "batch": 128,
+    "weight_decay": 0.003,
+    "loss": "huber",
+    "beta": 2.0,
+    "weight24": 1.0,
+    "classification_weight": 0.2,
+    "clip_grad": 1.5,
+    "epochs": 24,
+    "patience": 6,
+    "clip": 8.0,
+    "missing": false,
+    "mask_absent": true,
+    "heads": 4,
+    "name": "robust_regularized"
+  }
+}

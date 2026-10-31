@@ -1,0 +1,30 @@
+{
+  "family": "imaging_xgb",
+  "name": "absolute_loss_only",
+  "seed": 42,
+  "horizon": 24,
+  "metrics": {
+    "n_patients": 449,
+    "mae": 9.855593297157627,
+    "rmse": 13.09549930005816,
+    "r2": 0.2063378951526762,
+    "pearson_r": 0.4601879085055569,
+    "bias": -0.9957084828336414
+  },
+  "seconds": 0.9163758754730225,
+  "best_iteration": 354,
+  "checkpoint": "ablations\\imaging_xgb\\absolute_loss_only\\42\\24m\\best.json",
+  "config": {
+    "n_estimators": 500,
+    "learning_rate": 0.03,
+    "max_depth": 3,
+    "min_child_weight": 1,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_alpha": 0.5,
+    "reg_lambda": 2.0,
+    "gamma": 0.0,
+    "objective": "reg:absoluteerror",
+    "name": "absolute_loss_only"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "family": "imaging_xgb",
+  "name": "pseudo_huber",
+  "seed": 42,
+  "horizon": 12,
+  "metrics": {
+    "n_patients": 574,
+    "mae": 9.474494688186912,
+    "rmse": 12.687712780336737,
+    "r2": 0.1999591634204938,
+    "pearson_r": 0.4691025329287486,
+    "bias": -1.9664135120471595
+  },
+  "seconds": 0.22446346282958984,
+  "best_iteration": 354,
+  "checkpoint": "runs\\imaging_xgb\\pseudo_huber\\42\\12m\\best.json",
+  "config": {
+    "n_estimators": 900,
+    "learning_rate": 0.03,
+    "max_depth": 2,
+    "min_child_weight": 10,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_alpha": 0.5,
+    "reg_lambda": 20.0,
+    "gamma": 0.0,
+    "objective": "reg:pseudohubererror",
+    "huber_slope": 5.0,
+    "name": "pseudo_huber"
+  }
+}

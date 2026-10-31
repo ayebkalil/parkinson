@@ -1,0 +1,178 @@
+{
+  "threads": 2,
+  "screen_seed": 42,
+  "final_seeds": [
+    42,
+    17,
+    2026
+  ],
+  "bootstrap_samples": 2000,
+  "selection": "Choose one whole multitask neural configuration by equal mean MAE12/MAE24 on validation. XGBoost configuration is chosen per horizon. Freeze choices before test. Retain baseline if challenger fails to improve mean validation MAE across the three prespecified seeds. No seed selection, no prediction ensemble. Amendment before any new test prediction: retain a challenger only if the paired patient bootstrap upper 95% bound for validation mean MAE change is below zero; otherwise retain the corrected baseline.",
+  "neural_defaults": {
+    "hidden": 64,
+    "layers": 2,
+    "dropout": 0.25,
+    "lr": 0.001,
+    "batch": 128,
+    "weight_decay": 0.001,
+    "loss": "huber",
+    "beta": 1.0,
+    "weight24": 1.0,
+    "classification_weight": 0.2,
+    "clip_grad": 1.5,
+    "epochs": 24,
+    "patience": 6,
+    "clip": null,
+    "missing": false,
+    "mask_absent": true,
+    "heads": 4
+  },
+  "neural_trials": {
+    "baseline": {},
+    "compact_mae": {
+      "hidden": 32,
+      "layers": 1,
+      "dropout": 0.15,
+      "loss": "mae",
+      "lr": 0.001,
+      "weight_decay": 0.0001
+    },
+    "robust_regularized": {
+      "hidden": 48,
+      "layers": 2,
+      "dropout": 0.35,
+      "lr": 0.0005,
+      "weight_decay": 0.003,
+      "beta": 2.0,
+      "clip": 8.0
+    }
+  },
+  "imaging_mlp_trials": {
+    "baseline": {
+      "hidden": 64,
+      "epochs": 60,
+      "patience": 12
+    },
+    "compact_mae": {
+      "hidden": 32,
+      "dropout": 0.2,
+      "loss": "mae",
+      "lr": 0.002,
+      "epochs": 80,
+      "patience": 15,
+      "missing": true
+    },
+    "robust_regularized": {
+      "hidden": 48,
+      "dropout": 0.35,
+      "lr": 0.001,
+      "weight_decay": 0.01,
+      "beta": 2.0,
+      "epochs": 80,
+      "patience": 15,
+      "clip": 8.0
+    }
+  },
+  "xgb_defaults": {
+    "n_estimators": 900,
+    "learning_rate": 0.03,
+    "max_depth": 4,
+    "min_child_weight": 1,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_alpha": 0.5,
+    "reg_lambda": 1.5,
+    "gamma": 0.0,
+    "objective": "reg:squarederror"
+  },
+  "xgb_trials": {
+    "baseline": {
+      "n_estimators": 600
+    },
+    "regularized": {
+      "max_depth": 3,
+      "min_child_weight": 10,
+      "reg_alpha": 2.0,
+      "reg_lambda": 20.0,
+      "gamma": 0.1,
+      "subsample": 0.85,
+      "colsample_bytree": 0.85,
+      "n_estimators": 1200
+    },
+    "absolute": {
+      "objective": "reg:absoluteerror",
+      "max_depth": 3,
+      "min_child_weight": 8,
+      "reg_alpha": 1.0,
+      "reg_lambda": 10.0
+    },
+    "pseudo_huber": {
+      "objective": "reg:pseudohubererror",
+      "huber_slope": 3.0,
+      "max_depth": 3,
+      "min_child_weight": 8,
+      "reg_alpha": 1.0,
+      "reg_lambda": 10.0
+    },
+    "causal_locf": {
+      "n_estimators": 600,
+      "locf": true
+    },
+    "robust_causal_locf": {
+      "objective": "reg:pseudohubererror",
+      "huber_slope": 3.0,
+      "max_depth": 3,
+      "min_child_weight": 8,
+      "reg_alpha": 1.0,
+      "reg_lambda": 10.0,
+      "locf": true
+    }
+  },
+  "imaging_xgb_trials": {
+    "baseline": {
+      "n_estimators": 500,
+      "learning_rate": 0.03,
+      "max_depth": 3,
+      "reg_alpha": 0.5,
+      "reg_lambda": 2.0
+    },
+    "regularized": {
+      "max_depth": 2,
+      "min_child_weight": 20,
+      "reg_alpha": 3.0,
+      "reg_lambda": 30.0,
+      "subsample": 0.9,
+      "colsample_bytree": 1.0
+    },
+    "absolute": {
+      "objective": "reg:absoluteerror",
+      "max_depth": 2,
+      "min_child_weight": 15,
+      "reg_alpha": 1.0,
+      "reg_lambda": 20.0
+    },
+    "pseudo_huber": {
+      "objective": "reg:pseudohubererror",
+      "huber_slope": 5.0,
+      "max_depth": 2,
+      "min_child_weight": 10,
+      "reg_lambda": 20.0
+    },
+    "causal_locf": {
+      "n_estimators": 500,
+      "learning_rate": 0.03,
+      "max_depth": 3,
+      "reg_alpha": 0.5,
+      "reg_lambda": 2.0,
+      "locf": true
+    },
+    "robust_causal_locf": {
+      "objective": "reg:pseudohubererror",
+      "huber_slope": 5.0,
+      "max_depth": 2,
+      "min_child_weight": 10,
+      "reg_lambda": 20.0,
+      "locf": true
+    }
+  }
+}

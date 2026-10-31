@@ -1,0 +1,54 @@
+{
+  "family": "imaging_mlp",
+  "name": "missing_indicators_only",
+  "seed": 42,
+  "metrics": {
+    "12m": {
+      "n_patients": 574,
+      "mae": 7.3811583760931105,
+      "rmse": 10.859098246038915,
+      "r2": 0.4139522503593138,
+      "pearson_r": 0.6614372968133917,
+      "bias": -2.1281201200825826
+    },
+    "24m": {
+      "n_patients": 449,
+      "mae": 7.691901598316524,
+      "rmse": 11.174022714463991,
+      "r2": 0.42215598321446146,
+      "pearson_r": 0.6682240460235895,
+      "bias": -2.2549857057813547
+    }
+  },
+  "classification": {
+    "n_patients": 574,
+    "roc_auc": 0.6308390022675736,
+    "average_precision": 0.42795890119861024,
+    "threshold": 0.5,
+    "accuracy": 0.6707317073170732
+  },
+  "seconds": 20.508506774902344,
+  "best_epoch": 11,
+  "epochs": 23,
+  "checkpoint": "ablations\\imaging_mlp\\missing_indicators_only\\42\\best.pt",
+  "config": {
+    "hidden": 64,
+    "layers": 2,
+    "dropout": 0.25,
+    "lr": 0.001,
+    "batch": 128,
+    "weight_decay": 0.001,
+    "loss": "huber",
+    "beta": 1.0,
+    "weight24": 1.0,
+    "classification_weight": 0.2,
+    "clip_grad": 1.5,
+    "epochs": 60,
+    "patience": 12,
+    "clip": null,
+    "missing": true,
+    "mask_absent": true,
+    "heads": 4,
+    "name": "missing_indicators_only"
+  }
+}

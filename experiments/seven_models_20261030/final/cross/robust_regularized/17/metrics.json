@@ -1,0 +1,54 @@
+{
+  "family": "cross",
+  "name": "robust_regularized",
+  "seed": 17,
+  "metrics": {
+    "12m": {
+      "n_patients": 574,
+      "mae": 4.511930605065635,
+      "rmse": 6.34500173050741,
+      "r2": 0.7999175633562448,
+      "pearson_r": 0.8974288644032,
+      "bias": -0.8697193108031767
+    },
+    "24m": {
+      "n_patients": 449,
+      "mae": 5.315754224635445,
+      "rmse": 7.614081094873574,
+      "r2": 0.7316963893744011,
+      "pearson_r": 0.8582205103755184,
+      "bias": -0.23746095939574635
+    }
+  },
+  "classification": {
+    "n_patients": 574,
+    "roc_auc": 0.753562839277125,
+    "average_precision": 0.621341868984776,
+    "threshold": 0.5,
+    "accuracy": 0.7229965156794426
+  },
+  "seconds": 437.9670407772064,
+  "best_epoch": 17,
+  "epochs": 23,
+  "checkpoint": "final\\cross\\robust_regularized\\17\\best.pt",
+  "config": {
+    "hidden": 48,
+    "layers": 2,
+    "dropout": 0.35,
+    "lr": 0.0005,
+    "batch": 128,
+    "weight_decay": 0.003,
+    "loss": "huber",
+    "beta": 2.0,
+    "weight24": 1.0,
+    "classification_weight": 0.2,
+    "clip_grad": 1.5,
+    "epochs": 24,
+    "patience": 6,
+    "clip": 8.0,
+    "missing": false,
+    "mask_absent": true,
+    "heads": 4,
+    "name": "robust_regularized"
+  }
+}

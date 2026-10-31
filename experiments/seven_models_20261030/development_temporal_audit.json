@@ -1,0 +1,20 @@
+[
+  {
+    "split": "train",
+    "rows": 22980,
+    "patients": 3787,
+    "negative_intervals": 0,
+    "delta_day_mismatches": 0,
+    "elapsed_month_mismatches": 0,
+    "duplicate_patient_dates": 3309
+  },
+  {
+    "split": "val",
+    "rows": 4831,
+    "patients": 827,
+    "negative_intervals": 0,
+    "delta_day_mismatches": 0,
+    "elapsed_month_mismatches": 0,
+    "duplicate_patient_dates": 675
+  }
+]

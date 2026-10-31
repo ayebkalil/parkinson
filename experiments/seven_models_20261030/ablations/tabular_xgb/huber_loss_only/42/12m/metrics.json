@@ -1,0 +1,31 @@
+{
+  "family": "tabular_xgb",
+  "name": "huber_loss_only",
+  "seed": 42,
+  "horizon": 12,
+  "metrics": {
+    "n_patients": 574,
+    "mae": 4.537117449092948,
+    "rmse": 6.515371558825146,
+    "r2": 0.7890284695677978,
+    "pearson_r": 0.8909183608204001,
+    "bias": -0.9720227771831307
+  },
+  "seconds": 0.7128758430480957,
+  "best_iteration": 104,
+  "checkpoint": "ablations\\tabular_xgb\\huber_loss_only\\42\\12m\\best.json",
+  "config": {
+    "n_estimators": 600,
+    "learning_rate": 0.03,
+    "max_depth": 4,
+    "min_child_weight": 1,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_alpha": 0.5,
+    "reg_lambda": 1.5,
+    "gamma": 0.0,
+    "objective": "reg:pseudohubererror",
+    "name": "huber_loss_only",
+    "huber_slope": 3.0
+  }
+}

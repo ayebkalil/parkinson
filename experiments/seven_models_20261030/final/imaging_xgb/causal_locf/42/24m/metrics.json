@@ -1,0 +1,31 @@
+{
+  "family": "imaging_xgb",
+  "name": "causal_locf",
+  "seed": 42,
+  "horizon": 24,
+  "metrics": {
+    "n_patients": 449,
+    "mae": 7.921226535448784,
+    "rmse": 11.068790114742514,
+    "r2": 0.4329885538092767,
+    "pearson_r": 0.6581622316952649,
+    "bias": -0.18249396173353982
+  },
+  "seconds": 0.932497501373291,
+  "best_iteration": 205,
+  "checkpoint": "final\\imaging_xgb\\causal_locf\\42\\24m\\best.json",
+  "config": {
+    "n_estimators": 500,
+    "learning_rate": 0.03,
+    "max_depth": 3,
+    "min_child_weight": 1,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_alpha": 0.5,
+    "reg_lambda": 2.0,
+    "gamma": 0.0,
+    "objective": "reg:squarederror",
+    "locf": true,
+    "name": "causal_locf"
+  }
+}

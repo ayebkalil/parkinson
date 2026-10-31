@@ -1,0 +1,205 @@
+{
+  "decisions": {
+    "tabular_xgb": {
+      "12m": {
+        "challenger": "regularized",
+        "retained": "baseline",
+        "baseline_mae": 4.58856033344302,
+        "challenger_mae": 4.557069668232633,
+        "validation_paired_interval": {
+          "delta_mae": -0.03149065454123115,
+          "ci95_low": -0.08100223642624862,
+          "ci95_high": 0.017440047135307713,
+          "unit": "patient",
+          "bootstrap_samples": 2000,
+          "seeds": [
+            42,
+            17,
+            2026
+          ],
+          "note": "Development safeguard only; conditional on these seeds, exploratory after validation tuning, no independent validation claim"
+        },
+        "passed_validation_safeguard": false
+      },
+      "24m": {
+        "challenger": "robust_causal_locf",
+        "retained": "robust_causal_locf",
+        "baseline_mae": 5.468205831098662,
+        "challenger_mae": 5.196172541216204,
+        "validation_paired_interval": {
+          "delta_mae": -0.27203328322197473,
+          "ci95_low": -0.4416731756805864,
+          "ci95_high": -0.09840055485077942,
+          "unit": "patient",
+          "bootstrap_samples": 2000,
+          "seeds": [
+            42,
+            17,
+            2026
+          ],
+          "note": "Development safeguard only; conditional on these seeds, exploratory after validation tuning, no independent validation claim"
+        },
+        "passed_validation_safeguard": true
+      }
+    },
+    "bilstm": {
+      "joint": {
+        "challenger": "robust_regularized",
+        "retained": "baseline",
+        "baseline_mae": 4.826073441437345,
+        "challenger_mae": 4.865305370201303,
+        "validation_paired_interval": {
+          "delta_mae": 0.039231918894464465,
+          "ci95_low": -0.038042249059343974,
+          "ci95_high": 0.11913263855161906,
+          "unit": "patient",
+          "bootstrap_samples": 2000,
+          "seeds": [
+            42,
+            17,
+            2026
+          ],
+          "note": "Development safeguard only; conditional on these seeds, exploratory after validation tuning, no independent validation claim"
+        },
+        "passed_validation_safeguard": false
+      }
+    },
+    "late": {
+      "joint": {
+        "challenger": "compact_mae",
+        "retained": "baseline",
+        "baseline_mae": 4.871582842082084,
+        "challenger_mae": 4.873145944865694,
+        "validation_paired_interval": {
+          "delta_mae": 0.0015630924328244576,
+          "ci95_low": -0.07653897126264662,
+          "ci95_high": 0.08131055646383976,
+          "unit": "patient",
+          "bootstrap_samples": 2000,
+          "seeds": [
+            42,
+            17,
+            2026
+          ],
+          "note": "Development safeguard only; conditional on these seeds, exploratory after validation tuning, no independent validation claim"
+        },
+        "passed_validation_safeguard": false
+      }
+    },
+    "early": {
+      "joint": {
+        "challenger": "compact_mae",
+        "retained": "baseline",
+        "baseline_mae": 4.850836260334665,
+        "challenger_mae": 4.828265735044116,
+        "validation_paired_interval": {
+          "delta_mae": -0.022570525642177677,
+          "ci95_low": -0.10192102030274455,
+          "ci95_high": 0.0569691915435264,
+          "unit": "patient",
+          "bootstrap_samples": 2000,
+          "seeds": [
+            42,
+            17,
+            2026
+          ],
+          "note": "Development safeguard only; conditional on these seeds, exploratory after validation tuning, no independent validation claim"
+        },
+        "passed_validation_safeguard": false
+      }
+    },
+    "cross": {
+      "joint": {
+        "challenger": "robust_regularized",
+        "retained": "baseline",
+        "baseline_mae": 4.876012051314712,
+        "challenger_mae": 4.875437526968118,
+        "validation_paired_interval": {
+          "delta_mae": -0.0005745311925595877,
+          "ci95_low": -0.0673545873772409,
+          "ci95_high": 0.06810614314804375,
+          "unit": "patient",
+          "bootstrap_samples": 2000,
+          "seeds": [
+            42,
+            17,
+            2026
+          ],
+          "note": "Development safeguard only; conditional on these seeds, exploratory after validation tuning, no independent validation claim"
+        },
+        "passed_validation_safeguard": false
+      }
+    },
+    "imaging_mlp": {
+      "joint": {
+        "challenger": "compact_mae",
+        "retained": "compact_mae",
+        "baseline_mae": 7.787065879404917,
+        "challenger_mae": 7.566705920280978,
+        "validation_paired_interval": {
+          "delta_mae": -0.2203599549910628,
+          "ci95_low": -0.402678183408295,
+          "ci95_high": -0.03381052704844162,
+          "unit": "patient",
+          "bootstrap_samples": 2000,
+          "seeds": [
+            42,
+            17,
+            2026
+          ],
+          "note": "Development safeguard only; conditional on these seeds, exploratory after validation tuning, no independent validation claim"
+        },
+        "passed_validation_safeguard": true
+      }
+    },
+    "imaging_xgb": {
+      "12m": {
+        "challenger": "robust_causal_locf",
+        "retained": "robust_causal_locf",
+        "baseline_mae": 9.694300555462897,
+        "challenger_mae": 7.673329480087577,
+        "validation_paired_interval": {
+          "delta_mae": -2.020971074622532,
+          "ci95_low": -2.509840752941347,
+          "ci95_high": -1.5187083844483158,
+          "unit": "patient",
+          "bootstrap_samples": 2000,
+          "seeds": [
+            42,
+            17,
+            2026
+          ],
+          "note": "Development safeguard only; conditional on these seeds, exploratory after validation tuning, no independent validation claim"
+        },
+        "passed_validation_safeguard": true
+      },
+      "24m": {
+        "challenger": "robust_causal_locf",
+        "retained": "robust_causal_locf",
+        "baseline_mae": 10.145449234716146,
+        "challenger_mae": 7.7451151480211005,
+        "validation_paired_interval": {
+          "delta_mae": -2.400334089593615,
+          "ci95_low": -3.0099196346440493,
+          "ci95_high": -1.8034230338738941,
+          "unit": "patient",
+          "bootstrap_samples": 2000,
+          "seeds": [
+            42,
+            17,
+            2026
+          ],
+          "note": "Development safeguard only; conditional on these seeds, exploratory after validation tuning, no independent validation claim"
+        },
+        "passed_validation_safeguard": true
+      }
+    }
+  },
+  "policy": "Choose one whole multitask neural configuration by equal mean MAE12/MAE24 on validation. XGBoost configuration is chosen per horizon. Freeze choices before test. Retain baseline if challenger fails to improve mean validation MAE across the three prespecified seeds. No seed selection, no prediction ensemble. Amendment before any new test prediction: retain a challenger only if the paired patient bootstrap upper 95% bound for validation mean MAE change is below zero; otherwise retain the corrected baseline.",
+  "seeds": [
+    42,
+    17,
+    2026
+  ],
+  "test_evaluated": false
+}

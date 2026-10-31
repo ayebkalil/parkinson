@@ -1,0 +1,54 @@
+{
+  "family": "imaging_mlp",
+  "name": "robust_regularized",
+  "seed": 42,
+  "metrics": {
+    "12m": {
+      "n_patients": 574,
+      "mae": 7.777288377077322,
+      "rmse": 11.459419062103098,
+      "r2": 0.3473645187654326,
+      "pearson_r": 0.6310150115844356,
+      "bias": -3.191497560992889
+    },
+    "24m": {
+      "n_patients": 449,
+      "mae": 7.867180456430185,
+      "rmse": 11.58527973431239,
+      "r2": 0.37883844248760634,
+      "pearson_r": 0.6499984280973315,
+      "bias": -3.0682988749580553
+    }
+  },
+  "classification": {
+    "n_patients": 574,
+    "roc_auc": 0.6702810417096131,
+    "average_precision": 0.4976937443993297,
+    "threshold": 0.5,
+    "accuracy": 0.6707317073170732
+  },
+  "seconds": 6.818575382232666,
+  "best_epoch": 12,
+  "epochs": 27,
+  "checkpoint": "runs\\imaging_mlp\\robust_regularized\\42\\best.pt",
+  "config": {
+    "hidden": 48,
+    "layers": 2,
+    "dropout": 0.35,
+    "lr": 0.001,
+    "batch": 128,
+    "weight_decay": 0.01,
+    "loss": "huber",
+    "beta": 2.0,
+    "weight24": 1.0,
+    "classification_weight": 0.2,
+    "clip_grad": 1.5,
+    "epochs": 80,
+    "patience": 15,
+    "clip": 8.0,
+    "missing": false,
+    "mask_absent": true,
+    "heads": 4,
+    "name": "robust_regularized"
+  }
+}

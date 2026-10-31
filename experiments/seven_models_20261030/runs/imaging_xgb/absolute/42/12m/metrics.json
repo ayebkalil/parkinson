@@ -1,0 +1,30 @@
+{
+  "family": "imaging_xgb",
+  "name": "absolute",
+  "seed": 42,
+  "horizon": 12,
+  "metrics": {
+    "n_patients": 574,
+    "mae": 9.477457915448976,
+    "rmse": 12.68272079351777,
+    "r2": 0.20058859249096583,
+    "pearson_r": 0.464917863205002,
+    "bias": -1.7410040940141844
+  },
+  "seconds": 0.42922329902648926,
+  "best_iteration": 748,
+  "checkpoint": "runs\\imaging_xgb\\absolute\\42\\12m\\best.json",
+  "config": {
+    "n_estimators": 900,
+    "learning_rate": 0.03,
+    "max_depth": 2,
+    "min_child_weight": 15,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_alpha": 1.0,
+    "reg_lambda": 20.0,
+    "gamma": 0.0,
+    "objective": "reg:absoluteerror",
+    "name": "absolute"
+  }
+}

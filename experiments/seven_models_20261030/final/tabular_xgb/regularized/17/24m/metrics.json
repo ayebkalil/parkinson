@@ -1,0 +1,30 @@
+{
+  "family": "tabular_xgb",
+  "name": "regularized",
+  "seed": 17,
+  "horizon": 24,
+  "metrics": {
+    "n_patients": 449,
+    "mae": 5.481568068996038,
+    "rmse": 7.848913331480769,
+    "r2": 0.714891222285692,
+    "pearson_r": 0.8475272690731309,
+    "bias": 0.5137907865318264
+  },
+  "seconds": 1.4930484294891357,
+  "best_iteration": 252,
+  "checkpoint": "final\\tabular_xgb\\regularized\\17\\24m\\best.json",
+  "config": {
+    "n_estimators": 1200,
+    "learning_rate": 0.03,
+    "max_depth": 3,
+    "min_child_weight": 10,
+    "subsample": 0.85,
+    "colsample_bytree": 0.85,
+    "reg_alpha": 2.0,
+    "reg_lambda": 20.0,
+    "gamma": 0.1,
+    "objective": "reg:squarederror",
+    "name": "regularized"
+  }
+}

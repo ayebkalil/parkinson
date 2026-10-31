@@ -1,0 +1,54 @@
+{
+  "family": "bilstm",
+  "name": "baseline",
+  "seed": 42,
+  "metrics": {
+    "12m": {
+      "n_patients": 574,
+      "mae": 4.4903786194410165,
+      "rmse": 6.361980805923567,
+      "r2": 0.7988452988056148,
+      "pearson_r": 0.8969959109803348,
+      "bias": -0.6148762753629207
+    },
+    "24m": {
+      "n_patients": 449,
+      "mae": 5.132737359749713,
+      "rmse": 7.271054803724041,
+      "r2": 0.7553268252667186,
+      "pearson_r": 0.8707158707043222,
+      "bias": -0.15799126669532207
+    }
+  },
+  "classification": {
+    "n_patients": 574,
+    "roc_auc": 0.7510616367759224,
+    "average_precision": 0.6114489188541365,
+    "threshold": 0.5,
+    "accuracy": 0.7177700348432056
+  },
+  "seconds": 368.2075707912445,
+  "best_epoch": 6,
+  "epochs": 12,
+  "checkpoint": "runs\\bilstm\\baseline\\42\\best.pt",
+  "config": {
+    "hidden": 64,
+    "layers": 2,
+    "dropout": 0.2,
+    "lr": 0.0015,
+    "batch": 128,
+    "weight_decay": 0.0001,
+    "loss": "huber",
+    "beta": 1.0,
+    "weight24": 1.0,
+    "classification_weight": 0.2,
+    "clip_grad": 1.5,
+    "epochs": 24,
+    "patience": 6,
+    "clip": null,
+    "missing": false,
+    "mask_absent": true,
+    "heads": 4,
+    "name": "baseline"
+  }
+}

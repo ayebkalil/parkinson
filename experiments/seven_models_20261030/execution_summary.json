@@ -1,0 +1,15 @@
+{
+  "completed_training_runs": 118,
+  "reused_screen_runs": 18,
+  "recorded_training_seconds": 162818.3154630661,
+  "seeds": [
+    42,
+    17,
+    2026
+  ],
+  "critical_tests": 12,
+  "backend_tests": 6,
+  "all_principal_families": 7,
+  "duration_measure": "Sum of recorded wall-clock durations. Includes machine sleep/suspension across calendar days; not CPU compute time and not a speed benchmark.",
+  "test_status": "All 18 targeted tests passed; live HTTP checks and React build passed."
+}

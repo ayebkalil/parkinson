@@ -1,0 +1,54 @@
+{
+  "family": "cross",
+  "name": "baseline",
+  "seed": 42,
+  "metrics": {
+    "12m": {
+      "n_patients": 574,
+      "mae": 4.641267522948856,
+      "rmse": 6.69168762040062,
+      "r2": 0.7774555355214869,
+      "pearson_r": 0.8851545721140197,
+      "bias": -0.8810781150381324
+    },
+    "24m": {
+      "n_patients": 449,
+      "mae": 5.550081214073108,
+      "rmse": 8.082485822685658,
+      "r2": 0.6976698746872996,
+      "pearson_r": 0.8394376390603911,
+      "bias": -0.1406017324009823
+    }
+  },
+  "classification": {
+    "n_patients": 574,
+    "roc_auc": 0.7336356764928192,
+    "average_precision": 0.6078585571329973,
+    "threshold": 0.5,
+    "accuracy": 0.7317073170731707
+  },
+  "seconds": 20.268934965133667,
+  "best_epoch": 2,
+  "epochs": 2,
+  "checkpoint": "pilot\\cross\\baseline\\42\\best.pt",
+  "config": {
+    "hidden": 64,
+    "layers": 2,
+    "dropout": 0.25,
+    "lr": 0.001,
+    "batch": 128,
+    "weight_decay": 0.001,
+    "loss": "huber",
+    "beta": 1.0,
+    "weight24": 1.0,
+    "classification_weight": 0.2,
+    "clip_grad": 1.5,
+    "epochs": 24,
+    "patience": 6,
+    "clip": null,
+    "missing": false,
+    "mask_absent": true,
+    "heads": 4,
+    "name": "baseline"
+  }
+}

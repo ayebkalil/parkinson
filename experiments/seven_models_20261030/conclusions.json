@@ -1,0 +1,10 @@
+{
+  "test_comparisons": 14,
+  "lower_mae_point_estimate": 5,
+  "paired_ci_supports_lower_mae": 4,
+  "best_available_reuses_previous_families": [
+    "tabular_xgb"
+  ],
+  "test_is_independent": false,
+  "production_checkpoints_replaced": false
+}

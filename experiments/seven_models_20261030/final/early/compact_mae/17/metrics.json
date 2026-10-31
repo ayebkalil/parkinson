@@ -1,0 +1,54 @@
+{
+  "family": "early",
+  "name": "compact_mae",
+  "seed": 17,
+  "metrics": {
+    "12m": {
+      "n_patients": 574,
+      "mae": 4.446654641215498,
+      "rmse": 6.383376689077724,
+      "r2": 0.7974900229015202,
+      "pearson_r": 0.8958107319994434,
+      "bias": -0.8994225685968217
+    },
+    "24m": {
+      "n_patients": 449,
+      "mae": 5.1374433278448395,
+      "rmse": 7.414817531399075,
+      "r2": 0.7455558576514189,
+      "pearson_r": 0.8649853824790509,
+      "bias": -0.5411929283291101
+    }
+  },
+  "classification": {
+    "n_patients": 574,
+    "roc_auc": 0.7532192675049819,
+    "average_precision": 0.588947661502401,
+    "threshold": 0.5,
+    "accuracy": 0.7160278745644599
+  },
+  "seconds": 236.42626953125,
+  "best_epoch": 21,
+  "epochs": 24,
+  "checkpoint": "final\\early\\compact_mae\\17\\best.pt",
+  "config": {
+    "hidden": 32,
+    "layers": 1,
+    "dropout": 0.15,
+    "lr": 0.001,
+    "batch": 128,
+    "weight_decay": 0.0001,
+    "loss": "mae",
+    "beta": 1.0,
+    "weight24": 1.0,
+    "classification_weight": 0.2,
+    "clip_grad": 1.5,
+    "epochs": 24,
+    "patience": 6,
+    "clip": null,
+    "missing": false,
+    "mask_absent": true,
+    "heads": 4,
+    "name": "compact_mae"
+  }
+}

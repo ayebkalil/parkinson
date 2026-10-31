@@ -1,0 +1,8 @@
+runs imaging_xgb baseline seed=42 12m MAE=9.6842 sec=0.3
+runs imaging_xgb baseline seed=42 24m MAE=10.1565 sec=0.1
+runs imaging_xgb regularized seed=42 12m MAE=9.7087 sec=0.2
+runs imaging_xgb regularized seed=42 24m MAE=10.1307 sec=0.2
+runs imaging_xgb absolute seed=42 12m MAE=9.4775 sec=0.4
+runs imaging_xgb absolute seed=42 24m MAE=9.8700 sec=0.3
+runs imaging_xgb pseudo_huber seed=42 12m MAE=9.4745 sec=0.2
+runs imaging_xgb pseudo_huber seed=42 24m MAE=9.8350 sec=0.2

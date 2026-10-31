@@ -1,0 +1,31 @@
+{
+  "family": "tabular_xgb",
+  "name": "pseudo_huber",
+  "seed": 17,
+  "horizon": 12,
+  "metrics": {
+    "n_patients": 574,
+    "mae": 4.576454595549078,
+    "rmse": 6.533447794826534,
+    "r2": 0.7878562075342534,
+    "pearson_r": 0.8898129857416114,
+    "bias": -0.7830024879386823
+  },
+  "seconds": 1.6316406726837158,
+  "best_iteration": 348,
+  "checkpoint": "final\\tabular_xgb\\pseudo_huber\\17\\12m\\best.json",
+  "config": {
+    "n_estimators": 900,
+    "learning_rate": 0.03,
+    "max_depth": 3,
+    "min_child_weight": 8,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "reg_alpha": 1.0,
+    "reg_lambda": 10.0,
+    "gamma": 0.0,
+    "objective": "reg:pseudohubererror",
+    "huber_slope": 3.0,
+    "name": "pseudo_huber"
+  }
+}

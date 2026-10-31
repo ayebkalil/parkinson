@@ -1,0 +1,68 @@
+{
+  "splits_disjoint": true,
+  "longitudinal_targets_reconstructed": true,
+  "labels_equal_raw_delta_ge_3_5": true,
+  "raw_data_available": false,
+  "raw_provenance_certified": false,
+  "limitation": "Event joins omit acquisition dates; latest demographics/education are not time-stamped. Raw files required for prospective leakage certification. Same-month order unresolved.",
+  "protocol": "latest complete eligible row per horizon; 24m requires both labels, as in original training; unchanged PATNO partitions",
+  "target_aggregation": "mean of all motor states on the future date; original windows and MCID retained",
+  "source_sha256": {
+    "data\\processed\\train_longitudinal.parquet": "9245cd93077cab9e79f4f0d4a7fb40ac03d24513f318fc5255502c26c35a972c",
+    "data\\processed\\train_tabular_latest.parquet": "d6ddd630749cd47d1a5451c453e900974d3b3ffb345c7461ed961b35d0d9b7e2",
+    "data\\processed\\val_longitudinal.parquet": "1e7366730671433300bd07dff5ce3969f5d349f2c5c7e6c228e7b4340c274c56",
+    "data\\processed\\val_tabular_latest.parquet": "46d7cbfd72d9ca6fedb858a56ced5519541dbd5f8cc641f8b528a307320e75c7",
+    "data\\processed\\test_longitudinal.parquet": "ca9fa3ad37e5e047cf616e62f9bc9c194a71a1602cd946970b164be59d5574fe",
+    "data\\processed\\test_tabular_latest.parquet": "7075e16d20c4dc7f8cb25cb6f06bc74cf51188918e9993da932192c234e68bde"
+  },
+  "splits": [
+    {
+      "split": "train",
+      "patients": 3787,
+      "visits": 22980,
+      "samples12": 2683,
+      "samples24": 2155,
+      "labelled_train_prefixes": 14850,
+      "prevalence12": 0.2944465150950429,
+      "historical_n12": 2683,
+      "same_index_valid12": 2683,
+      "stale_or_wrong12": 0,
+      "historical_n24": 2155,
+      "same_index_valid24": 80,
+      "stale_or_wrong24": 2075,
+      "mixed_feature_cells": 18753
+    },
+    {
+      "split": "val",
+      "patients": 827,
+      "visits": 4831,
+      "samples12": 574,
+      "samples24": 449,
+      "labelled_train_prefixes": 3057,
+      "prevalence12": 0.32926829268292684,
+      "historical_n12": 574,
+      "same_index_valid12": 574,
+      "stale_or_wrong12": 0,
+      "historical_n24": 449,
+      "same_index_valid24": 14,
+      "stale_or_wrong24": 435,
+      "mixed_feature_cells": 4185
+    },
+    {
+      "split": "test",
+      "patients": 812,
+      "visits": 4932,
+      "samples12": 583,
+      "samples24": 462,
+      "labelled_train_prefixes": 3171,
+      "prevalence12": 0.30874785591766724,
+      "historical_n12": 583,
+      "same_index_valid12": 583,
+      "stale_or_wrong12": 0,
+      "historical_n24": 462,
+      "same_index_valid24": 18,
+      "stale_or_wrong24": 444,
+      "mixed_feature_cells": 3850
+    }
+  ]
+}
